@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fort_parts/main.dart';
+import 'package:fort_parts/view/onboarding_view/onboarding_view.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
 
@@ -26,7 +27,7 @@ class _MyHomePageState extends State<SplashView> {
     Timer(
         const Duration(seconds: 8),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) =>  MyHomePage(title: 'hi'))));
+            context, MaterialPageRoute(builder: (context) =>  OnBording())));
   }
 
   @override
