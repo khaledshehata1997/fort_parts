@@ -39,7 +39,7 @@ dependencies:
   is_first_run: ^1.0.0
   font_awesome_flutter: ^10.8.0
   unicons: ^3.0.0
-
+  intl: ^0.20.1
 
 
 dev_dependencies:
