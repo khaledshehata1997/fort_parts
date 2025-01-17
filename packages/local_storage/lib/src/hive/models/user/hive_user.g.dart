@@ -17,16 +17,25 @@ class HiveUserAdapter extends TypeAdapter<HiveUser> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveUser(
-      id: fields[0] as String,
+      name: fields[0] as String,
+      email: fields[0] as String,
+      phone: fields[0] as String,
+      image: fields[0] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveUser obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.id);
+      ..write(obj.name)
+      ..writeByte(0)
+      ..write(obj.email)
+      ..writeByte(0)
+      ..write(obj.phone)
+      ..writeByte(0)
+      ..write(obj.image);
   }
 
   @override

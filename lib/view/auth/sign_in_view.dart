@@ -1,10 +1,26 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
 import 'package:fort_parts/view/auth/sign_up_view.dart';
-import 'package:fort_parts/view/home_view/nav_bar_view.dart';
 import 'package:get/get.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends StatefulWidget {
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,25 +55,10 @@ class SignInView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextFormField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                    prefixIcon: Row(
-                      children: [
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          '+966',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          '50214625',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        )
-                      ],
-                    ),
+                    hintText: "50729272599",
                     prefixStyle: TextStyle(color: Colors.black),
                     contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                     filled: true,
@@ -74,23 +75,41 @@ class SignInView extends StatelessWidget {
             SizedBox(
               height: Get.height * .1,
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(NavBarView());
+            BlocListener<AuthenticationCubit, AuthenticationStates>(
+              listenWhen: (previous, current) => current is LoginState,
+              listener: (context, state) {
+                if (state is LoginState && state.stateStatus == StateStatus.success) {}
               },
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                child: Text(
-                  'تسجيل الدخول',
-                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+              child: GestureDetector(
+                onTap: () async {
+                  if (phoneController.text.isNotEmpty && phoneController.text.length == 9) {
+                    final cubit = context.read<AuthenticationCubit>();
+                    cubit.login(
+                      phone: "966${phoneController.text}",
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('رقمم الهاتف غير صحيح'),
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    'تسجيل الدخول',
+                    style:
+                        TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                  ),
+                  width: Get.width,
+                  height: 65,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: mainColor,
+                      border: Border.all(color: mainColor, width: 1)),
                 ),
-                width: Get.width,
-                height: 65,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: mainColor,
-                    border: Border.all(color: mainColor, width: 1)),
               ),
             ),
             SizedBox(

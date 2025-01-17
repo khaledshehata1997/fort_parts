@@ -1,19 +1,9 @@
 class EndPoints {
-  static String baseUrl = 'https://api.developertest.online/api';
+  static String baseUrl = 'http://127.0.0.1:8000/api';
 
   // Authentication
-  static String register() => '$baseUrl/register';
-  static String login() => '$baseUrl/login';
-
-  // Doctors
-  static String doctors() => '$baseUrl/doctors';
-
-  // Branches
-  static String branches() => '$baseUrl/branches';
-
-  // Specializations
-  static String specializations() => '$baseUrl/specializations';
-
-  // Appointments
-  static String appointments() => '$baseUrl/appointment';
+  static String login() => '$baseUrl/auth/login';
+  static String register() => '$baseUrl/auth/register';
+  static String otpVerification() => '$baseUrl/auth/verify-phone';
+  static String saveFCM() => '$baseUrl/auth/save_fcm';
 }

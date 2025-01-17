@@ -4,7 +4,10 @@ import 'package:local_storage/local_storage.dart';
 extension ToHiveUser on User {
   HiveUser get toHiveUser {
     return HiveUser(
-      id: id,
+      name: name,
+      email: email,
+      phone: phone,
+      image: image,
     );
   }
 }
