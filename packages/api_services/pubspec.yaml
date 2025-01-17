@@ -1,5 +1,5 @@
-name: fort_parts
-description: "A new Flutter project."
+name: api_services
+description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -21,6 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.0
 
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -35,26 +36,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  get: ^4.6.6
-  is_first_run: ^1.0.0
-  font_awesome_flutter: ^10.8.0
-  unicons: ^3.0.0
-  intl_phone_field: ^3.2.0
-  bloc: ^8.1.4
-  flutter_bloc: ^8.1.6
+  dio: ^5.7.0
+  path_provider: ^2.1.5
+  logger: ^2.5.0
 
   #Custom Packages
-  components:
-    path: packages/components
-
-  api_services:
-    path: packages/api_services
-
   data_access:
-    path: packages/data_access
+    path: ../data_access
 
   local_storage:
-    path: packages/local_storage
+    path: ../local_storage
 
 dev_dependencies:
   flutter_test:
@@ -79,16 +70,15 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - images/
-    - icons/
+  #  assets:
+  #   - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
+  # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
+  # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -108,4 +98,4 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  # see https://flutter.dev/custom-fonts/#from-packages
