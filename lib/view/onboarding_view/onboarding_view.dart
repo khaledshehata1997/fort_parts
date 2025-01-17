@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fort_parts/constants.dart';
+import 'package:fort_parts/view/home_view/nav_bar_view.dart';
 import 'package:get/get.dart';
-
-import '../home_view/home_view.dart';
 
 class OnBording extends StatefulWidget {
   @override
@@ -37,7 +36,7 @@ class _OnBordingState extends State<OnBording> {
         curve: Curves.easeIn,
       );
     } else {
-      Get.to(HomeView());
+      Get.to(NavBarView());
     }
     if (_currentIndex < imgList2.length - 1) {
       _pageController2.nextPage(
@@ -45,7 +44,7 @@ class _OnBordingState extends State<OnBording> {
         curve: Curves.easeIn,
       );
     } else {
-      Get.to(HomeView());
+      Get.to(NavBarView());
     }
   }
 
@@ -64,7 +63,7 @@ class _OnBordingState extends State<OnBording> {
                 alignment: Alignment.topRight,
                 child: TextButton(
                     onPressed: () {
-                      Get.to(HomeView());
+                      Get.to(NavBarView());
                     },
                     child: Text("تخطي",
                         textDirection: TextDirection.rtl,
