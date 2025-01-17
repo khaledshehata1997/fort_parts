@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fort_parts/constants.dart';
+import 'package:fort_parts/view/auth/sign_up_view.dart';
 import 'package:fort_parts/view/home_view/nav_bar_view.dart';
 import 'package:get/get.dart';
 
@@ -81,11 +82,16 @@ class SignInView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(width: 8,),
-                Text('إنشاء حساب ',style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    decorationColor: mainColor,
+                GestureDetector(
+                  onTap: (){
+                    Get.to(SignUpView());
+                  },
+                  child: Text('إنشاء حساب ',style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      decorationColor: mainColor,
 
-                    fontSize: 18,color: mainColor,fontWeight: FontWeight.bold)),
+                      fontSize: 18,color: mainColor,fontWeight: FontWeight.bold)),
+                ),
                 SizedBox(width: 2,),
                 Text('ليس لديك حساب؟ ',style: TextStyle(fontSize: 17,color: Colors.black),
                 )
