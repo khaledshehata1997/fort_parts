@@ -13,12 +13,16 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   }) async {
     try {
       emit(RegisterState(stateStatus: StateStatus.loading));
-      await sl<IAuthenticationRepository>().register(
+      final bool isSuccess = await sl<IAuthenticationRepository>().register(
         name: name,
         email: email,
         phone: phone,
       );
-      emit(RegisterState(stateStatus: StateStatus.success));
+      if (isSuccess) {
+        emit(RegisterState(stateStatus: StateStatus.success));
+      } else {
+        emit(RegisterState(stateStatus: StateStatus.error));
+      }
     } catch (e) {
       emit(RegisterState(stateStatus: StateStatus.error));
       rethrow;
@@ -30,10 +34,14 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   }) async {
     try {
       emit(LoginState(stateStatus: StateStatus.loading));
-      await sl<IAuthenticationRepository>().login(
+      final bool isSuccess = await sl<IAuthenticationRepository>().login(
         phone: phone,
       );
-      emit(LoginState(stateStatus: StateStatus.success));
+      if (isSuccess) {
+        emit(LoginState(stateStatus: StateStatus.success));
+      } else {
+        emit(LoginState(stateStatus: StateStatus.error));
+      }
     } catch (e) {
       emit(LoginState(stateStatus: StateStatus.error));
       rethrow;

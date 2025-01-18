@@ -13,6 +13,9 @@ class AuthInterceptor extends Interceptor {
       if (accessToken != null) {
         options.headers.addAll({'Authorization': 'Bearer $accessToken'});
       }
+
+      // Send App Key
+      options.headers.addAll({'appKey': '123456789'});
     } catch (e) {
       rethrow;
     }

@@ -1,9 +1,9 @@
 abstract class IAuthenticationRepository {
-  Future<void> login({
+  Future<bool> login({
     required String phone,
   });
 
-  Future<void> register({
+  Future<bool> register({
     required String name,
     required String email,
     required String phone,

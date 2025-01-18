@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 class AuthenticationRepository implements IAuthenticationRepository {
   @override
-  Future<void> login({
+  Future<bool> login({
     required String phone,
   }) async {
     try {
@@ -14,19 +14,19 @@ class AuthenticationRepository implements IAuthenticationRepository {
         "phone": phone,
       };
 
-      await sl<IApiRepository>().post(
+      final Response response = await sl<IApiRepository>().post(
         url: url,
         formData: FormData.fromMap(data),
       );
 
-      return;
+      return response.data['status'] == 200;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> register({
+  Future<bool> register({
     required String name,
     required String email,
     required String phone,
@@ -39,12 +39,12 @@ class AuthenticationRepository implements IAuthenticationRepository {
         "phone": phone,
       };
 
-      await sl<IApiRepository>().post(
+      final Response response = await sl<IApiRepository>().post(
         url: url,
         formData: FormData.fromMap(data),
       );
 
-      return;
+      return response.data['status'] == 200;
     } catch (e) {
       rethrow;
     }

@@ -1,5 +1,5 @@
 class EndPoints {
-  static String baseUrl = 'http://127.0.0.1:8000/api';
+  static String baseUrl = 'https://fortpart.fannyjeddah.com/api';
 
   // Authentication
   static String login() => '$baseUrl/auth/login';
