@@ -83,7 +83,10 @@ class _SignInViewState extends State<SignInView> {
                 listener: (context, state) {
                   if (state is LoginState && state.stateStatus == StateStatus.success) {
                     AppNavigator.navigateTo(
-                        type: NavigationType.navigateTo, widget: const OtvVerificationView());
+                        type: NavigationType.navigateTo,
+                        widget: OtvVerificationView(
+                          phone: "966${phoneController.text}",
+                        ));
                   }
 
                   if (state is LoginState && state.stateStatus == StateStatus.error) {
@@ -96,6 +99,12 @@ class _SignInViewState extends State<SignInView> {
                 },
                 child: GestureDetector(
                   onTap: () async {
+                    AppNavigator.navigateTo(
+                        type: NavigationType.navigateTo,
+                        widget: OtvVerificationView(
+                          phone: "966${phoneController.text}",
+                        ));
+                    return;
                     if (phoneController.text.isNotEmpty && phoneController.text.length == 9) {
                       final cubit = context.read<AuthenticationCubit>();
                       cubit.login(

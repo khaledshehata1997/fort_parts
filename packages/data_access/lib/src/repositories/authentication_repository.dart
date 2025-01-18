@@ -51,7 +51,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }
 
   @override
-  Future<void> otpVerification({
+  Future<LoggedUser> otpVerification({
     required String phone,
     required String otp,
   }) async {
@@ -59,15 +59,16 @@ class AuthenticationRepository implements IAuthenticationRepository {
       final String url = EndPoints.otpVerification();
       final Map<String, dynamic> data = {
         "phone": phone,
-        "otp": otp,
+        "otp": int.parse(otp),
       };
-
-      await sl<IApiRepository>().post(
+      final Response response = await sl<IApiRepository>().post(
         url: url,
         formData: FormData.fromMap(data),
       );
 
-      return;
+      final LoggedUser loggedUser = LoggedUser.fromJson(response.data['data']);
+
+      return loggedUser;
     } catch (e) {
       rethrow;
     }

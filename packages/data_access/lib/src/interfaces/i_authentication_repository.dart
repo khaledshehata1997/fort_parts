@@ -1,3 +1,5 @@
+import 'package:data_access/src/models/logged_user.dart';
+
 abstract class IAuthenticationRepository {
   Future<bool> login({
     required String phone,
@@ -9,7 +11,7 @@ abstract class IAuthenticationRepository {
     required String phone,
   });
 
-  Future<void> otpVerification({
+  Future<LoggedUser> otpVerification({
     required String phone,
     required String otp,
   });

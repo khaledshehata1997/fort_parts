@@ -2,6 +2,7 @@ import 'package:components/components.dart';
 import 'package:data_access/data_access.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
+import 'package:local_storage/local_storage.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationStates> {
   AuthenticationCubit() : super(AuthenticationInitialState());
@@ -53,15 +54,33 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
     required String otp,
   }) async {
     try {
-      emit(LoginState(stateStatus: StateStatus.loading));
-      await sl<IAuthenticationRepository>().otpVerification(
+      emit(OTPVerificationState(stateStatus: StateStatus.loading));
+      final LoggedUser loggedUser = await sl<IAuthenticationRepository>().otpVerification(
         phone: phone,
         otp: otp,
       );
-      emit(LoginState(stateStatus: StateStatus.success));
+      emit(OTPVerificationState(stateStatus: StateStatus.success, loggedUser: loggedUser));
     } catch (e) {
-      emit(LoginState(stateStatus: StateStatus.error));
+      emit(OTPVerificationState(stateStatus: StateStatus.error));
       rethrow;
     }
+  }
+
+  Future<void> resendOTP() async {
+    try {
+      emit(ResendOTPState(stateStatus: StateStatus.loading));
+
+      emit(ResendOTPState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(ResendOTPState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
+
+  Future<void> updateDataLocally({
+    required LoggedUser loggedUser,
+  }) async {
+    await HiveHelper.put(hiveBox: HiveBoxes.user, data: loggedUser.user.toHiveUser);
+    await HiveHelper.put(hiveBox: HiveBoxes.accessToken, data: loggedUser.token);
   }
 }
