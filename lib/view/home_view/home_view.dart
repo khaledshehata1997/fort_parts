@@ -1,5 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
+import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
 import 'package:fort_parts/view/auth/sign_in_view.dart';
 import 'package:fort_parts/view/service_name/service_home.dart';
 import 'package:get/get.dart';
@@ -7,8 +11,22 @@ import 'package:local_storage/local_storage.dart';
 
 import '../../constants.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int currentIndex = 0;
+  @override
+  void initState() {
+    final cubit = context.read<SettingsCubit>();
+    cubit.fetchHomeSlider();
+    cubit.fetchCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,19 +162,63 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: 10),
-                  width: Get.width,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'images/slider.png',
-                        fit: BoxFit.fill,
-                      ),
-                      Positioned(top: 30, right: 20, child: Image.asset('icons/label.png')),
-                    ],
-                  )),
+              BlocBuilder<SettingsCubit, SettingsStates>(
+                buildWhen: (previous, current) => current is FetchHomeSliderState,
+                builder: (BuildContext context, state) {
+                  if (state is FetchHomeSliderState) {
+                    return state.stateStatus == StateStatus.success
+                        ? Column(
+                            children: [
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                    height: 150.0,
+                                    viewportFraction: 1,
+                                    onPageChanged: (index, reason) {
+                                      currentIndex = index;
+                                      setState(() {});
+                                    },
+                                    autoPlay: true),
+                                items: state.slider.map((slider) {
+                                  return Container(
+                                      width: double.infinity,
+                                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: AppCachedNetworkImage(
+                                            imageUrl: slider.image,
+                                            height: 150,
+                                            width: Get.width,
+                                          )));
+                                }).toList(),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                    state.slider.length,
+                                    (index) => Container(
+                                          height: 12,
+                                          width: 12,
+                                          margin: const EdgeInsets.only(right: 10),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: currentIndex == index
+                                                  ? mainColor
+                                                  : mainColor.withOpacity(0.3)),
+                                        )),
+                              ),
+                            ],
+                          )
+                        : AppShimmer(child: Container());
+                  }
+                  return const SizedBox();
+                },
+              ),
               SizedBox(
                 height: Get.height * .05,
               ),

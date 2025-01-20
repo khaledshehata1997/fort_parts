@@ -1,0 +1,19 @@
+class Category {
+  Category({
+    required this.id,
+    required this.name,
+    required this.image,
+  });
+
+  final int id;
+  final String name;
+  final String image;
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+    );
+  }
+}
