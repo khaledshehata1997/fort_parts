@@ -1,32 +1,15 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
-import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
 import 'package:fort_parts/view/auth/sign_in_view.dart';
-import 'package:fort_parts/view/service_name/service_home.dart';
+import 'package:fort_parts/view/home_view/widgets/home_categories.dart';
+import 'package:fort_parts/view/home_view/widgets/home_slider.dart';
 import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
 
 import '../../constants.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  int currentIndex = 0;
-  @override
-  void initState() {
-    final cubit = context.read<SettingsCubit>();
-    cubit.fetchHomeSlider();
-    cubit.fetchCategories();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,197 +145,11 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
-              BlocBuilder<SettingsCubit, SettingsStates>(
-                buildWhen: (previous, current) => current is FetchHomeSliderState,
-                builder: (BuildContext context, state) {
-                  if (state is FetchHomeSliderState) {
-                    return state.stateStatus == StateStatus.success
-                        ? Column(
-                            children: [
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                    height: 150.0,
-                                    viewportFraction: 1,
-                                    onPageChanged: (index, reason) {
-                                      currentIndex = index;
-                                      setState(() {});
-                                    },
-                                    autoPlay: true),
-                                items: state.slider.map((slider) {
-                                  return Container(
-                                      width: double.infinity,
-                                      margin: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-                                      decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(10)),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: AppCachedNetworkImage(
-                                            imageUrl: slider.image,
-                                            height: 150,
-                                            width: Get.width,
-                                          )));
-                                }).toList(),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                    state.slider.length,
-                                    (index) => Container(
-                                          height: 12,
-                                          width: 12,
-                                          margin: const EdgeInsets.only(right: 10),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: currentIndex == index
-                                                  ? mainColor
-                                                  : mainColor.withOpacity(0.3)),
-                                        )),
-                              ),
-                            ],
-                          )
-                        : AppShimmer(child: Container());
-                  }
-                  return const SizedBox();
-                },
-              ),
+              const HomeSlider(),
               SizedBox(
                 height: Get.height * .05,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(ServiceHome());
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Image.asset('icons/img.png'),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'الكهرباء',
-                              style: TextStyle(fontSize: 19, color: Colors.black),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        width: Get.width * .43,
-                        height: Get.height * .17,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)
-                            ]),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(ServiceHome());
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Image.asset('icons/img_1.png'),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'النجاره',
-                              style: TextStyle(fontSize: 19, color: Colors.black),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        width: Get.width * .43,
-                        height: Get.height * .17,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)
-                            ]),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: Get.height * .03,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(ServiceHome());
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Image.asset('icons/img_2.png'),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'السباكه',
-                              style: TextStyle(fontSize: 19, color: Colors.black),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        width: Get.width * .43,
-                        height: Get.height * .17,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)
-                            ]),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(ServiceHome());
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Image.asset('icons/img_3.png'),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'تنظيف المكيفات',
-                              style: TextStyle(fontSize: 19, color: Colors.black),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        width: Get.width * .43,
-                        height: Get.height * .17,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)
-                            ]),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              const HomeCategories(),
             ],
           ),
         ),
