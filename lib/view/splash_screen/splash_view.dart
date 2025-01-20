@@ -22,7 +22,7 @@ class _MyHomePageState extends State<SplashView> {
       Timer(
           const Duration(seconds: 8),
           () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => firstRun ? OnBording() : NavBarView())));
+              MaterialPageRoute(builder: (context) => firstRun ? OnBordingView() : NavBarView())));
     });
   }
 
