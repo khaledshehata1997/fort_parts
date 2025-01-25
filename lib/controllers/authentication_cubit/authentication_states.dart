@@ -10,8 +10,10 @@ class AuthenticationRefreshState extends AuthenticationStates {}
 class LoginState extends AuthenticationStates {
   LoginState({
     required this.stateStatus,
+    this.isRegistered = false,
   });
   final StateStatus stateStatus;
+  final bool isRegistered;
 }
 
 class RegisterState extends AuthenticationStates {

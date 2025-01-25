@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 class AuthenticationRepository implements IAuthenticationRepository {
   @override
-  Future<bool> login({
+  Future<Map<String, dynamic>> login({
     required String phone,
   }) async {
     try {
@@ -19,7 +19,10 @@ class AuthenticationRepository implements IAuthenticationRepository {
         formData: FormData.fromMap(data),
       );
 
-      return response.data['status'] == 200;
+      return {
+        'status': response.data['status'],
+        'type': response.data['data']['type'],
+      };
     } catch (e) {
       rethrow;
     }

@@ -84,9 +84,11 @@ class _SignInViewState extends State<SignInView> {
                   if (state is LoginState && state.stateStatus == StateStatus.success) {
                     AppNavigator.navigateTo(
                         type: NavigationType.navigateTo,
-                        widget: OtvVerificationView(
-                          phone: "966${phoneController.text}",
-                        ));
+                        widget: state.isRegistered
+                            ? OtvVerificationView(
+                                phone: "966${phoneController.text}",
+                              )
+                            : const SignUpView());
                   }
 
                   if (state is LoginState && state.stateStatus == StateStatus.error) {

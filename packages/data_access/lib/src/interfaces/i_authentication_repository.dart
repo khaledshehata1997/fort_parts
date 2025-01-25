@@ -1,7 +1,7 @@
 import 'package:data_access/src/models/logged_user.dart';
 
 abstract class IAuthenticationRepository {
-  Future<bool> login({
+  Future<Map<String, dynamic>> login({
     required String phone,
   });
 

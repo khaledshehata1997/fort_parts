@@ -35,11 +35,14 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   }) async {
     try {
       emit(LoginState(stateStatus: StateStatus.loading));
-      final bool isSuccess = await sl<IAuthenticationRepository>().login(
+      final Map<String, dynamic> data = await sl<IAuthenticationRepository>().login(
         phone: phone,
       );
-      if (isSuccess) {
-        emit(LoginState(stateStatus: StateStatus.success));
+      if (data['status'] == 200) {
+        emit(LoginState(
+          stateStatus: StateStatus.success,
+          isRegistered: data['type'] == 'otp',
+        ));
       } else {
         emit(LoginState(stateStatus: StateStatus.error));
       }
