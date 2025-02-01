@@ -1,10 +1,11 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:fort_parts/view/auth/sign_in_view.dart';
 import 'package:fort_parts/view/cart_view/cart_view.dart';
 import 'package:fort_parts/view/home_view/home_view.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fort_parts/view/profile_view/profile_view.dart';
 import 'package:fort_parts/view/requests_view/requests_view.dart';
-import 'package:unicons/unicons.dart';
+import 'package:local_storage/local_storage.dart';
 
 import '../../constants.dart';
 
@@ -45,10 +46,16 @@ class _NavBarViewState extends State<NavBarView> {
         elevation: 10,
         backgroundColor: Colors.red,
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+        onTap: (index) async {
+          final HiveUser? user = await HiveHelper.get(hiveBox: HiveBoxes.user);
+          if (user != null) {
+            setState(() {
+              _currentIndex = index;
+            });
+          } else {
+            AppNavigator.navigateTo(
+                type: NavigationType.navigateAndFinish, widget: SignInView());
+          }
         },
         items: [
           BottomNavigationBarItem(

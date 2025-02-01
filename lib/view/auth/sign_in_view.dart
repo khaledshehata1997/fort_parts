@@ -34,7 +34,10 @@ class _SignInViewState extends State<SignInView> {
               SizedBox(
                 height: 90,
               ),
-              Container(width: 100, height: 100, child: Image.asset('images/logo.png')),
+              Container(
+                  width: 100,
+                  height: 100,
+                  child: Image.asset('images/logo.png')),
               SizedBox(
                 height: 40,
               ),
@@ -67,7 +70,8 @@ class _SignInViewState extends State<SignInView> {
                       filled: true,
                       fillColor: Colors.white,
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey, width: 0.0),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 0.0),
                         borderRadius: BorderRadius.circular(5),
                       )),
                 ),
@@ -81,7 +85,8 @@ class _SignInViewState extends State<SignInView> {
               BlocListener<AuthenticationCubit, AuthenticationStates>(
                 listenWhen: (previous, current) => current is LoginState,
                 listener: (context, state) {
-                  if (state is LoginState && state.stateStatus == StateStatus.success) {
+                  if (state is LoginState &&
+                      state.stateStatus == StateStatus.success) {
                     AppNavigator.navigateTo(
                         type: NavigationType.navigateTo,
                         widget: state.isRegistered
@@ -91,7 +96,8 @@ class _SignInViewState extends State<SignInView> {
                             : const SignUpView());
                   }
 
-                  if (state is LoginState && state.stateStatus == StateStatus.error) {
+                  if (state is LoginState &&
+                      state.stateStatus == StateStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('رقمم الهاتف غير صحيح'),
@@ -101,13 +107,8 @@ class _SignInViewState extends State<SignInView> {
                 },
                 child: GestureDetector(
                   onTap: () async {
-                    AppNavigator.navigateTo(
-                        type: NavigationType.navigateTo,
-                        widget: OtvVerificationView(
-                          phone: "966${phoneController.text}",
-                        ));
-                    return;
-                    if (phoneController.text.isNotEmpty && phoneController.text.length == 9) {
+                    if (phoneController.text.isNotEmpty &&
+                        phoneController.text.length == 9) {
                       final cubit = context.read<AuthenticationCubit>();
                       cubit.login(
                         phone: "966${phoneController.text}",
@@ -125,8 +126,10 @@ class _SignInViewState extends State<SignInView> {
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       'تسجيل الدخول',
-                      style:
-                          TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700),
                     ),
                     width: Get.width,
                     height: 65,

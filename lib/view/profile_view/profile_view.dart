@@ -1,13 +1,14 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:fort_parts/constants.dart';
-import 'package:fort_parts/main.dart';
+import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
 import 'package:fort_parts/view/profile_view/notifications_view.dart';
 import 'package:fort_parts/view/profile_view/profile_info_screen.dart';
 import 'package:fort_parts/view/profile_view/terms_conditions_view.dart';
 import 'package:fort_parts/view/profile_view/warranty_documents_view.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:local_storage/local_storage.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -35,109 +36,142 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: Column(
-          children: [
-            // Profile Section
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF8E7),
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              margin: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Profile Image and Edit Icon
-                  Stack(
-                    alignment: Alignment.topLeft,
-                    children: [
-                      Center(
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.grey[200],
-                          child: const Icon(
-                            Icons.person,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          Get.to(const PersonalInfoScreen());
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.amber,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.edit,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  // Name
-                  const Text(
-                    'محمد علي',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Profile Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF8E7),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 5,
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  // Stats
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildStat('النشطة', '50'),
-                      Container(
-                        height: 20,
-                        width: 1,
-                        color: Colors.grey[300],
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                      ),
-                      _buildStat('المستخدمة', '120'),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
+                margin: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    // Profile Image and Edit Icon
+                    Stack(
+                      alignment: Alignment.topLeft,
+                      children: [
+                        Center(
+                          child: FutureBuilder(
+                            future: HiveHelper.get(hiveBox: HiveBoxes.user),
+                            builder: (BuildContext context, snapshot) {
+                              return snapshot.data != null
+                                  ? AppCachedNetworkImage(
+                                      imageUrl: snapshot.data.image,
+                                      height: 80,
+                                      width: 80,
+                                      radius: 100,
+                                    )
+                                  : AppShimmer(
+                                      child: CircleAvatar(
+                                      radius: 40,
+                                      backgroundColor: Colors.white,
+                                    ));
+                            },
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(const PersonalInfoScreen());
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.amber,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    // Name
+                    FutureBuilder(
+                      future: HiveHelper.get(hiveBox: HiveBoxes.user),
+                      builder: (BuildContext context, snapshot) {
+                        return snapshot.data != null
+                            ? Text(
+                                snapshot.data.name,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : AppShimmer(
+                                child: Container(
+                                width: 100,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ));
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+                    // Stats
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildStat('النشطة', '50'),
+                        Container(
+                          height: 20,
+                          width: 1,
+                          color: Colors.grey[300],
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                        ),
+                        _buildStat('المستخدمة', '120'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // Menu Items
-            GestureDetector(
-              onTap: (){
-                Get.to(const NotificationsScreen());
-              },
-                child: _buildMenuItem(Icons.notifications_outlined, 'الإشعارات')),
-            GestureDetector(
-                onTap: (){
-                  Get.to(const CouponsScreen());
-                },
-                child: _buildMenuItem(Icons.discount_outlined, 'الكوبونات')),
-            GestureDetector(
-                onTap: (){
-                  Get.to(const WarrantyDocumentsScreen());
-                },
-                child: _buildMenuItem(Icons.shield_outlined, 'وثائق الضمان')),
-            _buildMenuItem(Icons.language_outlined, 'اللغة'),
-            GestureDetector(
-                onTap: (){
-                  Get.to(const TermsConditionsScreen());
-                },
-                child: _buildMenuItem(Icons.description_outlined, 'الشروط والأحكام')),
-          ],
+              // Menu Items
+              GestureDetector(
+                  onTap: () {
+                    Get.to(const NotificationsScreen());
+                  },
+                  child: _buildMenuItem(
+                      Icons.notifications_outlined, 'الإشعارات')),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(const CouponsScreen());
+                  },
+                  child: _buildMenuItem(Icons.discount_outlined, 'الكوبونات')),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(const AddressScreen());
+                  },
+                  child: _buildMenuItem(Icons.person_add_alt_1, 'العناوين')),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(const WarrantyDocumentsScreen());
+                  },
+                  child: _buildMenuItem(Icons.shield_outlined, 'وثائق الضمان')),
+              _buildMenuItem(Icons.language_outlined, 'اللغة'),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(const TermsConditionsScreen());
+                  },
+                  child: _buildMenuItem(
+                      Icons.description_outlined, 'الشروط والأحكام')),
+            ],
+          ),
         ),
       ),
     );
@@ -182,7 +216,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-             Icon(
+            Icon(
               Icons.arrow_forward_ios_outlined,
               color: mainColor,
               size: 24,
