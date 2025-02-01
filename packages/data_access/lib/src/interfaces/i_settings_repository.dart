@@ -4,4 +4,6 @@ abstract class ISettingsRepository {
   Future<Settings> fetchSettings();
 
   Future<List<Category>> fetchCategories();
+
+  Future<List<Product>> fetchCategoryProducts({required int categoryID});
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
-import 'package:fort_parts/view/service_name/service_home.dart';
+import 'package:fort_parts/view/category_products_view/category_products_view.dart';
 import 'package:get/get.dart';
 
 class HomeCategories extends StatefulWidget {
@@ -36,18 +36,25 @@ class _HomeCategoriesState extends State<HomeCategories> {
             childAspectRatio: 1.6 / 1,
             crossAxisCount: 2,
             children: List.generate(
-              state.stateStatus == StateStatus.success ? state.categories.length : 2,
+              state.stateStatus == StateStatus.success
+                  ? state.categories.length
+                  : 2,
               (int index) => state.stateStatus == StateStatus.success
                   ? InkWell(
                       onTap: () {
-                        Get.to(ServiceHome());
+                        Get.to(CategoryProductsView(
+                          category: state.categories[index],
+                        ));
                       },
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5),
                             boxShadow: [
-                              BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  spreadRadius: 0,
+                                  blurRadius: 2)
                             ]),
                         child: Column(
                           children: [
@@ -61,7 +68,8 @@ class _HomeCategoriesState extends State<HomeCategories> {
                             ),
                             Text(
                               state.categories[index].name,
-                              style: TextStyle(fontSize: 19, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 19, color: Colors.black),
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -33,3 +33,12 @@ class FetchCategoriesState extends SettingsStates {
   final StateStatus stateStatus;
   final List<Category> categories;
 }
+
+class FetchProductsSate extends SettingsStates {
+  FetchProductsSate({
+    required this.stateStatus,
+    this.products = const [],
+  });
+  final StateStatus stateStatus;
+  final List<Product> products;
+}

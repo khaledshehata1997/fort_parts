@@ -10,4 +10,6 @@ class EndPoints {
   // Settings
   static String settings() => '$baseUrl/settings';
   static String categories() => '$baseUrl/categories';
+  static String categoryProducts({required int categoryID}) =>
+      '$baseUrl/categories-product/$categoryID';
 }
