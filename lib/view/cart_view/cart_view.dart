@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
-import 'package:fort_parts/main.dart';
+import 'package:fort_parts/controllers/cart_cubit/cart_cubit.dart';
 import 'package:fort_parts/view/cart_view/payment_view.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<CartCubit>();
+    cubit.fetchCart();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +26,6 @@ class CartScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text('السلة', style: TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
@@ -65,8 +73,7 @@ class CartScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.monetization_on_outlined,
-                                    size: 30, color: mainColor),
+                                Icon(Icons.monetization_on_outlined, size: 30, color: mainColor),
                                 SizedBox(width: 8),
                                 Text(
                                   'المبلغ الإجمالي : 1200 جنيه',
@@ -94,9 +101,11 @@ class CartScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8), // Less rounded corners (8)
                         ),
                       ),
-                      child: const Text('تأكيد الطلب',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
+                      child: const Text(
+                        'تأكيد الطلب',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
                     )
-
                   ],
                 ),
               ),
@@ -218,8 +227,7 @@ class CartItemCard extends StatelessWidget {
                             height: size,
                             decoration: BoxDecoration(
                               color: Colors.grey,
-                              borderRadius: BorderRadius.circular(
-                                  size * 0.2), // Rounded outer box
+                              borderRadius: BorderRadius.circular(size * 0.2), // Rounded outer box
                             ),
                             child: Center(
                               child: Container(
@@ -227,15 +235,12 @@ class CartItemCard extends StatelessWidget {
                                 height: size * 0.8,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(
-                                      size * 0.15), // Rounded inner box
+                                  borderRadius: BorderRadius.circular(size * 0.15), // Rounded inner box
                                 ),
                                 child: Center(
                                   child: Container(
-                                    width:
-                                        size * 0.5, // Width of the minus line
-                                    height: size *
-                                        0.1, // Thickness of the minus line
+                                    width: size * 0.5, // Width of the minus line
+                                    height: size * 0.1, // Thickness of the minus line
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -244,31 +249,31 @@ class CartItemCard extends StatelessWidget {
                           ),
                         )
                       : Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25),
-                    child: Container(
-                      width: size,
-                      height: size,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(
-                            size * 0.2), // Rounded outer box
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: size * 0.8,
-                          height: size * 0.8,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                                size * 0.15), // Rounded inner box
+                          padding: const EdgeInsets.only(left: 25.0, right: 25),
+                          child: Container(
+                            width: size,
+                            height: size,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(size * 0.2), // Rounded outer box
+                            ),
+                            child: Center(
+                              child: Container(
+                                width: size * 0.8,
+                                height: size * 0.8,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(size * 0.15), // Rounded inner box
+                                ),
+                                child: Center(
+                                    child: Icon(
+                                  Icons.delete_outline_outlined,
+                                  color: Colors.red,
+                                )),
+                              ),
+                            ),
                           ),
-                          child: Center(
-                            child: Icon(Icons.delete_outline_outlined,color: Colors.red,)
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                        )
                 ],
               ),
               Text(

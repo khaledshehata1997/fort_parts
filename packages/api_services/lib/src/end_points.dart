@@ -12,4 +12,10 @@ class EndPoints {
   static String categories() => '$baseUrl/categories';
   static String categoryProducts({required int categoryID}) =>
       '$baseUrl/categories-product/$categoryID';
+
+  // Cart
+  static String addToCart() => '$baseUrl/auth/add-product-to-cart';
+  static String myCart() => '$baseUrl/auth/my-cart';
+  static String updateCart() => '$baseUrl/auth/update-cart';
+  static String deleteItemFromCart() => '$baseUrl/auth/delete-item-cart';
 }

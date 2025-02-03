@@ -20,10 +20,6 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
         centerTitle: true,
         title: const Text(
           'الحساب',
@@ -146,8 +142,7 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {
                     Get.to(const NotificationsScreen());
                   },
-                  child: _buildMenuItem(
-                      Icons.notifications_outlined, 'الإشعارات')),
+                  child: _buildMenuItem(Icons.notifications_outlined, 'الإشعارات')),
               GestureDetector(
                   onTap: () {
                     Get.to(const CouponsScreen());
@@ -168,8 +163,7 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {
                     Get.to(const TermsConditionsScreen());
                   },
-                  child: _buildMenuItem(
-                      Icons.description_outlined, 'الشروط والأحكام')),
+                  child: _buildMenuItem(Icons.description_outlined, 'الشروط والأحكام')),
             ],
           ),
         ),
