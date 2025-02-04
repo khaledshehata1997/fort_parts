@@ -25,7 +25,6 @@ class _CategoryProductState extends State<CategoryProduct> {
     if (cartProduct != null) {
       return cartProduct.quantity.toString();
     }
-
     return "0";
   }
 
@@ -148,7 +147,7 @@ class _CategoryProductState extends State<CategoryProduct> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
