@@ -12,8 +12,12 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../constants.dart';
 
 class SignUpView extends StatefulWidget {
-  const SignUpView({super.key});
+  const SignUpView({
+    required this.phoneNumber,
+    super.key,
+  });
 
+  final String phoneNumber;
   @override
   State<SignUpView> createState() => _SignUpViewState();
 }
@@ -22,6 +26,14 @@ class _SignUpViewState extends State<SignUpView> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.phoneNumber.isNotEmpty) {
+      phoneController.text = widget.phoneNumber;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {

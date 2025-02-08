@@ -26,15 +26,15 @@ class AppNavBarItem extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: () async {
-          if (index == 2 || index == 3) {
+          if (index == 0) {
+            cubit.changeScreenBody(index: index);
+          } else {
             final HiveUser? user = await HiveHelper.get(hiveBox: HiveBoxes.user);
             if (user != null) {
               cubit.changeScreenBody(index: index);
             } else {
               AppNavigator.navigateTo(type: NavigationType.navigateAndFinish, widget: SignInView());
             }
-          } else {
-            cubit.changeScreenBody(index: index);
           }
         },
         child: Column(

@@ -60,7 +60,7 @@ class HomeView extends StatelessWidget {
                                     return Row(
                                       children: [
                                         Text(
-                                          'خالد !',
+                                          "${snapshot.data.name} !",
                                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
                                         ),
                                         SizedBox(width: 4),

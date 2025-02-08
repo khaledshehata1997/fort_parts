@@ -13,7 +13,7 @@ class HiveUser {
 
   @HiveField(0)
   final String name;
-  @HiveField(2)
+  @HiveField(1)
   final String email;
   @HiveField(2)
   final String phone;

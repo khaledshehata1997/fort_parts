@@ -34,8 +34,10 @@ class _CategoryProductState extends State<CategoryProduct> {
       margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       width: Get.width,
       height: Get.height * .18,
-      decoration:
-          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [BoxShadow(blurRadius: 1, color: Colors.grey.shade300, spreadRadius: .025)]),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [BoxShadow(blurRadius: 1, color: Colors.grey.shade300, spreadRadius: .025)]),
       child: Column(
         children: [
           ListTile(
@@ -100,13 +102,20 @@ class _CategoryProductState extends State<CategoryProduct> {
                   ),
                   width: 35,
                   height: 35,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: mainColor, width: 3)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: mainColor, width: 3)),
                 ),
               ),
               SizedBox(
                 width: 40,
               ),
-              BlocBuilder<CartCubit, CartStates>(
+              BlocConsumer<CartCubit, CartStates>(
+                listener: (BuildContext context, s) {
+                  if ((s is UpdateItemInCartState && s.stateStatus == StateStatus.success) ||
+                      (s is DeleteItemFromCartState && s.stateStatus == StateStatus.success)) {
+                    setState(() {});
+                  }
+                },
                 builder: (BuildContext context, s) {
                   return s is UpdateItemInCartState && s.stateStatus == StateStatus.loading
                       ? CircularProgressIndicator()
@@ -119,33 +128,35 @@ class _CategoryProductState extends State<CategoryProduct> {
               SizedBox(
                 width: 40,
               ),
-              InkWell(
-                borderRadius: BorderRadius.circular(4),
-                onTap: () {
-                  final cubit = context.read<CartCubit>();
-                  final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
+              if (fetchQuantity() != "0")
+                InkWell(
+                  borderRadius: BorderRadius.circular(4),
+                  onTap: () {
+                    final cubit = context.read<CartCubit>();
+                    final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
 
-                  if (cartProduct != null && cartProduct.quantity > 1) {
-                    cubit.updateItemInCartState(
-                      productID: widget.product.id,
-                      quantity: cartProduct.quantity - 1,
-                    );
-                  } else if (cartProduct != null && cartProduct.quantity == 1) {
-                    cubit.deleteItemFromCart(
-                      productID: widget.product.id,
-                    );
-                  }
-                },
-                child: Container(
-                  child: Icon(
-                    Icons.minimize,
-                    color: Colors.grey,
+                    if (cartProduct != null && cartProduct.quantity > 1) {
+                      cubit.updateItemInCartState(
+                        productID: widget.product.id,
+                        quantity: cartProduct.quantity - 1,
+                      );
+                    } else if (cartProduct != null && cartProduct.quantity == 1) {
+                      cubit.deleteItemFromCart(
+                        productID: widget.product.id,
+                      );
+                    }
+                  },
+                  child: Container(
+                    child: Icon(
+                      Icons.minimize,
+                      color: Colors.grey,
+                    ),
+                    width: 35,
+                    height: 35,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: Colors.grey, width: 3)),
                   ),
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: Colors.grey, width: 3)),
                 ),
-              ),
             ],
           ),
         ],

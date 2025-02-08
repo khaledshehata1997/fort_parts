@@ -18,23 +18,23 @@ class HiveUserAdapter extends TypeAdapter<HiveUser> {
     };
     return HiveUser(
       name: fields[0] as String,
-      email: fields[0] as String,
-      phone: fields[0] as String,
-      image: fields[0] as String,
+      email: fields[1] as String,
+      phone: fields[2] as String,
+      image: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveUser obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
-      ..writeByte(0)
+      ..writeByte(1)
       ..write(obj.email)
-      ..writeByte(0)
+      ..writeByte(2)
       ..write(obj.phone)
-      ..writeByte(0)
+      ..writeByte(3)
       ..write(obj.image);
   }
 
@@ -42,7 +42,5 @@ class HiveUserAdapter extends TypeAdapter<HiveUser> {
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HiveUserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+  bool operator ==(Object other) => identical(this, other) || other is HiveUserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

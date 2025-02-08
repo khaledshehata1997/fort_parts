@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
-import 'package:fort_parts/view/home_view/nav_bar_view.dart';
+import 'package:fort_parts/view/home_layout/home_layout.dart';
 import 'package:pinput/pinput.dart';
 
 class OtvVerificationView extends StatefulWidget {
@@ -100,7 +100,7 @@ class _OtvVerificationViewState extends State<OtvVerificationView> {
                     await cubit.updateDataLocally(loggedUser: state.loggedUser!);
                     AppNavigator.navigateTo(
                       type: NavigationType.navigateAndFinish,
-                      widget: NavBarView(),
+                      widget: HomeLayout(),
                     );
                   }
                   if (state is OTPVerificationState && state.stateStatus == StateStatus.error) {
@@ -171,10 +171,7 @@ class _OtvVerificationViewState extends State<OtvVerificationView> {
                   final cubit = context.read<AuthenticationCubit>();
                   cubit.resendOTP();
                 },
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    height: 90,
-                    child: Image.asset('icons/resend_otp.png')),
+                child: Container(padding: EdgeInsets.symmetric(horizontal: 20), height: 90, child: Image.asset('icons/resend_otp.png')),
               ),
             ],
           ),

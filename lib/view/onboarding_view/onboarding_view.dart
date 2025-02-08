@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
-import 'package:fort_parts/view/home_view/nav_bar_view.dart';
+import 'package:fort_parts/view/home_layout/home_layout.dart';
 import 'package:get/get.dart';
 
 class OnBordingView extends StatefulWidget {
@@ -31,7 +31,7 @@ class _OnBordingViewState extends State<OnBordingView> {
         curve: Curves.easeIn,
       );
     } else {
-      Get.to(NavBarView());
+      Get.to(HomeLayout());
     }
   }
 
@@ -59,7 +59,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                   alignment: Alignment.topRight,
                   child: TextButton(
                       onPressed: () {
-                        Get.to(NavBarView());
+                        Get.to(HomeLayout());
                       },
                       child: Text("تخطي",
                           textDirection: TextDirection.rtl, style: TextStyle(fontSize: 20, color: mainColor, fontWeight: FontWeight.bold))),
