@@ -42,3 +42,12 @@ class FetchProductsSate extends SettingsStates {
   final StateStatus stateStatus;
   final List<Product> products;
 }
+
+class FetchTermsAndConditionsState extends SettingsStates {
+  FetchTermsAndConditionsState({
+    required this.stateStatus,
+    this.termsAndConditions = "",
+  });
+  final StateStatus stateStatus;
+  final String termsAndConditions;
+}

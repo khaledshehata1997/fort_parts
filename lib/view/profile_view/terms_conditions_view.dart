@@ -1,7 +1,23 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
+import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
 
-class TermsConditionsScreen extends StatelessWidget {
+class TermsConditionsScreen extends StatefulWidget {
   const TermsConditionsScreen({super.key});
+
+  @override
+  State<TermsConditionsScreen> createState() => _TermsConditionsScreenState();
+}
+
+class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<SettingsCubit>();
+    cubit.fetchTermsAndConditions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +55,7 @@ class TermsConditionsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: // Character illustration
-                Image.asset(
+                    Image.asset(
                   'icons/img_8.png', // Add your character illustration
                   width: 150,
                   height: 200,
@@ -47,39 +63,23 @@ class TermsConditionsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               // Terms List
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          margin: const EdgeInsets.only(top: 6),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.amber,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'نص تجريبي ليس له أي أساس من الصحة',
+              BlocBuilder<SettingsCubit, SettingsStates>(
+                buildWhen: (previous, current) => current is FetchTermsAndConditionsState,
+                builder: (BuildContext context, state) {
+                  if (state is FetchTermsAndConditionsState) {
+                    return state.stateStatus == StateStatus.success
+                        ? Text(
+                            state.termsAndConditions,
+                            textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: 25,
                               height: 1.5,
                               color: Colors.black87,
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                          )
+                        : SizedBox();
+                  }
+                  return const SizedBox();
                 },
               ),
             ],

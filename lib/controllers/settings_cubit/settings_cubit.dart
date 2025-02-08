@@ -39,8 +39,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   Future<void> fetchCategories() async {
     try {
       emit(FetchCategoriesState(stateStatus: StateStatus.loading));
-      final List<Category> categories =
-          await sl<ISettingsRepository>().fetchCategories();
+      final List<Category> categories = await sl<ISettingsRepository>().fetchCategories();
 
       emit(FetchCategoriesState(
         stateStatus: StateStatus.success,
@@ -57,8 +56,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   }) async {
     try {
       emit(FetchProductsSate(stateStatus: StateStatus.loading));
-      final List<Product> products = await sl<ISettingsRepository>()
-          .fetchCategoryProducts(categoryID: categoryID);
+      final List<Product> products = await sl<ISettingsRepository>().fetchCategoryProducts(categoryID: categoryID);
 
       emit(FetchProductsSate(
         stateStatus: StateStatus.success,
@@ -66,6 +64,21 @@ class SettingsCubit extends Cubit<SettingsStates> {
       ));
     } catch (e) {
       emit(FetchProductsSate(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
+
+  Future<void> fetchTermsAndConditions() async {
+    try {
+      emit(FetchTermsAndConditionsState(stateStatus: StateStatus.loading));
+      final Settings settings = await sl<ISettingsRepository>().fetchSettings();
+
+      emit(FetchTermsAndConditionsState(
+        stateStatus: StateStatus.success,
+        termsAndConditions: settings.setting.termsAndConditions,
+      ));
+    } catch (e) {
+      emit(FetchTermsAndConditionsState(stateStatus: StateStatus.error));
       rethrow;
     }
   }

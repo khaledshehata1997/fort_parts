@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
 import 'package:fort_parts/view/auth/otv_verification_view.dart';
+import 'package:fort_parts/view/profile_view/terms_conditions_view.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -143,13 +144,18 @@ class _SignUpViewState extends State<SignUpView> {
                   SizedBox(
                     width: 8,
                   ),
-                  Text('الشروط والاحكام',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationColor: mainColor,
-                          fontSize: 16,
-                          color: mainColor,
-                          fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(const TermsConditionsScreen());
+                    },
+                    child: Text('الشروط والاحكام',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: mainColor,
+                            fontSize: 16,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold)),
+                  ),
                   SizedBox(
                     width: 2,
                   ),
@@ -206,15 +212,12 @@ class _SignUpViewState extends State<SignUpView> {
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       'إنشاء حساب',
-                      style:
-                          TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                     ),
                     width: Get.width,
                     height: 65,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: mainColor,
-                        border: Border.all(color: mainColor, width: 1)),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(4), color: mainColor, border: Border.all(color: mainColor, width: 1)),
                   ),
                 ),
               ),
