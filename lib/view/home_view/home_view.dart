@@ -28,10 +28,7 @@ class HomeView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                        width: Get.width * .2,
-                        height: Get.height * .1,
-                        child: Image.asset('images/logo.png')),
+                    Container(width: Get.width * .2, height: Get.height * .1, child: Image.asset('images/logo.png')),
                     SizedBox(width: 10),
                     Container(
                       width: Get.width * .65,
@@ -43,8 +40,7 @@ class HomeView extends StatelessWidget {
                             children: [
                               Text(
                                 'مرحبا بك , ',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
                               ),
                               FutureBuilder(
                                   future: HiveHelper.get(hiveBox: HiveBoxes.user),
@@ -53,16 +49,11 @@ class HomeView extends StatelessWidget {
                                       return InkWell(
                                         borderRadius: BorderRadius.circular(5),
                                         onTap: () {
-                                          AppNavigator.navigateTo(
-                                              type: NavigationType.navigateTo,
-                                              widget: SignInView());
+                                          AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: SignInView());
                                         },
                                         child: Text(
-                                          'تسجيل الدخول',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: mainColor),
+                                          'انضم إلينا',
+                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
                                         ),
                                       );
                                     }
@@ -70,10 +61,7 @@ class HomeView extends StatelessWidget {
                                       children: [
                                         Text(
                                           'خالد !',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black),
+                                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
                                         ),
                                         SizedBox(width: 4),
                                         Container(
@@ -95,13 +83,11 @@ class HomeView extends StatelessWidget {
                             children: [
                               Text(
                                 'العنوان : ',
-                                style: TextStyle(
-                                    fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
+                                style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
                               ),
                               Text(
                                 '3 شارع التحرير, جده',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
                               ),
                               Icon(
                                 Icons.keyboard_arrow_down_rounded,
