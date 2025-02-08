@@ -36,9 +36,7 @@ class _HomeCategoriesState extends State<HomeCategories> {
             childAspectRatio: 1.6 / 1,
             crossAxisCount: 2,
             children: List.generate(
-              state.stateStatus == StateStatus.success
-                  ? state.categories.length
-                  : 2,
+              state.stateStatus == StateStatus.success ? state.categories.length : 2,
               (int index) => state.stateStatus == StateStatus.success
                   ? InkWell(
                       onTap: () {
@@ -50,26 +48,20 @@ class _HomeCategoriesState extends State<HomeCategories> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 0,
-                                  blurRadius: 2)
-                            ]),
+                            boxShadow: [BoxShadow(color: Colors.grey, spreadRadius: 0, blurRadius: 2)]),
                         child: Column(
                           children: [
                             AppCachedNetworkImage(
                               imageUrl: state.categories[index].image,
-                              height: 50,
-                              width: 50,
+                              height: 65,
+                              width: 65,
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
                             Text(
                               state.categories[index].name,
-                              style:
-                                  TextStyle(fontSize: 19, color: Colors.black),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.center,
