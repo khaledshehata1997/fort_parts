@@ -23,34 +23,37 @@ class AppBottomNavigationBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [AppShadows.shadow3],
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AppNavBarItem(
-              label: "الرئيسية",
-              icon: AppImages.home,
-              index: 0,
-              color: cubit.currentIndex == 0 ? AppColors.fE0AA06 : AppColors.f949494,
-            ),
-            AppNavBarItem(
-              label: "الطلبات",
-              icon: AppImages.orders,
-              index: 1,
-              color: cubit.currentIndex == 1 ? AppColors.fE0AA06 : AppColors.f949494,
-            ),
-            AppNavBarItem(
-              label: "السلة",
-              icon: AppImages.cart,
-              index: 2,
-              color: cubit.currentIndex == 2 ? AppColors.fE0AA06 : AppColors.f949494,
-            ),
-            AppNavBarItem(
-              label: "حسابي",
-              icon: AppImages.profile,
-              index: 3,
-              color: cubit.currentIndex == 3 ? AppColors.fE0AA06 : AppColors.f949494,
-            ),
-          ],
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppNavBarItem(
+                label: "الرئيسية",
+                icon: AppImages.home,
+                index: 0,
+                color: cubit.currentIndex == 0 ? AppColors.fE0AA06 : AppColors.f949494,
+              ),
+              AppNavBarItem(
+                label: "الطلبات",
+                icon: AppImages.orders,
+                index: 1,
+                color: cubit.currentIndex == 1 ? AppColors.fE0AA06 : AppColors.f949494,
+              ),
+              AppNavBarItem(
+                label: "السلة",
+                icon: AppImages.cart,
+                index: 2,
+                color: cubit.currentIndex == 2 ? AppColors.fE0AA06 : AppColors.f949494,
+              ),
+              AppNavBarItem(
+                label: "حسابي",
+                icon: AppImages.profile,
+                index: 3,
+                color: cubit.currentIndex == 3 ? AppColors.fE0AA06 : AppColors.f949494,
+              ),
+            ],
+          ),
         ),
       ),
     );

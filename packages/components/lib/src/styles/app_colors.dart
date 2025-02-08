@@ -10,6 +10,7 @@ class AppColors {
   static const Color fEED58A = Color(0xFFEED58A);
   static const Color fE0AA06 = Color(0xFFE0AA06);
   static const Color f949494 = Color(0xFF949494);
+  static const Color fFBFBFB = Color(0xFFFBFBFB);
   static Color shimmerBaseColor = Colors.grey[300] as Color;
   static Color shimmerHighlightColor = Colors.grey[100] as Color;
 }
