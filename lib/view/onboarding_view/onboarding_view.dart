@@ -62,9 +62,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                         Get.to(NavBarView());
                       },
                       child: Text("تخطي",
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                              fontSize: 20, color: mainColor, fontWeight: FontWeight.bold))),
+                          textDirection: TextDirection.rtl, style: TextStyle(fontSize: 20, color: mainColor, fontWeight: FontWeight.bold))),
                 ),
                 SizedBox(
                   height: Get.height * .025,
@@ -83,6 +81,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   AppCachedNetworkImage(
                                     imageUrl: state.onBoarding[index].image,
@@ -106,6 +105,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                                   ),
                                   Text(
                                     state.onBoarding[index].subTitle,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Color(0xFF333333),
                                       fontWeight: FontWeight.w500,
@@ -133,11 +133,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                         },
                         child: Text(
                           'التالي',
-                          style: TextStyle(
-                              wordSpacing: 2,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: mainColor),
+                          style: TextStyle(wordSpacing: 2, fontSize: 16, fontWeight: FontWeight.w600, color: mainColor),
                         )),
                     TextButton(
                         onPressed: () {
