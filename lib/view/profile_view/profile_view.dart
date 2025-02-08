@@ -1,5 +1,6 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/constants.dart';
 import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
@@ -164,6 +165,7 @@ class ProfileScreen extends StatelessWidget {
                     Get.to(const TermsConditionsScreen());
                   },
                   child: _buildMenuItem(Icons.description_outlined, 'الشروط والأحكام')),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

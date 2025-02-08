@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/constants.dart';
 import 'package:fort_parts/controllers/cart_cubit/cart_cubit.dart';
 import 'package:fort_parts/controllers/cart_cubit/cart_states.dart';
@@ -137,6 +138,7 @@ class _CartScreenState extends State<CartScreen> {
               //     ),
               //   ],
               // ),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

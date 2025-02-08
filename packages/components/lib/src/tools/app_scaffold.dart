@@ -5,11 +5,13 @@ class AppScaffold extends StatelessWidget {
   const AppScaffold({
     required this.body,
     this.title,
+    this.bottomNavigationBar,
     super.key,
   });
 
   final Widget body;
   final String? title;
+  final Widget? bottomNavigationBar;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class AppScaffold extends StatelessWidget {
             )
           : null,
       body: body,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

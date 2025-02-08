@@ -1,7 +1,7 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fort_parts/view/home_view/home_view.dart';
+import 'package:fort_parts/view/home_layout/home_layout.dart';
 import 'package:fort_parts/view/onboarding_view/onboarding_view.dart';
 import 'package:is_first_run/is_first_run.dart';
 
@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       final bool isFirstLogin = await IsFirstRun.isFirstRun();
       AppNavigator.navigateTo(
         type: NavigationType.navigateAndFinish,
-        widget: isFirstLogin ? OnBordingView() : const HomeView(),
+        widget: isFirstLogin ? OnBordingView() : const HomeLayout(),
       );
     });
   }

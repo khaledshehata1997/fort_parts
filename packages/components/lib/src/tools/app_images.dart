@@ -2,10 +2,12 @@ const String imagePath = 'packages/components/assets/images';
 
 class AppImages {
   //A
+  static const String accounts = '$imagePath/accounts.svg';
 
   //B
 
   //C
+  static const String cart = '$imagePath/cart.svg';
 
   //D
 
@@ -16,11 +18,14 @@ class AppImages {
   //G
 
   //H
+  static const String home = '$imagePath/home.svg';
 
   //I
 
   //J
+
   //K
+
   //L
 
   //M
@@ -28,8 +33,10 @@ class AppImages {
   //N
 
   //O
+  static const String orders = '$imagePath/orders.svg';
 
   //P
+  static const String profile = '$imagePath/profile.svg';
 
   //Q
 
