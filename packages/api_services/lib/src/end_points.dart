@@ -6,12 +6,12 @@ class EndPoints {
   static String register() => '$baseUrl/auth/register';
   static String otpVerification() => '$baseUrl/auth/verify-phone';
   static String saveFCM() => '$baseUrl/auth/save_fcm';
+  static String updateProfile() => '$baseUrl/auth/update_profile';
 
   // Settings
   static String settings() => '$baseUrl/settings';
   static String categories() => '$baseUrl/categories';
-  static String categoryProducts({required int categoryID}) =>
-      '$baseUrl/categories-product/$categoryID';
+  static String categoryProducts({required int categoryID}) => '$baseUrl/categories-product/$categoryID';
 
   // Cart
   static String addToCart() => '$baseUrl/auth/add-product-to-cart';

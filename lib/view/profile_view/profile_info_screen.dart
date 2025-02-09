@@ -1,5 +1,14 @@
+import 'dart:io';
+
 import 'package:components/components.dart';
+import 'package:file_services/file_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:local_storage/local_storage.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
@@ -13,12 +22,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  XFile? pickedImage;
 
   Future<void> fetchUserData() async {
     final HiveUser user = await HiveHelper.get(hiveBox: HiveBoxes.user);
     nameController.text = user.name;
     emailController.text = user.email;
-    phoneController.text = user.phone;
+    phoneController.text = user.phone.substring(3);
   }
 
   @override
@@ -72,17 +82,33 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         future: HiveHelper.get(hiveBox: HiveBoxes.user),
                         builder: (BuildContext context, snapshot) {
                           if (snapshot.data == null) return SizedBox();
-                          return AppCachedNetworkImage(
-                            imageUrl: snapshot.data.image,
-                            height: 40,
-                            width: 40,
-                            radius: 100,
-                          );
+                          return pickedImage != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.r),
+                                  child: Image.file(
+                                    File(pickedImage!.path),
+                                    width: 40.w,
+                                    height: 40.w,
+                                  ),
+                                )
+                              : AppCachedNetworkImage(
+                                  imageUrl: snapshot.data.image,
+                                  height: 40,
+                                  width: 40,
+                                  radius: 100,
+                                );
                         },
                       ),
                       const SizedBox(height: 8),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final XFile? image = await FileServices.pickImage();
+                          if (image != null) {
+                            setState(() {
+                              pickedImage = image;
+                            });
+                          }
+                        },
                         icon: const Icon(
                           Icons.camera_alt,
                           size: 18,
@@ -143,23 +169,42 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
                 const SizedBox(height: 32),
                 // Save Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                BlocListener<AuthenticationCubit, AuthenticationStates>(
+                  listenWhen: (previous, current) => current is UpdateProfileState,
+                  listener: (BuildContext context, state) async {
+                    if (state is UpdateProfileState && state.stateStatus == StateStatus.success) {
+                      // final cubit = context.read<AuthenticationCubit>();
+                      // await HiveHelper.put(hiveBox: HiveBoxes.user, data: state.user.toHiveUser);
+                      // fetchUserData();
+                    }
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (nameController.text.isNotEmpty && emailController.text.isNotEmpty) {
+                          final cubit = context.read<AuthenticationCubit>();
+                          cubit.updateProfile(
+                            name: nameController.text,
+                            email: emailController.text,
+                            image: pickedImage,
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'حفظ التعديلات',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
+                      child: const Text(
+                        'حفظ التعديلات',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -212,6 +257,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           Expanded(
             child: TextFormField(
               controller: controller,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: const InputDecoration(
                 hintText: 'أدخل رقم الجوال',
                 border: InputBorder.none,

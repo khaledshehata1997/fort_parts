@@ -1,4 +1,5 @@
 import 'package:data_access/src/models/logged_user.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class IAuthenticationRepository {
   Future<Map<String, dynamic>> login({
@@ -18,5 +19,11 @@ abstract class IAuthenticationRepository {
 
   Future<void> saveFCM({
     required String token,
+  });
+
+  Future<void> updateProfile({
+    required String name,
+    required String email,
+    required XFile? image,
   });
 }

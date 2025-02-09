@@ -2,6 +2,7 @@ import 'package:api_services/api_services.dart';
 import 'package:data_access/data_access.dart';
 import 'package:data_access/src/interfaces/i_api_repository.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthenticationRepository implements IAuthenticationRepository {
   @override
@@ -86,6 +87,35 @@ class AuthenticationRepository implements IAuthenticationRepository {
       final Map<String, dynamic> data = {
         "token": token,
       };
+
+      await sl<IApiRepository>().post(
+        url: url,
+        formData: FormData.fromMap(data),
+      );
+
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateProfile({
+    required String name,
+    required String email,
+    required XFile? image,
+  }) async {
+    try {
+      final String url = EndPoints.updateProfile();
+      final Map<String, dynamic> data = {
+        "name": name,
+        "email": email,
+      };
+
+      // add nullable parameters
+      if (image != null) {
+        data.addAll({"image": await MultipartFile.fromFile(image.path)});
+      }
 
       await sl<IApiRepository>().post(
         url: url,

@@ -45,3 +45,10 @@ class FetchProfileState extends AuthenticationStates {
   });
   final StateStatus stateStatus;
 }
+
+class UpdateProfileState extends AuthenticationStates {
+  UpdateProfileState({
+    required this.stateStatus,
+  });
+  final StateStatus stateStatus;
+}

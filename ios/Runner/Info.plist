@@ -52,5 +52,12 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Fort Parts want to access your gallery to update your profile image</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Fort Parts want to access your gallery to update your profile image</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Fort Parts want to access your gallery to update your profile image</string>
+
 	</dict>
 </plist>

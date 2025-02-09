@@ -1,5 +1,5 @@
-name: fort_parts
-description: "A new Flutter project."
+name: file_services
+description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -21,6 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.1
 
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -35,35 +36,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  get: ^4.6.6
-  is_first_run: ^1.0.0
-  font_awesome_flutter: ^10.8.0
-  unicons: ^3.0.0
-  intl_phone_field: ^3.2.0
-  bloc: ^8.1.4
-  flutter_bloc: ^8.1.6
-  pinput: ^5.0.1
-  carousel_slider: ^5.0.0
-  flutter_screenutil: ^5.9.3
-  easy_localization: ^3.0.7+1
-  flutter_phoenix: ^1.1.1
+  file_picker: ^8.3.1
   image_picker: ^1.1.2
-
-  #Custom Packages
-  components:
-    path: packages/components
-
-  api_services:
-    path: packages/api_services
-
-  data_access:
-    path: packages/data_access
-
-  local_storage:
-    path: packages/local_storage
-
-  file_services:
-    path: packages/file_services
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -74,17 +49,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_launcher_icons: ^0.14.3
-  flutter_native_splash: ^2.4.4
   flutter_lints: ^5.0.0
-
-flutter_native_splash:
-  color: "#FFFFFF"
-  image: assets/images/splash.png
-
-  android_12:
-    icon_background_color: "#FFFFFF"
-    image: assets/images/splash_android12.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,32 +63,33 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/images/
-    - assets/fonts/
-    - assets/translations/
-    - images/
-    - icons/
-  #   - images/a_dot_ham.jpeg
+  #  assets:
+  #    - assets/animations/
+  #    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
+  # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
+  # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Cairo
-      fonts:
-        - asset: assets/fonts/Cairo-Light.ttf
-        - asset: assets/fonts/Cairo-Regular.ttf
-        - asset: assets/fonts/Cairo-Medium.ttf
-        - asset: assets/fonts/Cairo-Bold.ttf
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  # see https://flutter.dev/custom-fonts/#from-packages
+

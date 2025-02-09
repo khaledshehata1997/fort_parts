@@ -2,6 +2,7 @@ import 'package:components/components.dart';
 import 'package:data_access/data_access.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:local_storage/local_storage.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationStates> {
@@ -85,5 +86,24 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   }) async {
     await HiveHelper.put(hiveBox: HiveBoxes.user, data: loggedUser.user.toHiveUser);
     await HiveHelper.put(hiveBox: HiveBoxes.accessToken, data: loggedUser.token);
+  }
+
+  Future<void> updateProfile({
+    required String name,
+    required String email,
+    required XFile? image,
+  }) async {
+    try {
+      emit(UpdateProfileState(stateStatus: StateStatus.loading));
+      await sl<IAuthenticationRepository>().updateProfile(
+        name: name,
+        email: email,
+        image: image,
+      );
+      emit(UpdateProfileState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(UpdateProfileState(stateStatus: StateStatus.error));
+      rethrow;
+    }
   }
 }
