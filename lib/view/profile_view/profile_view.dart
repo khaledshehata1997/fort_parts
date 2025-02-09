@@ -11,9 +11,14 @@ import 'package:fort_parts/view/profile_view/warranty_documents_view.dart';
 import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +83,10 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(const PersonalInfoScreen());
+                            AppNavigator.navigateTo(
+                              type: NavigationType.navigateTo,
+                              widget: PersonalInfoScreen(),
+                            ).then((_) => setState(() {}));
                           },
                           child: Container(
                             padding: const EdgeInsets.all(4),
