@@ -28,6 +28,7 @@ class AppImages {
 
   //L
   static const String location = '$imagePath/location.svg';
+  static const String logout = '$imagePath/logout.svg';
 
   //M
 

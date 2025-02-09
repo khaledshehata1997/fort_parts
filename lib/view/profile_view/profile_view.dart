@@ -2,6 +2,7 @@ import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/constants.dart';
+import 'package:fort_parts/view/auth/sign_in_view.dart';
 import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
 import 'package:fort_parts/view/profile_view/notifications_view.dart';
@@ -173,6 +174,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Get.to(const TermsConditionsScreen());
                   },
                   child: _buildMenuItem(Icons.description_outlined, 'الشروط والأحكام')),
+              Padding(
+                padding: EdgeInsets.all(25),
+                child: GestureDetector(
+                  onTap: () async {
+                    await HiveHelper.deleteDB();
+                    await SharedPreferenceHelper.clearLocalData();
+                    AppNavigator.navigateTo(type: NavigationType.navigateAndFinish, widget: SignInView());
+                  },
+                  child: Row(
+                    children: [
+                      AppSVG(
+                        svgPath: AppImages.logout,
+                        width: 24,
+                        height: 24,
+                      ),
+                      SizedBox(width: 16.w),
+                      AppText(
+                        text: "تسجيل الخروج",
+                        color: Color(0xFFBB0000),
+                        textStyles: AppTextStyles.regular16,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               SizedBox(height: 100.h),
             ],
           ),
