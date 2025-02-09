@@ -20,4 +20,30 @@ class AddressCubit extends Cubit<AddressStates> {
       rethrow;
     }
   }
+
+  Future<void> addAddress({
+    required String latitude,
+    required String longitude,
+    required String name,
+    required String address,
+    required String build,
+    required String floor,
+  }) async {
+    try {
+      emit(AddAddressesState(stateStatus: StateStatus.loading));
+      await sl<IAddressRepository>().addAddress(
+        latitude: latitude,
+        longitude: longitude,
+        name: name,
+        address: address,
+        build: build,
+        floor: floor,
+      );
+
+      emit(AddAddressesState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(AddAddressesState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

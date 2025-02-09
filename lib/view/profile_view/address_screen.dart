@@ -45,6 +45,7 @@ class _AddressScreenState extends State<AddressScreen> {
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: BlocBuilder<AddressCubit, AddressStates>(
@@ -106,7 +107,8 @@ class _AddressScreenState extends State<AddressScreen> {
                 AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: const PickLocationMapScreen());
               },
               child: Container(
-                width: 343.w,
+                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                width: 375.w,
                 height: 56.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),

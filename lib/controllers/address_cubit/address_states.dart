@@ -15,3 +15,10 @@ class FetchAddressesState extends AddressStates {
   final StateStatus stateStatus;
   final List<Address> addresses;
 }
+
+class AddAddressesState extends AddressStates {
+  AddAddressesState({
+    required this.stateStatus,
+  });
+  final StateStatus stateStatus;
+}

@@ -33,7 +33,7 @@ class AddressRepository implements IAddressRepository {
       final Map<String, dynamic> data = {
         'lat': latitude,
         'lng': longitude,
-        'name': "Home",
+        'name': name,
         'address': address,
         'build': build,
         'flower': floor,

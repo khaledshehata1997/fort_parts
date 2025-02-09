@@ -27,6 +27,7 @@ class AppImages {
   //K
 
   //L
+  static const String location = '$imagePath/location.svg';
 
   //M
 

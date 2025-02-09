@@ -1,6 +1,8 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fort_parts/view/profile_view/address_information_screen.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_services/location_services.dart';
 
@@ -84,9 +86,16 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
                     alignment: AlignmentDirectional.bottomCenter,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12.r),
-                      onTap: () {
+                      onTap: () async {
                         if (selectedLocation != null) {
-                          // AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: const PickLocationMapScreen());
+                          final Placemark placeMark = await LocationServices.fetchFormattedAddress(
+                              context: context, latitude: selectedLocation!.latitude, longitude: selectedLocation!.longitude);
+                          AppNavigator.navigateTo(
+                              type: NavigationType.navigateTo,
+                              widget: AddressInformationScreen(
+                                pickedLocation: selectedLocation!,
+                                formattedAddress: placeMark.subLocality ?? "",
+                              ));
                         }
                       },
                       child: Container(
