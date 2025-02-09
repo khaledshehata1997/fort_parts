@@ -1,7 +1,39 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:local_storage/local_storage.dart';
 
-class PersonalInfoScreen extends StatelessWidget {
+class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
+
+  @override
+  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
+}
+
+class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
+  Future<void> fetchUserData() async {
+    final HiveUser user = await HiveHelper.get(hiveBox: HiveBoxes.user);
+    nameController.text = user.name;
+    emailController.text = user.email;
+    phoneController.text = user.phone;
+  }
+
+  @override
+  void initState() {
+    fetchUserData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +68,17 @@ class PersonalInfoScreen extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey[200],
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
+                      FutureBuilder(
+                        future: HiveHelper.get(hiveBox: HiveBoxes.user),
+                        builder: (BuildContext context, snapshot) {
+                          if (snapshot.data == null) return SizedBox();
+                          return AppCachedNetworkImage(
+                            imageUrl: snapshot.data.image,
+                            height: 40,
+                            width: 40,
+                            radius: 100,
+                          );
+                        },
                       ),
                       const SizedBox(height: 8),
                       TextButton.icon(
@@ -67,6 +102,7 @@ class PersonalInfoScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Form Fields
+
                 const Text(
                   'الاسم',
                   style: TextStyle(
@@ -75,7 +111,10 @@ class PersonalInfoScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                _buildTextField(hint: 'أدخل اسمك'),
+                _buildTextField(
+                  hint: 'أدخل اسمك',
+                  controller: nameController,
+                ),
 
                 const SizedBox(height: 16),
                 const Text(
@@ -88,7 +127,7 @@ class PersonalInfoScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 _buildTextField(
                   hint: 'example@email.com',
-                  initialValue: 'Mustafarabea96@Hotmail.Com',
+                  controller: emailController,
                 ),
 
                 const SizedBox(height: 16),
@@ -100,7 +139,7 @@ class PersonalInfoScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                _buildPhoneField(),
+                _buildPhoneField(controller: phoneController),
 
                 const SizedBox(height: 32),
                 // Save Button
@@ -134,11 +173,11 @@ class PersonalInfoScreen extends StatelessWidget {
   }
 
   Widget _buildTextField({
-    String? hint,
-    String? initialValue,
+    required String hint,
+    required TextEditingController controller,
   }) {
     return TextFormField(
-      initialValue: initialValue,
+      controller: controller,
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
@@ -159,7 +198,9 @@ class PersonalInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPhoneField() {
+  Widget _buildPhoneField({
+    required TextEditingController controller,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[50],
@@ -170,7 +211,7 @@ class PersonalInfoScreen extends StatelessWidget {
         children: [
           Expanded(
             child: TextFormField(
-              initialValue: '0507222728',
+              controller: controller,
               decoration: const InputDecoration(
                 hintText: 'أدخل رقم الجوال',
                 border: InputBorder.none,
