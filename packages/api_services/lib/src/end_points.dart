@@ -18,4 +18,8 @@ class EndPoints {
   static String myCart() => '$baseUrl/auth/my-cart';
   static String updateCart() => '$baseUrl/auth/update-cart';
   static String deleteItemFromCart() => '$baseUrl/auth/delete-item-cart';
+
+  // Coupon
+  static String fetchCoupons() => '$baseUrl/auth/coupons';
+  static String activateCoupon() => '$baseUrl/auth/change-active-coupon';
 }

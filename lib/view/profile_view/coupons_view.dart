@@ -1,7 +1,25 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fort_parts/controllers/coupon_cubit/coupon_cubit.dart';
+import 'package:fort_parts/controllers/coupon_cubit/coupon_states.dart';
+import 'package:fort_parts/view/profile_view/widgets/coupon_item.dart';
 
-class CouponsScreen extends StatelessWidget {
+class CouponsScreen extends StatefulWidget {
   const CouponsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CouponsScreen> createState() => _CouponsScreenState();
+}
+
+class _CouponsScreenState extends State<CouponsScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<CouponCubit>();
+    cubit.fetchCoupons();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +52,6 @@ class CouponsScreen extends StatelessWidget {
               fontSize: 16,
             ),
             tabs: [
-
               Tab(text: 'المنتهية'),
               Tab(text: 'المتاحة'),
             ],
@@ -42,7 +59,6 @@ class CouponsScreen extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-
             // Expired Coupons
             ExpiredCouponsTab(),
             // Available Coupons
@@ -61,88 +77,39 @@ class AvailableCouponsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildCouponCard(
-            value: '10 ريس',
-            expiryDate: 'صالح حتى يوم 30 مايو 2025',
-            isActive: true,
-          ),
-          _buildCouponCard(
-            value: '20 ريس',
-            expiryDate: 'صالح حتى يوم 15 يونيو 2025',
-            isActive: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCouponCard({
-    required String value,
-    required String expiryDate,
-    required bool isActive,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Coupon Icon
-          Container(
-            height: 40,
-            width: 42,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.amber.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Image.asset('icons/img_9.png'),
-          ),
-          const SizedBox(width: 16),
-          // Coupon Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  expiryDate,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Activation Switch
-          Switch(
-            value: isActive,
-            onChanged: (value) {},
-            activeColor: Colors.green,
-          ),
-        ],
+      child: BlocBuilder<CouponCubit, CouponStates>(
+        buildWhen: (previous, current) => current is FetchCouponsState,
+        builder: (BuildContext context, state) {
+          if (state is FetchCouponsState) {
+            return ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              itemBuilder: (BuildContext context, int index) {
+                return state.stateStatus == StateStatus.success
+                    ? CouponItem(
+                        coupon: state.coupons!.active[index],
+                        isExpired: false,
+                      )
+                    : AppShimmer(
+                        child: Container(
+                          width: 343.w,
+                          height: 114.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.fffffff,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 16.h);
+              },
+              itemCount: state.stateStatus == StateStatus.success ? state.coupons!.active.length : 3,
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
@@ -155,88 +122,39 @@ class ExpiredCouponsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildCouponCard(
-            value: '5 ريس',
-            expiryDate: 'انتهى في 15 مايو 2024',
-            isActive: false,
-          ),
-          _buildCouponCard(
-            value: '15 ريس',
-            expiryDate: 'انتهى في 20 أبريل 2024',
-            isActive: false,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCouponCard({
-    required String value,
-    required String expiryDate,
-    required bool isActive,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Coupon Icon
-          Container(
-            height: 40,
-            width: 42,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Image.asset('icons/img_9.png'),
-          ),
-          const SizedBox(width: 16),
-          // Coupon Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  expiryDate,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Activation Switch
-          // Switch(
-          //   value: isActive,
-          //   onChanged: null,
-          //   activeColor: Colors.green,
-          // ),
-        ],
+      child: BlocBuilder<CouponCubit, CouponStates>(
+        buildWhen: (previous, current) => current is FetchCouponsState,
+        builder: (BuildContext context, state) {
+          if (state is FetchCouponsState) {
+            return ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              itemBuilder: (BuildContext context, int index) {
+                return state.stateStatus == StateStatus.success
+                    ? CouponItem(
+                        coupon: state.coupons!.expired[index],
+                        isExpired: true,
+                      )
+                    : AppShimmer(
+                        child: Container(
+                          width: 343.w,
+                          height: 114.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.fffffff,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 16.h);
+              },
+              itemCount: state.stateStatus == StateStatus.success ? state.coupons!.expired.length : 3,
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
