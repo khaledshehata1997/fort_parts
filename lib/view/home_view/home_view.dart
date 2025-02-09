@@ -9,6 +9,7 @@ import 'package:fort_parts/view/home_view/widgets/home_slider.dart';
 import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
+import 'package:location_services/location_services.dart';
 
 import '../../constants.dart';
 
@@ -95,37 +96,54 @@ class _HomeViewState extends State<HomeView> {
                           SizedBox(
                             height: 5,
                           ),
-                          InkWell(
-                            onTap: () {
-                              AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: const AddressScreen());
+                          FutureBuilder(
+                            future: HiveHelper.get(hiveBox: HiveBoxes.user),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) return const SizedBox();
+                              return InkWell(
+                                onTap: () async {
+                                  AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: const AddressScreen());
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'العنوان : ',
+                                      style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
+                                    ),
+                                    BlocBuilder<AddressCubit, AddressStates>(
+                                      buildWhen: (previous, current) => current is FetchAddressesState,
+                                      builder: (context, state) {
+                                        if (state is FetchAddressesState) {
+                                          return state.stateStatus == StateStatus.success && state.addresses.isNotEmpty
+                                              ? FutureBuilder(
+                                                  future: LocationServices.fetchFormattedAddress(
+                                                      context: context,
+                                                      latitude: double.parse(state.addresses.firstWhere((element) => element.isDefault).latitude),
+                                                      longitude: double.parse(state.addresses.firstWhere((element) => element.isDefault).longitude)),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.data == null) {
+                                                      return SizedBox();
+                                                    }
+                                                    return Text(
+                                                      snapshot.data!.subLocality ?? "",
+                                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
+                                                    );
+                                                  },
+                                                )
+                                              : const SizedBox();
+                                        }
+                                        return const SizedBox();
+                                      },
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: mainColor,
+                                      size: 35,
+                                    )
+                                  ],
+                                ),
+                              );
                             },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'العنوان : ',
-                                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
-                                ),
-                                BlocBuilder<AddressCubit, AddressStates>(
-                                  buildWhen: (previous, current) => current is FetchAddressesState,
-                                  builder: (context, state) {
-                                    if (state is FetchAddressesState) {
-                                      return state.stateStatus == StateStatus.success
-                                          ? Text(
-                                              state.addresses.firstWhere((element) => element.isDefault).address,
-                                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
-                                            )
-                                          : const SizedBox();
-                                    }
-                                    return const SizedBox();
-                                  },
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: mainColor,
-                                  size: 35,
-                                )
-                              ],
-                            ),
                           ),
                         ],
                       ),

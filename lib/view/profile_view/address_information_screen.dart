@@ -137,7 +137,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                       ),
                       SizedBox(height: 20.h),
                       AppText(
-                        text: "الأسم",
+                        text: "النوع",
                         color: Color(0xFF333333),
                         textStyles: AppTextStyles.medium14,
                       ),
@@ -153,7 +153,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                           controller: nameController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                              hintText: "",
+                              hintText: "النوع",
                               prefixStyle: TextStyle(color: Colors.black),
                               contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                               filled: true,
@@ -182,7 +182,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                           controller: addressController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                              hintText: "",
+                              hintText: "الشارع",
                               prefixStyle: TextStyle(color: Colors.black),
                               contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                               filled: true,
@@ -218,7 +218,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                                     keyboardType: TextInputType.phone,
                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                     decoration: InputDecoration(
-                                        hintText: "",
+                                        hintText: "رقم البيت",
                                         prefixStyle: TextStyle(color: Colors.black),
                                         contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                                         filled: true,
@@ -255,7 +255,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                                     keyboardType: TextInputType.phone,
                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                     decoration: InputDecoration(
-                                        hintText: "",
+                                        hintText: "رقم الشقة",
                                         prefixStyle: TextStyle(color: Colors.black),
                                         contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                                         filled: true,
@@ -289,7 +289,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                           controller: landmarkController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                              hintText: "",
+                              hintText: "علامة مميزة للعنوان",
                               prefixStyle: TextStyle(color: Colors.black),
                               contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                               filled: true,
@@ -321,7 +321,6 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                     if (nameController.text.isNotEmpty &&
                         addressController.text.isNotEmpty &&
                         buildNumberController.text.isNotEmpty &&
-                        apartmentNumberController.text.isNotEmpty &&
                         landmarkController.text.isNotEmpty) {
                       final cubit = context.read<AddressCubit>();
                       cubit.addAddress(

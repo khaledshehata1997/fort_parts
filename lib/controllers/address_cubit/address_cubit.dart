@@ -2,19 +2,23 @@ import 'package:components/components.dart';
 import 'package:data_access/data_access.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/address_cubit/address_states.dart';
+import 'package:local_storage/local_storage.dart';
 
 class AddressCubit extends Cubit<AddressStates> {
   AddressCubit() : super(AddressInitialState());
 
   Future<void> fetchAddresses() async {
     try {
-      emit(FetchAddressesState(stateStatus: StateStatus.loading));
-      final List<Address> addresses = await sl<IAddressRepository>().fetchAddresses();
+      final HiveUser? user = await HiveHelper.get(hiveBox: HiveBoxes.user);
+      if (user != null) {
+        emit(FetchAddressesState(stateStatus: StateStatus.loading));
+        final List<Address> addresses = await sl<IAddressRepository>().fetchAddresses();
 
-      emit(FetchAddressesState(
-        stateStatus: StateStatus.success,
-        addresses: addresses,
-      ));
+        emit(FetchAddressesState(
+          stateStatus: StateStatus.success,
+          addresses: addresses,
+        ));
+      }
     } catch (e) {
       emit(FetchAddressesState(stateStatus: StateStatus.error));
       rethrow;
