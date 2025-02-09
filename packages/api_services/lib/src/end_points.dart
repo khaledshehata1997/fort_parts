@@ -24,5 +24,5 @@ class EndPoints {
   static String activateCoupon() => '$baseUrl/auth/change-active-coupon';
 
   // Coupon
-  static String fetchAddresses() => '$baseUrl/auth/address';
+  static String address() => '$baseUrl/auth/address';
 }

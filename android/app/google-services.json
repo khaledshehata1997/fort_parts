@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "214600875555",
+    "firebase_url": "https://perfictworker-default-rtdb.firebaseio.com",
+    "project_id": "perfictworker",
+    "storage_bucket": "perfictworker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214600875555:android:4b17882412193be7247b96",
+        "android_client_info": {
+          "package_name": "com.example.fort_parts8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214600875555-l4mbl2h4p046j9gs3han67ssldc7ebpk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYd2GBpJC02wh7TqtTwhxvP9Yohg05hks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214600875555-l4mbl2h4p046j9gs3han67ssldc7ebpk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "214600875555-2p54raoconrqa5d6qvg4aa05odm5j22q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.PerfectWorker.App.PerfectWorker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

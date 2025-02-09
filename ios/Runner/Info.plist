@@ -58,6 +58,9 @@
 		<string>Fort Parts want to access your gallery to update your profile image</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Fort Parts want to access your gallery to update your profile image</string>
-
+	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	    <string>Fort Parts want to access your location to update your address</string>
+	    <key>NSLocationWhenInUseUsageDescription</key>
+	    <string>Fort Parts want to access your location to update your address</string>
 	</dict>
 </plist>
