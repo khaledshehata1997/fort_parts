@@ -1,15 +1,31 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/address_cubit/address_cubit.dart';
+import 'package:fort_parts/controllers/address_cubit/address_states.dart';
 import 'package:fort_parts/view/auth/sign_in_view.dart';
 import 'package:fort_parts/view/home_view/widgets/home_categories.dart';
 import 'package:fort_parts/view/home_view/widgets/home_slider.dart';
+import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
 
 import '../../constants.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    final cubit = context.read<AddressCubit>();
+    cubit.fetchAddresses();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,22 +95,37 @@ class HomeView extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                'العنوان : ',
-                                style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
-                              ),
-                              Text(
-                                '3 شارع التحرير, جده',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color: mainColor,
-                                size: 35,
-                              )
-                            ],
+                          InkWell(
+                            onTap: () {
+                              AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: const AddressScreen());
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'العنوان : ',
+                                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
+                                ),
+                                BlocBuilder<AddressCubit, AddressStates>(
+                                  buildWhen: (previous, current) => current is FetchAddressesState,
+                                  builder: (context, state) {
+                                    if (state is FetchAddressesState) {
+                                      return state.stateStatus == StateStatus.success
+                                          ? Text(
+                                              state.addresses.firstWhere((element) => element.isDefault).address,
+                                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
+                                            )
+                                          : const SizedBox();
+                                    }
+                                    return const SizedBox();
+                                  },
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: mainColor,
+                                  size: 35,
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       ),
