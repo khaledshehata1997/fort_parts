@@ -1,4 +1,4 @@
-import 'package:data_access/src/models/logged_user.dart';
+import 'package:data_access/data_access.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class IAuthenticationRepository {
@@ -21,7 +21,7 @@ abstract class IAuthenticationRepository {
     required String token,
   });
 
-  Future<void> updateProfile({
+  Future<User> updateProfile({
     required String name,
     required String email,
     required XFile? image,

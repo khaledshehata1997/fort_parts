@@ -95,12 +95,12 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
   }) async {
     try {
       emit(UpdateProfileState(stateStatus: StateStatus.loading));
-      await sl<IAuthenticationRepository>().updateProfile(
+      final User user = await sl<IAuthenticationRepository>().updateProfile(
         name: name,
         email: email,
         image: image,
       );
-      emit(UpdateProfileState(stateStatus: StateStatus.success));
+      emit(UpdateProfileState(stateStatus: StateStatus.success, user: user));
     } catch (e) {
       emit(UpdateProfileState(stateStatus: StateStatus.error));
       rethrow;

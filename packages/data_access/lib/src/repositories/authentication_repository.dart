@@ -100,7 +100,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }
 
   @override
-  Future<void> updateProfile({
+  Future<User> updateProfile({
     required String name,
     required String email,
     required XFile? image,
@@ -117,12 +117,13 @@ class AuthenticationRepository implements IAuthenticationRepository {
         data.addAll({"image": await MultipartFile.fromFile(image.path)});
       }
 
-      await sl<IApiRepository>().post(
+      final Response response = await sl<IApiRepository>().post(
         url: url,
         formData: FormData.fromMap(data),
       );
 
-      return;
+      final User user = User.fromJson(response.data['data']);
+      return user;
     } catch (e) {
       rethrow;
     }

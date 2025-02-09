@@ -49,6 +49,8 @@ class FetchProfileState extends AuthenticationStates {
 class UpdateProfileState extends AuthenticationStates {
   UpdateProfileState({
     required this.stateStatus,
+    this.user,
   });
   final StateStatus stateStatus;
+  final User? user;
 }

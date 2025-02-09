@@ -173,9 +173,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   listenWhen: (previous, current) => current is UpdateProfileState,
                   listener: (BuildContext context, state) async {
                     if (state is UpdateProfileState && state.stateStatus == StateStatus.success) {
-                      // final cubit = context.read<AuthenticationCubit>();
-                      // await HiveHelper.put(hiveBox: HiveBoxes.user, data: state.user.toHiveUser);
-                      // fetchUserData();
+                      await HiveHelper.put(hiveBox: HiveBoxes.user, data: state.user!.toHiveUser);
+                      fetchUserData();
                     }
                   },
                   child: SizedBox(
