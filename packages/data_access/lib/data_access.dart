@@ -1,8 +1,10 @@
 export 'src/dependency_injection.dart';
+export 'src/interfaces/i_address_repository.dart';
 export 'src/interfaces/i_authentication_repository.dart';
 export 'src/interfaces/i_cart_repository.dart';
 export 'src/interfaces/i_coupon_repository.dart';
 export 'src/interfaces/i_settings_repository.dart';
+export 'src/models/address.dart';
 export 'src/models/cart.dart';
 export 'src/models/category.dart';
 export 'src/models/coupons.dart';
