@@ -1,5 +1,6 @@
 import 'package:components/components.dart';
 import 'package:data_access/data_access.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
@@ -20,6 +21,8 @@ class CartItemCard extends StatefulWidget {
 }
 
 class _CartItemCardState extends State<CartItemCard> {
+  bool isLoading = false;
+
   String fetchQuantity() {
     final cubit = context.read<CartCubit>();
 
@@ -88,6 +91,9 @@ class _CartItemCardState extends State<CartItemCard> {
                     borderRadius: BorderRadius.circular(4),
                     onTap: () {
                       final cubit = context.read<CartCubit>();
+                      setState(() {
+                        isLoading = true;
+                      });
                       final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
 
                       cubit.updateItemInCartState(
@@ -102,16 +108,25 @@ class _CartItemCardState extends State<CartItemCard> {
                       ),
                       width: 35,
                       height: 35,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: mainColor, width: 3)),
+                      decoration:
+                          BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: mainColor, width: 3)),
                     ),
                   ),
                   SizedBox(
                     width: 40,
                   ),
-                  BlocBuilder<CartCubit, CartStates>(
+                  BlocConsumer<CartCubit, CartStates>(
+                    listener: (BuildContext context, s) {
+                      if ((s is UpdateItemInCartState && s.stateStatus == StateStatus.success) ||
+                          (s is DeleteItemFromCartState && s.stateStatus == StateStatus.success)) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
                     builder: (BuildContext context, s) {
-                      return s is UpdateItemInCartState && s.stateStatus == StateStatus.loading
-                          ? CircularProgressIndicator()
+                      return isLoading
+                          ? CupertinoActivityIndicator()
                           : Text(
                               fetchQuantity(),
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -125,6 +140,9 @@ class _CartItemCardState extends State<CartItemCard> {
                     borderRadius: BorderRadius.circular(4),
                     onTap: () {
                       final cubit = context.read<CartCubit>();
+                      setState(() {
+                        isLoading = true;
+                      });
                       final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
 
                       if (cartProduct != null && cartProduct.quantity > 1) {
@@ -145,7 +163,8 @@ class _CartItemCardState extends State<CartItemCard> {
                       ),
                       width: 35,
                       height: 35,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: Colors.grey, width: 3)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4), color: Colors.white, border: Border.all(color: Colors.grey, width: 3)),
                     ),
                   ),
                 ],

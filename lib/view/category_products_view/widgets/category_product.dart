@@ -1,5 +1,6 @@
 import 'package:components/components.dart';
 import 'package:data_access/data_access.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/constants.dart';
@@ -17,6 +18,8 @@ class CategoryProduct extends StatefulWidget {
 }
 
 class _CategoryProductState extends State<CategoryProduct> {
+  bool isLoading = false;
+
   String fetchQuantity() {
     final cubit = context.read<CartCubit>();
 
@@ -88,6 +91,9 @@ class _CategoryProductState extends State<CategoryProduct> {
                 borderRadius: BorderRadius.circular(4),
                 onTap: () {
                   final cubit = context.read<CartCubit>();
+                  setState(() {
+                    isLoading = true;
+                  });
                   final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
 
                   cubit.updateItemInCartState(
@@ -113,12 +119,14 @@ class _CategoryProductState extends State<CategoryProduct> {
                 listener: (BuildContext context, s) {
                   if ((s is UpdateItemInCartState && s.stateStatus == StateStatus.success) ||
                       (s is DeleteItemFromCartState && s.stateStatus == StateStatus.success)) {
-                    setState(() {});
+                    setState(() {
+                      isLoading = false;
+                    });
                   }
                 },
                 builder: (BuildContext context, s) {
-                  return s is UpdateItemInCartState && s.stateStatus == StateStatus.loading
-                      ? CircularProgressIndicator()
+                  return isLoading
+                      ? CupertinoActivityIndicator()
                       : Text(
                           fetchQuantity(),
                           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -133,6 +141,9 @@ class _CategoryProductState extends State<CategoryProduct> {
                   borderRadius: BorderRadius.circular(4),
                   onTap: () {
                     final cubit = context.read<CartCubit>();
+                    setState(() {
+                      isLoading = true;
+                    });
                     final CartProduct? cartProduct = cubit.cart.products.firstWhereOrNull((element) => element.product == widget.product);
 
                     if (cartProduct != null && cartProduct.quantity > 1) {
