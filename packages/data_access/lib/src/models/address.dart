@@ -27,7 +27,7 @@ class Address {
       longitude: json['lng'],
       address: json['address'],
       build: json['build'],
-      floor: json['flower'],
+      floor: json['flower'] ?? "",
       isDefault: json['default'] == 1,
     );
   }
