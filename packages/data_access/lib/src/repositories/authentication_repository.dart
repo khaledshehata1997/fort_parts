@@ -128,4 +128,17 @@ class AuthenticationRepository implements IAuthenticationRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<User> fetchProfile() async {
+    try {
+      final String url = EndPoints.myProfile();
+      final Response response = await sl<IApiRepository>().get(url: url);
+
+      final User user = User.fromJson(response.data['data']);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

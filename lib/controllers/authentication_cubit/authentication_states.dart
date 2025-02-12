@@ -42,8 +42,10 @@ class ResendOTPState extends AuthenticationStates {
 class FetchProfileState extends AuthenticationStates {
   FetchProfileState({
     required this.stateStatus,
+    this.user,
   });
   final StateStatus stateStatus;
+  final User? user;
 }
 
 class UpdateProfileState extends AuthenticationStates {

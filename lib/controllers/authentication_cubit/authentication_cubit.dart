@@ -106,4 +106,19 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
       rethrow;
     }
   }
+
+  Future<void> fetchProfile() async {
+    try {
+      final HiveUser? hiveUser = await HiveHelper.get(hiveBox: HiveBoxes.user);
+      if (hiveUser != null) {
+        emit(FetchProfileState(stateStatus: StateStatus.loading));
+        final User user = await sl<IAuthenticationRepository>().fetchProfile();
+        await HiveHelper.put(hiveBox: HiveBoxes.user, data: user.toHiveUser);
+        emit(FetchProfileState(stateStatus: StateStatus.success, user: user));
+      }
+    } catch (e) {
+      emit(FetchProfileState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

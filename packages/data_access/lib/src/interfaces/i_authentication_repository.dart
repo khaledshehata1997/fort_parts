@@ -26,4 +26,6 @@ abstract class IAuthenticationRepository {
     required String email,
     required XFile? image,
   });
+
+  Future<User> fetchProfile();
 }

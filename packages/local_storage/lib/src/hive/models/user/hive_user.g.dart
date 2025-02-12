@@ -21,13 +21,16 @@ class HiveUserAdapter extends TypeAdapter<HiveUser> {
       email: fields[1] as String,
       phone: fields[2] as String,
       image: fields[3] as String,
+      activeCoupon: fields[4] as String,
+      pos: fields[5] as int,
+      posUsed: fields[6] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveUser obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -35,7 +38,13 @@ class HiveUserAdapter extends TypeAdapter<HiveUser> {
       ..writeByte(2)
       ..write(obj.phone)
       ..writeByte(3)
-      ..write(obj.image);
+      ..write(obj.image)
+      ..writeByte(4)
+      ..write(obj.activeCoupon)
+      ..writeByte(5)
+      ..write(obj.pos)
+      ..writeByte(6)
+      ..write(obj.posUsed);
   }
 
   @override

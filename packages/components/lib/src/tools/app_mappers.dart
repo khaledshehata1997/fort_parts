@@ -8,6 +8,9 @@ extension ToHiveUser on User {
       email: email,
       phone: phone,
       image: image,
+      activeCoupon: activeCoupon,
+      pos: pos,
+      posUsed: posUsed,
     );
   }
 }

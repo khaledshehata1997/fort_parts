@@ -9,6 +9,9 @@ class HiveUser {
     required this.email,
     required this.phone,
     required this.image,
+    required this.activeCoupon,
+    required this.pos,
+    required this.posUsed,
   });
 
   @HiveField(0)
@@ -19,4 +22,10 @@ class HiveUser {
   final String phone;
   @HiveField(3)
   final String image;
+  @HiveField(4)
+  final String activeCoupon;
+  @HiveField(5)
+  final int pos;
+  @HiveField(6)
+  final int posUsed;
 }

@@ -1,7 +1,9 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/constants.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
 import 'package:fort_parts/view/auth/sign_in_view.dart';
 import 'package:fort_parts/view/profile_view/address_screen.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
@@ -13,13 +15,20 @@ import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<AuthenticationCubit>();
+    cubit.fetchProfile();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,11 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       width: 80,
                                       radius: 100,
                                     )
-                                  : AppShimmer(
-                                      child: CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: Colors.white,
-                                    ));
+                                  : SizedBox();
                             },
                           ),
                         ),
@@ -117,32 +122,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               )
-                            : AppShimmer(
-                                child: Container(
-                                width: 100,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ));
+                            : SizedBox();
                       },
                     ),
 
                     const SizedBox(height: 12),
                     // Stats
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildStat('النشطة', '50'),
-                        Container(
-                          height: 20,
-                          width: 1,
-                          color: Colors.grey[300],
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                        ),
-                        _buildStat('المستخدمة', '120'),
-                      ],
+                    FutureBuilder(
+                      future: HiveHelper.get(hiveBox: HiveBoxes.user),
+                      builder: (BuildContext context, snapshot) {
+                        return snapshot.data != null
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _buildStat(
+                                    'النشطة',
+                                    snapshot.data.pos.toString(),
+                                  ),
+                                  Container(
+                                    height: 20,
+                                    width: 1,
+                                    color: Colors.grey[300],
+                                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                                  ),
+                                  _buildStat(
+                                    'المستخدمة',
+                                    snapshot.data.posUsed.toString(),
+                                  ),
+                                ],
+                              )
+                            : SizedBox();
+                      },
                     ),
                   ],
                 ),

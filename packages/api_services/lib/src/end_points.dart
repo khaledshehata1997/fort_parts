@@ -7,6 +7,7 @@ class EndPoints {
   static String otpVerification() => '$baseUrl/auth/verify-phone';
   static String saveFCM() => '$baseUrl/auth/save_fcm';
   static String updateProfile() => '$baseUrl/auth/update_profile';
+  static String myProfile() => '$baseUrl/auth/my_profile';
 
   // Settings
   static String settings() => '$baseUrl/settings';
