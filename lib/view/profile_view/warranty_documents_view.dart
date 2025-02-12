@@ -1,11 +1,25 @@
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
-import 'package:fort_parts/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
+import 'package:fort_parts/controllers/order_cubit/order_states.dart';
 import 'package:fort_parts/view/profile_view/warranty_details_screen.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class WarrantyDocumentsScreen extends StatelessWidget {
+class WarrantyDocumentsScreen extends StatefulWidget {
   const WarrantyDocumentsScreen({super.key});
+
+  @override
+  State<WarrantyDocumentsScreen> createState() => _WarrantyDocumentsScreenState();
+}
+
+class _WarrantyDocumentsScreenState extends State<WarrantyDocumentsScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<OrderCubit>();
+    cubit.fetchCertificates();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,37 +44,46 @@ class WarrantyDocumentsScreen extends StatelessWidget {
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            GestureDetector(
-              onTap: (){
-                Get.to(const WarrantyDetailsScreen());
-              },
-              child: _buildDocumentCard(
-                title: 'ضمان السخان',
-                subtitle: 'الضمان الخاص بتصليح السخان',
-                date: '12 ديسمبر 2024',
-                icon: Icons.lock,
-                backgroundColor: Colors.white,
-                iconColor: const Color(0xffe2ffe9),
-              ),
-            ),
-            const SizedBox(height: 16),
-            GestureDetector(
-              onTap: (){
-                Get.to(const WarrantyDetailsScreen());
-              },
-              child: _buildDocumentCard(
-                title: 'ضمان تمديد الأسلاك',
-                subtitle: 'الضمان الخاص بتصليح السخان',
-                date: '20 ديسمبر 2024',
-                icon: Icons.electric_bolt,
-                backgroundColor: Colors.white,
-                iconColor: const Color(0xffe2ffe9),
-              ),
-            ),
-          ],
+        child: BlocBuilder<OrderCubit, OrderStates>(
+          buildWhen: (previous, current) => current is FetchCertificatesState,
+          builder: (context, state) {
+            if (state is FetchCertificatesState) {
+              return ListView.separated(
+                padding: const EdgeInsets.all(16),
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return state.stateStatus == StateStatus.success
+                      ? GestureDetector(
+                          onTap: () {
+                            Get.to(WarrantyDetailsScreen(
+                              certificate: state.certificates[index],
+                            ));
+                          },
+                          child: _buildDocumentCard(
+                            title: state.certificates[index].product.name,
+                            subtitle: state.certificates[index].product.description,
+                            date: state.certificates[index].endDate,
+                            image: state.certificates[index].product.image,
+                          ),
+                        )
+                      : AppShimmer(
+                          child: Container(
+                          height: 133,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ));
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 16);
+                },
+                itemCount: state.stateStatus == StateStatus.success ? state.certificates.length : 2,
+              );
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );
@@ -70,9 +93,7 @@ class WarrantyDocumentsScreen extends StatelessWidget {
     required String title,
     required String subtitle,
     required String date,
-    required IconData icon,
-    required Color backgroundColor,
-    required Color iconColor,
+    required String image,
   }) {
     return Card(
       color: Colors.white,
@@ -85,20 +106,7 @@ class WarrantyDocumentsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Row(
           children: [
-            Container(
-              height: 80,
-              width: 80,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: iconColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                icon,
-                color: mainColor,
-                size: 24,
-              ),
-            ),
+            AppCachedNetworkImage(imageUrl: image, height: 80, width: 80),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

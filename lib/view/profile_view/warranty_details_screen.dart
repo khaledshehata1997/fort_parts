@@ -1,7 +1,13 @@
+import 'package:data_access/data_access.dart';
 import 'package:flutter/material.dart';
 
 class WarrantyDetailsScreen extends StatelessWidget {
-  const WarrantyDetailsScreen({super.key});
+  const WarrantyDetailsScreen({
+    super.key,
+    required this.certificate,
+  });
+
+  final Certificate certificate;
 
   @override
   Widget build(BuildContext context) {
@@ -31,53 +37,25 @@ class WarrantyDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'ضمان السخان',
+              Text(
+                certificate.product.name,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 24),
-              _buildInfoItem(
-                  'الرقم المرجعي:',
-                  '12226HHALLY4H888'
-              ),
-              _buildInfoItem(
-                  'نوع الجهاز:',
-                  'سخان غاز تيتو'
-              ),
-              _buildInfoItem(
-                  'اسم البراند:',
-                  'اوليمبيك الكترك'
-              ),
-              _buildInfoItem(
-                  'المشكلة الاساسية:',
-                  'تسريب غاز إلى الأوضي'
-              ),
-              _buildInfoItem(
-                  'تاريخ بداية الضمان:',
-                  '1/1/2025'
-              ),
-              _buildInfoItem(
-                  'تاريخ نهاية الضمان بعد شهر:',
-                  '1/2/2025'
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'الإجراءات المتخذة لعملية التسريب وتوفير الضمان:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              _buildInfoItem('الرقم المرجعي:', certificate.code),
+              _buildInfoItem('نوع الجهاز:', certificate.type),
+              _buildInfoItem('اسم البراند:', certificate.brand),
+              _buildInfoItem('المشكلة الاساسية:', certificate.problem),
+              _buildInfoItem('تاريخ بداية الضمان:', certificate.startDate),
+              _buildInfoItem('تاريخ نهاية الضمان بعد شهر:', certificate.endDate),
+              _buildInfoItem('الإجراءات المتخذة:', certificate.procedure),
               const SizedBox(height: 16),
+              _buildBulletPoint('شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'),
               _buildBulletPoint(
-                  'شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'
-              ),
-              _buildBulletPoint(
-                  'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'
-              ),
+                  'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:data_access/src/repositories/api_repository.dart';
 import 'package:data_access/src/repositories/authentication_repository.dart';
 import 'package:data_access/src/repositories/cart_repository.dart';
 import 'package:data_access/src/repositories/coupon_repository.dart';
+import 'package:data_access/src/repositories/order_repository.dart';
 import 'package:data_access/src/repositories/settings_repository.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,5 +17,6 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<IAuthenticationRepository>(() => AuthenticationRepository());
   sl.registerLazySingleton<ICartRepository>(() => CartRepository());
   sl.registerLazySingleton<ICouponRepository>(() => CouponRepository());
+  sl.registerLazySingleton<IOrderRepository>(() => OrderRepository());
   sl.registerLazySingleton<ISettingsRepository>(() => SettingsRepository());
 }

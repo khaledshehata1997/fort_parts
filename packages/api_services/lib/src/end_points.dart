@@ -26,4 +26,7 @@ class EndPoints {
 
   // Coupon
   static String address() => '$baseUrl/auth/address';
+
+  // Order
+  static String myCertificates() => '$baseUrl/auth/my_certificate';
 }
