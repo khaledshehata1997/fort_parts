@@ -92,7 +92,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return state.stateStatus == StateStatus.success
                             ? _buildNotificationItem(
-                                time: '9PM',
+                                time: state.notifications[index].time,
                                 message: state.notifications[index].title,
                                 number: (index + 1).toString(),
                                 onTap: () {

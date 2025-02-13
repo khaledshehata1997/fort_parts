@@ -24,12 +24,14 @@ class Notification {
     required this.title,
     required this.type,
     required this.typeID,
+    required this.time,
   });
 
   final int id;
   final String title;
   final String type;
   final int typeID;
+  final String time;
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     return Notification(
@@ -37,6 +39,7 @@ class Notification {
       title: json['title'],
       type: json['model'],
       typeID: json['model_id'],
+      time: json['time'],
     );
   }
 }
