@@ -11,6 +11,8 @@ export 'src/models/category.dart';
 export 'src/models/certificate.dart';
 export 'src/models/coupons.dart';
 export 'src/models/logged_user.dart';
+export 'src/models/meta.dart';
+export 'src/models/notifications.dart';
 export 'src/models/on_boarding.dart';
 export 'src/models/product.dart';
 export 'src/models/settings.dart';

@@ -8,6 +8,7 @@ class EndPoints {
   static String saveFCM() => '$baseUrl/auth/save_fcm';
   static String updateProfile() => '$baseUrl/auth/update_profile';
   static String myProfile() => '$baseUrl/auth/my_profile';
+  static String notifications() => '$baseUrl/auth/my_notification';
 
   // Settings
   static String settings() => '$baseUrl/settings';
@@ -29,4 +30,5 @@ class EndPoints {
 
   // Order
   static String myCertificates() => '$baseUrl/auth/my_certificate';
+  static String certificateDetails({required int certificateID}) => '$baseUrl/auth/show_certificate/$certificateID';
 }

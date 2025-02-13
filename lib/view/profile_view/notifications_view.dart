@@ -1,7 +1,58 @@
+import 'package:components/components.dart';
+import 'package:data_access/data_access.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
+import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
+import 'package:fort_parts/view/profile_view/coupons_view.dart';
+import 'package:fort_parts/view/profile_view/warranty_details_screen.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  final ScrollController scrollController = ScrollController();
+  Meta? meta;
+  bool hasMoreData = false;
+
+  @override
+  void initState() {
+    final cubit = context.read<AuthenticationCubit>();
+    cubit.refresh();
+    cubit.fetchNotifications(
+      currentPageIndex: 0,
+    );
+
+    // Pagination
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        if (meta!.totalPages > meta!.currentPage + 1) {
+          setState(() {
+            hasMoreData = true;
+          });
+          cubit.fetchNotifications(
+            currentPageIndex: meta!.currentPage + 1,
+          );
+        } else {
+          setState(() {
+            hasMoreData = false;
+          });
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,40 +76,70 @@ class NotificationsScreen extends StatelessWidget {
         ),
       ),
       body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Today Section
-            _buildDateHeader('اليوم'),
-            _buildNotificationItem(
-              time: '9PM',
-              message: 'لقد تم تصليح الثلاجه بنجاح',
-              number: '1',
-            ),
-            _buildNotificationItem(
-              time: '9PM',
-              message: 'لقد تم تصليح الثلاجه بنجاح',
-              number: '2',
-            ),
-            const Divider(),
-            const SizedBox(height: 24),
-
-            // Yesterday Section
-            _buildDateHeader('الأمس'),
-            _buildNotificationItem(
-              time: '9PM',
-              message: 'لقد تم تصليح الثلاجه بنجاح',
-              number: '1',
-            ),
-            _buildNotificationItem(
-              time: '9PM',
-              message: 'لقد تم تصليح الثلاجه بنجاح',
-              number: '2',
-            ),
-          ],
-        ),
-      ),
+          textDirection: TextDirection.rtl,
+          child: BlocBuilder<AuthenticationCubit, AuthenticationStates>(
+            buildWhen: (previous, current) => current is FetchNotificationsState,
+            builder: (context, state) {
+              if (state is FetchNotificationsState) {
+                meta = state.meta;
+                return Column(
+                  children: [
+                    ListView.separated(
+                      controller: scrollController,
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      itemBuilder: (BuildContext context, int index) {
+                        return state.stateStatus == StateStatus.success
+                            ? _buildNotificationItem(
+                                time: '9PM',
+                                message: state.notifications[index].title,
+                                number: (index + 1).toString(),
+                                onTap: () {
+                                  switch (state.notifications[index].type) {
+                                    case 'coupon':
+                                      return AppNavigator.navigateTo(
+                                        type: NavigationType.navigateTo,
+                                        widget: CouponsScreen(),
+                                      );
+                                    case 'order':
+                                      return AppNavigator.navigateTo(
+                                        type: NavigationType.navigateTo,
+                                        widget: CouponsScreen(),
+                                      );
+                                    case 'task':
+                                      return AppNavigator.navigateTo(
+                                        type: NavigationType.navigateTo,
+                                        widget: CouponsScreen(),
+                                      );
+                                    case 'certificate':
+                                      return AppNavigator.navigateTo(
+                                        type: NavigationType.navigateTo,
+                                        widget: WarrantyDetailsScreen(
+                                          certificateID: state.notifications[index].typeID,
+                                        ),
+                                      );
+                                  }
+                                },
+                              )
+                            : const SizedBox();
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 16);
+                      },
+                      itemCount: state.stateStatus == StateStatus.success ? state.notifications.length : 2,
+                    ),
+                    if (hasMoreData)
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: const CupertinoActivityIndicator(),
+                      ),
+                  ],
+                );
+              }
+              return const SizedBox();
+            },
+          )),
     );
   }
 
@@ -80,13 +161,13 @@ class NotificationsScreen extends StatelessWidget {
     required String time,
     required String message,
     required String number,
+    required Function onTap,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+    return InkWell(
+      onTap: () => onTap(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Container(
             width: 25,
             height: 25,
@@ -123,7 +204,6 @@ class NotificationsScreen extends StatelessWidget {
               ],
             ),
           ),
-
           Text(
             time,
             style: TextStyle(

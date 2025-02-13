@@ -28,4 +28,8 @@ abstract class IAuthenticationRepository {
   });
 
   Future<User> fetchProfile();
+
+  Future<Notifications> fetchNotifications({
+    required int currentPageIndex,
+  });
 }

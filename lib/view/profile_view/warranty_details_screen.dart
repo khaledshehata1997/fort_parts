@@ -1,13 +1,28 @@
-import 'package:data_access/data_access.dart';
+import 'package:components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
+import 'package:fort_parts/controllers/order_cubit/order_states.dart';
 
-class WarrantyDetailsScreen extends StatelessWidget {
+class WarrantyDetailsScreen extends StatefulWidget {
   const WarrantyDetailsScreen({
     super.key,
-    required this.certificate,
+    required this.certificateID,
   });
 
-  final Certificate certificate;
+  final int certificateID;
+
+  @override
+  State<WarrantyDetailsScreen> createState() => _WarrantyDetailsScreenState();
+}
+
+class _WarrantyDetailsScreenState extends State<WarrantyDetailsScreen> {
+  @override
+  void initState() {
+    final cubit = context.read<OrderCubit>();
+    cubit.fetchCertificate(certificateID: widget.certificateID);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +49,39 @@ class WarrantyDetailsScreen extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                certificate.product.name,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-              _buildInfoItem('الرقم المرجعي:', certificate.code),
-              _buildInfoItem('نوع الجهاز:', certificate.type),
-              _buildInfoItem('اسم البراند:', certificate.brand),
-              _buildInfoItem('المشكلة الاساسية:', certificate.problem),
-              _buildInfoItem('تاريخ بداية الضمان:', certificate.startDate),
-              _buildInfoItem('تاريخ نهاية الضمان بعد شهر:', certificate.endDate),
-              _buildInfoItem('الإجراءات المتخذة:', certificate.procedure),
-              const SizedBox(height: 16),
-              _buildBulletPoint('شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'),
-              _buildBulletPoint(
-                  'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'),
-            ],
+          child: BlocBuilder<OrderCubit, OrderStates>(
+            buildWhen: (previous, current) => current is FetchCertificateState,
+            builder: (context, state) {
+              if (state is FetchCertificateState) {
+                return state.stateStatus == StateStatus.success
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            state.certificate!.product.name,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          _buildInfoItem('الرقم المرجعي:', state.certificate!.code),
+                          _buildInfoItem('نوع الجهاز:', state.certificate!.type),
+                          _buildInfoItem('اسم البراند:', state.certificate!.brand),
+                          _buildInfoItem('المشكلة الاساسية:', state.certificate!.problem),
+                          _buildInfoItem('تاريخ بداية الضمان:', state.certificate!.startDate),
+                          _buildInfoItem('تاريخ نهاية الضمان بعد شهر:', state.certificate!.endDate),
+                          _buildInfoItem('الإجراءات المتخذة:', state.certificate!.procedure),
+                          const SizedBox(height: 16),
+                          _buildBulletPoint('شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'),
+                          _buildBulletPoint(
+                              'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'),
+                        ],
+                      )
+                    : const SizedBox();
+              }
+              return const SizedBox();
+            },
           ),
         ),
       ),

@@ -56,3 +56,14 @@ class UpdateProfileState extends AuthenticationStates {
   final StateStatus stateStatus;
   final User? user;
 }
+
+class FetchNotificationsState extends AuthenticationStates {
+  FetchNotificationsState({
+    required this.stateStatus,
+    this.notifications = const [],
+    this.meta,
+  });
+  final StateStatus stateStatus;
+  final List<Notification> notifications;
+  final Meta? meta;
+}

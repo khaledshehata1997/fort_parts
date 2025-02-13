@@ -20,4 +20,21 @@ class OrderCubit extends Cubit<OrderStates> {
       rethrow;
     }
   }
+
+  Future<void> fetchCertificate({
+    required int certificateID,
+  }) async {
+    try {
+      emit(FetchCertificateState(stateStatus: StateStatus.loading));
+      final Certificate certificate = await sl<IOrderRepository>().fetchCertificate(certificateID: certificateID);
+
+      emit(FetchCertificateState(
+        stateStatus: StateStatus.success,
+        certificate: certificate,
+      ));
+    } catch (e) {
+      emit(FetchCertificateState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

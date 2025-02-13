@@ -57,7 +57,7 @@ class _WarrantyDocumentsScreenState extends State<WarrantyDocumentsScreen> {
                       ? GestureDetector(
                           onTap: () {
                             Get.to(WarrantyDetailsScreen(
-                              certificate: state.certificates[index],
+                              certificateID: state.certificates[index].id,
                             ));
                           },
                           child: _buildDocumentCard(

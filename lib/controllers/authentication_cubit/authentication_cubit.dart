@@ -8,6 +8,10 @@ import 'package:local_storage/local_storage.dart';
 class AuthenticationCubit extends Cubit<AuthenticationStates> {
   AuthenticationCubit() : super(AuthenticationInitialState());
 
+  Future<void> refresh() async {
+    emit(AuthenticationRefreshState());
+  }
+
   Future<void> register({
     required String name,
     required String email,
@@ -118,6 +122,50 @@ class AuthenticationCubit extends Cubit<AuthenticationStates> {
       }
     } catch (e) {
       emit(FetchProfileState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
+
+  Future<void> fetchNotifications({
+    required int currentPageIndex,
+  }) async {
+    try {
+      final previousState = state;
+      if (previousState is FetchNotificationsState) {
+        //in case of pagination
+        emit(FetchNotificationsState(
+          stateStatus: StateStatus.success,
+          notifications: previousState.notifications,
+        ));
+      } else {
+        //in case of first call
+        emit(FetchNotificationsState(stateStatus: StateStatus.loading));
+      }
+
+      final Notifications notifications = await sl<IAuthenticationRepository>().fetchNotifications(
+        currentPageIndex: currentPageIndex,
+      );
+
+      final Meta meta = Meta(
+        currentPage: notifications.current,
+        totalPages: notifications.total,
+      );
+      final List<Notification> notificationsList = [];
+
+      //in case of pagination
+      if (previousState is FetchNotificationsState) {
+        notificationsList.addAll(previousState.notifications);
+      }
+
+      notificationsList.addAll(notifications.notifications);
+
+      emit(FetchNotificationsState(
+        stateStatus: StateStatus.success,
+        notifications: notificationsList,
+        meta: meta,
+      ));
+    } catch (e) {
+      emit(FetchNotificationsState(stateStatus: StateStatus.error));
       rethrow;
     }
   }

@@ -18,4 +18,21 @@ class OrderRepository implements IOrderRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Certificate> fetchCertificate({
+    required int certificateID,
+  }) async {
+    try {
+      final String url = EndPoints.certificateDetails(certificateID: certificateID);
+
+      final Response response = await sl<IApiRepository>().get(url: url);
+
+      final Certificate certificate = Certificate.fromJson(response.data['data']);
+
+      return certificate;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

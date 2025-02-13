@@ -141,4 +141,21 @@ class AuthenticationRepository implements IAuthenticationRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Notifications> fetchNotifications({
+    required int currentPageIndex,
+  }) async {
+    try {
+      final String url = EndPoints.notifications();
+      final Map<String, dynamic> data = {'Page': currentPageIndex};
+
+      final Response response = await sl<IApiRepository>().get(url: url, queryParameters: data);
+
+      final Notifications notifications = Notifications.fromJson(response.data['data']);
+      return notifications;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

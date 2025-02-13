@@ -15,3 +15,12 @@ class FetchCertificatesState extends OrderStates {
   final StateStatus stateStatus;
   final List<Certificate> certificates;
 }
+
+class FetchCertificateState extends OrderStates {
+  FetchCertificateState({
+    required this.stateStatus,
+    this.certificate,
+  });
+  final StateStatus stateStatus;
+  final Certificate? certificate;
+}
