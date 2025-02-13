@@ -14,6 +14,7 @@ export 'src/models/logged_user.dart';
 export 'src/models/meta.dart';
 export 'src/models/notifications.dart';
 export 'src/models/on_boarding.dart';
+export 'src/models/orders.dart';
 export 'src/models/product.dart';
 export 'src/models/settings.dart';
 export 'src/models/slider.dart';

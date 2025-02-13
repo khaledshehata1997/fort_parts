@@ -148,7 +148,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }) async {
     try {
       final String url = EndPoints.notifications();
-      final Map<String, dynamic> data = {'Page': currentPageIndex};
+      final Map<String, dynamic> data = {'page': currentPageIndex};
 
       final Response response = await sl<IApiRepository>().get(url: url, queryParameters: data);
 

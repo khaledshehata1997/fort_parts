@@ -7,6 +7,7 @@ class AppImages {
   //B
 
   //C
+  static const String calendar = '$imagePath/calendar.svg';
   static const String cart = '$imagePath/cart.svg';
 
   //D
@@ -18,6 +19,7 @@ class AppImages {
   //G
 
   //H
+  static const String hash = '$imagePath/hash.svg';
   static const String home = '$imagePath/home.svg';
 
   //I
@@ -46,12 +48,15 @@ class AppImages {
 
   //S
   static const String splash = '$imagePath/splash.png';
+  static const String status = '$imagePath/status.svg';
 
   //T
+  static const String task = '$imagePath/task.svg';
 
   //U
 
   //V
+  static const String view = '$imagePath/view.svg';
 
   //W
 

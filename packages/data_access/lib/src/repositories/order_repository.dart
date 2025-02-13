@@ -35,4 +35,41 @@ class OrderRepository implements IOrderRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Orders> fetchOrders({
+    required int currentPageIndex,
+  }) async {
+    try {
+      final String url = EndPoints.myOrders();
+      final Map<String, dynamic> data = {'page': currentPageIndex};
+
+      final Response response = await sl<IApiRepository>().get(
+        url: url,
+        queryParameters: data,
+      );
+
+      final Orders orders = Orders.fromJson(response.data['data']);
+      return orders;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Order> fetchOrder({
+    required int orderID,
+  }) async {
+    try {
+      final String url = EndPoints.orderDetails(orderID: orderID);
+
+      final Response response = await sl<IApiRepository>().get(url: url);
+
+      final Order order = Order.fromJson(response.data['data']);
+
+      return order;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

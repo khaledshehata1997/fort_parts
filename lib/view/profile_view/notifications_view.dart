@@ -24,9 +24,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   void initState() {
     final cubit = context.read<AuthenticationCubit>();
     cubit.refresh();
-    cubit.fetchNotifications(
-      currentPageIndex: 0,
-    );
+    cubit.fetchNotifications(currentPageIndex: 1);
 
     // Pagination
     scrollController.addListener(() {
@@ -140,20 +138,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               return const SizedBox();
             },
           )),
-    );
-  }
-
-  Widget _buildDateHeader(String date) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Text(
-        date,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      ),
     );
   }
 

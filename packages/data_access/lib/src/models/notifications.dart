@@ -12,7 +12,7 @@ class Notifications {
   factory Notifications.fromJson(Map<String, dynamic> json) {
     return Notifications(
       notifications: List<Notification>.from(json['items'].map((x) => Notification.fromJson(x))),
-      total: json['total'],
+      total: json['last_page'],
       current: json['current'],
     );
   }
