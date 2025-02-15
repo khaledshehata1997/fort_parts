@@ -422,7 +422,7 @@ class _PaymentViewState extends State<PaymentView> {
                       );
                     },
                   );
-
+                  print(date);
                   if (date != null) {
                     TimeOfDay? time = await showTimePicker(
                       context: context,
@@ -434,10 +434,10 @@ class _PaymentViewState extends State<PaymentView> {
                         );
                       },
                     );
-
+                    print(time);
                     if (time != null) {
                       setState(() {
-                        selectedDate = DateFormat('yyyy-MM-dd', "en").format(date);
+                        selectedDate = DateFormat('yyyy-MM-dd').format(date);
                         selectedTime = time.format(context);
                       });
 

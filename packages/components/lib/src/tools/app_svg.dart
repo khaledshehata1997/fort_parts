@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,9 +21,7 @@ class AppSVG extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: EasyLocalization.of(context)!.currentLocale!.languageCode == 'ar'
-          ? TextDirection.ltr
-          : TextDirection.rtl,
+      textDirection: TextDirection.rtl,
       child: SvgPicture.asset(
         svgPath,
         width: width,
