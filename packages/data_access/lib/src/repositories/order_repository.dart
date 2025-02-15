@@ -57,7 +57,7 @@ class OrderRepository implements IOrderRepository {
   }
 
   @override
-  Future<Order> fetchOrder({
+  Future<OrderDetails> fetchOrder({
     required int orderID,
   }) async {
     try {
@@ -65,9 +65,25 @@ class OrderRepository implements IOrderRepository {
 
       final Response response = await sl<IApiRepository>().get(url: url);
 
-      final Order order = Order.fromJson(response.data['data']);
+      final OrderDetails order = OrderDetails.fromJson(response.data['data']);
 
       return order;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> cancelTask({
+    required int taskID,
+  }) async {
+    try {
+      final String url = EndPoints.cancelTask();
+      final Map<String, dynamic> data = {'id': taskID};
+
+      await sl<IApiRepository>().post(url: url, rawData: data);
+
+      return;
     } catch (e) {
       rethrow;
     }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
 import 'package:fort_parts/controllers/order_cubit/order_states.dart';
+import 'package:fort_parts/view/requests_view/request_details_view.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class RequestsView extends StatefulWidget {
@@ -82,6 +83,7 @@ class _RequestsViewState extends State<RequestsView> {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(width: 1.0, color: Color(0xFFF6F4FA).withValues(alpha: 0.80)),
                                   ),
                                   child: Column(
                                     children: [
@@ -92,7 +94,7 @@ class _RequestsViewState extends State<RequestsView> {
                                       ),
                                       SizedBox(height: 16.h),
                                       OrderInfoRow(
-                                        icon: AppImages.task,
+                                        icon: AppImages.task1,
                                         label: "عدد المهام :",
                                         value: state.orders[index].tasksCount.toString(),
                                       ),
@@ -133,7 +135,12 @@ class _RequestsViewState extends State<RequestsView> {
                                       SizedBox(height: 20.h),
                                       InkWell(
                                         borderRadius: BorderRadius.circular(12.r),
-                                        onTap: () {},
+                                        onTap: () {
+                                          AppNavigator.navigateTo(
+                                            type: NavigationType.navigateTo,
+                                            widget: RequestDetailsView(orderID: state.orders[index].id),
+                                          );
+                                        },
                                         child: Container(
                                           height: 40.h,
                                           decoration: BoxDecoration(

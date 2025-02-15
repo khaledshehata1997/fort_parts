@@ -42,5 +42,12 @@ class FetchOrderState extends OrderStates {
     this.order,
   });
   final StateStatus stateStatus;
-  final Order? order;
+  final OrderDetails? order;
+}
+
+class CancelTaskState extends OrderStates {
+  CancelTaskState({
+    required this.stateStatus,
+  });
+  final StateStatus stateStatus;
 }

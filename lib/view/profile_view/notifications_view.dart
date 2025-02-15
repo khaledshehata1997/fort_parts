@@ -7,6 +7,7 @@ import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
 import 'package:fort_parts/view/profile_view/warranty_details_screen.dart';
+import 'package:fort_parts/view/requests_view/request_details_view.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -103,12 +104,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     case 'order':
                                       return AppNavigator.navigateTo(
                                         type: NavigationType.navigateTo,
-                                        widget: CouponsScreen(),
+                                        widget: RequestDetailsView(
+                                          orderID: state.notifications[index].typeID,
+                                        ),
                                       );
                                     case 'task':
                                       return AppNavigator.navigateTo(
                                         type: NavigationType.navigateTo,
-                                        widget: CouponsScreen(),
+                                        widget: RequestDetailsView(
+                                          orderID: state.notifications[index].typeID,
+                                        ),
                                       );
                                     case 'certificate':
                                       return AppNavigator.navigateTo(

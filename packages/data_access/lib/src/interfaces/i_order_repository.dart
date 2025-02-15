@@ -11,7 +11,11 @@ abstract class IOrderRepository {
     required int currentPageIndex,
   });
 
-  Future<Order> fetchOrder({
+  Future<OrderDetails> fetchOrder({
     required int orderID,
+  });
+
+  Future<void> cancelTask({
+    required int taskID,
   });
 }

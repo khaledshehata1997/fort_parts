@@ -32,5 +32,6 @@ class EndPoints {
   static String myCertificates() => '$baseUrl/auth/my_certificate';
   static String certificateDetails({required int certificateID}) => '$baseUrl/auth/show_certificate/$certificateID';
   static String myOrders() => '$baseUrl/auth/my_order';
-  static String orderDetails({required int orderID}) => '$baseUrl/auth/my_order/$orderID';
+  static String orderDetails({required int orderID}) => '$baseUrl/auth/show_order/$orderID';
+  static String cancelTask() => '$baseUrl/auth/cancel_task';
 }

@@ -88,7 +88,7 @@ class OrderCubit extends Cubit<OrderStates> {
   }) async {
     try {
       emit(FetchOrderState(stateStatus: StateStatus.loading));
-      final Order order = await sl<IOrderRepository>().fetchOrder(orderID: orderID);
+      final OrderDetails order = await sl<IOrderRepository>().fetchOrder(orderID: orderID);
 
       emit(FetchOrderState(
         stateStatus: StateStatus.success,
@@ -96,6 +96,20 @@ class OrderCubit extends Cubit<OrderStates> {
       ));
     } catch (e) {
       emit(FetchOrderState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
+
+  Future<void> cancelTask({
+    required int taskID,
+  }) async {
+    try {
+      emit(CancelTaskState(stateStatus: StateStatus.loading));
+      await sl<IOrderRepository>().cancelTask(taskID: taskID);
+
+      emit(CancelTaskState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(CancelTaskState(stateStatus: StateStatus.error));
       rethrow;
     }
   }

@@ -5,9 +5,11 @@ class AppImages {
   static const String accounts = '$imagePath/accounts.svg';
 
   //B
+  static const String back = '$imagePath/back.svg';
 
   //C
   static const String calendar = '$imagePath/calendar.svg';
+  static const String cancel = '$imagePath/cancel.svg';
   static const String cart = '$imagePath/cart.svg';
 
   //D
@@ -35,6 +37,7 @@ class AppImages {
   //M
 
   //N
+  static const String notes = '$imagePath/notes.svg';
 
   //O
   static const String orders = '$imagePath/orders.svg';
@@ -47,11 +50,17 @@ class AppImages {
   //R
 
   //S
+  static const String setting = '$imagePath/setting.svg';
+  static const String spare = '$imagePath/spare.svg';
   static const String splash = '$imagePath/splash.png';
   static const String status = '$imagePath/status.svg';
 
   //T
-  static const String task = '$imagePath/task.svg';
+  static const String task1 = '$imagePath/task1.svg';
+  static const String task2 = '$imagePath/task2.svg';
+  static const String task3 = '$imagePath/task3.svg';
+  static const String technical = '$imagePath/technical.svg';
+  static const String total = '$imagePath/total.svg';
 
   //U
 
@@ -59,6 +68,7 @@ class AppImages {
   static const String view = '$imagePath/view.svg';
 
   //W
+  static const String warning = '$imagePath/warning.svg';
 
   //X
   //Y
