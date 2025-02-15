@@ -437,7 +437,7 @@ class _PaymentViewState extends State<PaymentView> {
 
                     if (time != null) {
                       setState(() {
-                        selectedDate = DateFormat('yyyy-MM-dd').format(date);
+                        selectedDate = DateFormat('yyyy-MM-dd', "en").format(date);
                         selectedTime = time.format(context);
                       });
 
