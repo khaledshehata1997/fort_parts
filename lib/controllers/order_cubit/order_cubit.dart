@@ -113,4 +113,28 @@ class OrderCubit extends Cubit<OrderStates> {
       rethrow;
     }
   }
+
+  Future<void> placeOrder({
+    required int addressID,
+    required String date,
+    required String time,
+    required String coupon,
+    required String pos,
+  }) async {
+    try {
+      emit(PlaceOrderState(stateStatus: StateStatus.loading));
+      await sl<IOrderRepository>().placeOrder(
+        addressID: addressID,
+        date: date,
+        time: time,
+        coupon: coupon,
+        pos: pos,
+      );
+
+      emit(PlaceOrderState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(PlaceOrderState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

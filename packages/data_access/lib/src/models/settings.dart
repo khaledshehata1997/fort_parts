@@ -25,17 +25,20 @@ class Setting {
     required this.name,
     required this.termsAndConditions,
     required this.privacyPolicy,
+    required this.pos,
   });
 
   final String name;
   final String termsAndConditions;
   final String privacyPolicy;
+  final int pos;
 
   factory Setting.fromJson(Map<String, dynamic> json) {
     return Setting(
       name: json['name'],
       termsAndConditions: json['terms_and_condition'],
       privacyPolicy: json['privacy_policy'],
+      pos: json['pos'],
     );
   }
 }

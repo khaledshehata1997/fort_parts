@@ -102,7 +102,9 @@ class _CartScreenState extends State<CartScreen> {
                       SizedBox(height: Get.height * 0.05),
                       ElevatedButton(
                         onPressed: () {
-                          Get.to(const PaymentView());
+                          if (cubit.cart.products.isNotEmpty) {
+                            Get.to(const PaymentView());
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.amber,

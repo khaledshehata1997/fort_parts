@@ -88,4 +88,31 @@ class OrderRepository implements IOrderRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> placeOrder({
+    required int addressID,
+    required String date,
+    required String time,
+    required String coupon,
+    required String pos,
+  }) async {
+    try {
+      final String url = EndPoints.placeOrder();
+      final Map<String, dynamic> data = {
+        "address_id": addressID,
+        "date": date,
+        "time": time,
+        "coupon": coupon,
+        "pos": pos,
+        "payment_method": "cache_delivery"
+      };
+
+      await sl<IApiRepository>().post(url: url, rawData: data);
+
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

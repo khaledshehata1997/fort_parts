@@ -51,3 +51,12 @@ class FetchTermsAndConditionsState extends SettingsStates {
   final StateStatus stateStatus;
   final String termsAndConditions;
 }
+
+class FetchPostToMoneyState extends SettingsStates {
+  FetchPostToMoneyState({
+    required this.stateStatus,
+    this.pos = 0,
+  });
+  final StateStatus stateStatus;
+  final int pos;
+}

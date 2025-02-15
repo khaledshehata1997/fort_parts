@@ -82,4 +82,19 @@ class SettingsCubit extends Cubit<SettingsStates> {
       rethrow;
     }
   }
+
+  Future<void> fetchPosToMoney() async {
+    try {
+      emit(FetchPostToMoneyState(stateStatus: StateStatus.loading));
+      final Settings settings = await sl<ISettingsRepository>().fetchSettings();
+
+      emit(FetchPostToMoneyState(
+        stateStatus: StateStatus.success,
+        pos: settings.setting.pos,
+      ));
+    } catch (e) {
+      emit(FetchPostToMoneyState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

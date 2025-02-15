@@ -34,4 +34,5 @@ class EndPoints {
   static String myOrders() => '$baseUrl/auth/my_order';
   static String orderDetails({required int orderID}) => '$baseUrl/auth/show_order/$orderID';
   static String cancelTask() => '$baseUrl/auth/cancel_task';
+  static String placeOrder() => '$baseUrl/auth/place_order';
 }

@@ -18,4 +18,12 @@ abstract class IOrderRepository {
   Future<void> cancelTask({
     required int taskID,
   });
+
+  Future<void> placeOrder({
+    required int addressID,
+    required String date,
+    required String time,
+    required String coupon,
+    required String pos,
+  });
 }

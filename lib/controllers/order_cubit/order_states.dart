@@ -51,3 +51,10 @@ class CancelTaskState extends OrderStates {
   });
   final StateStatus stateStatus;
 }
+
+class PlaceOrderState extends OrderStates {
+  PlaceOrderState({
+    required this.stateStatus,
+  });
+  final StateStatus stateStatus;
+}

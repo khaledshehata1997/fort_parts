@@ -6,12 +6,12 @@ class Cart {
     required this.products,
   });
 
-  final int total;
+  final double total;
   final List<CartProduct> products;
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
-      total: json['total'],
+      total: double.parse(json['total'].toString()),
       products: List<CartProduct>.from(json['products'].map((x) => CartProduct.fromJson(x))),
     );
   }
