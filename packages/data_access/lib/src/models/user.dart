@@ -23,7 +23,7 @@ class User {
       email: json['email'],
       phone: json['phone'],
       image: json['image'],
-      activeCoupon: json['active_coupon'],
+      activeCoupon: json['coupon_code'],
       pos: json['pos'],
       posUsed: json['pos_used'],
     );
