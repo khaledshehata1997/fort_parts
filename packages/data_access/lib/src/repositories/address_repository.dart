@@ -21,7 +21,6 @@ class AddressRepository implements IAddressRepository {
 
   @override
   Future<void> addAddress({
-    required int? addressID,
     required String latitude,
     required String longitude,
     required String name,
@@ -41,6 +40,35 @@ class AddressRepository implements IAddressRepository {
       };
 
       await sl<IApiRepository>().post(url: url, formData: FormData.fromMap(data));
+
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateAddress({
+    required int addressID,
+    required String latitude,
+    required String longitude,
+    required String name,
+    required String address,
+    required String build,
+    required String floor,
+  }) async {
+    try {
+      final String url = EndPoints.updateAddress(addressID: addressID);
+      final Map<String, dynamic> data = {
+        'lat': latitude,
+        'lng': longitude,
+        'name': name,
+        'address': address,
+        'build': build,
+        'flower': floor,
+      };
+
+      await sl<IApiRepository>().put(url: url, rawData: data);
 
       return;
     } catch (e) {

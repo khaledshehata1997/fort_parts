@@ -28,6 +28,7 @@ class EndPoints {
   // Coupon
   static String address() => '$baseUrl/auth/address';
   static String deleteAddress({required int addressID}) => '$baseUrl/auth/address/$addressID';
+  static String updateAddress({required int addressID}) => '$baseUrl/auth/address/$addressID';
 
   // Order
   static String myCertificates() => '$baseUrl/auth/my_certificate';

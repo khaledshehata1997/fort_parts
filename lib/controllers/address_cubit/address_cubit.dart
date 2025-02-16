@@ -36,15 +36,26 @@ class AddressCubit extends Cubit<AddressStates> {
   }) async {
     try {
       emit(AddAddressesState(stateStatus: StateStatus.loading));
-      await sl<IAddressRepository>().addAddress(
-        addressID: addressID,
-        latitude: latitude,
-        longitude: longitude,
-        name: name,
-        address: address,
-        build: build,
-        floor: floor,
-      );
+      if (addressID == null) {
+        await sl<IAddressRepository>().addAddress(
+          latitude: latitude,
+          longitude: longitude,
+          name: name,
+          address: address,
+          build: build,
+          floor: floor,
+        );
+      } else {
+        await sl<IAddressRepository>().updateAddress(
+          addressID: addressID,
+          latitude: latitude,
+          longitude: longitude,
+          name: name,
+          address: address,
+          build: build,
+          floor: floor,
+        );
+      }
 
       emit(AddAddressesState(stateStatus: StateStatus.success));
     } catch (e) {
