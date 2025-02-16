@@ -81,6 +81,15 @@ class AvailableCouponsTab extends StatelessWidget {
         buildWhen: (previous, current) => current is FetchCouponsState,
         builder: (BuildContext context, state) {
           if (state is FetchCouponsState) {
+            if (state.stateStatus == StateStatus.success && state.coupons!.active.isEmpty) {
+              return Center(
+                child: AppText(
+                  text: "لايوجد كوبونات متاحة حاليا",
+                  color: Color(0xFF333333),
+                  textStyles: AppTextStyles.regular14,
+                ),
+              );
+            }
             return ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -126,6 +135,15 @@ class ExpiredCouponsTab extends StatelessWidget {
         buildWhen: (previous, current) => current is FetchCouponsState,
         builder: (BuildContext context, state) {
           if (state is FetchCouponsState) {
+            if (state.stateStatus == StateStatus.success && state.coupons!.expired.isEmpty) {
+              return Center(
+                child: AppText(
+                  text: "لايوجد كوبونات متاحة حاليا",
+                  color: Color(0xFF333333),
+                  textStyles: AppTextStyles.regular14,
+                ),
+              );
+            }
             return ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
