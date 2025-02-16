@@ -18,6 +18,7 @@ import 'package:fort_parts/view/cart_view/widgets/change_address_bottom_sheet.da
 import 'package:fort_parts/view/home_layout/home_layout.dart';
 import 'package:fort_parts/view/home_layout/home_layout_cubit/home_layout_cubit.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
+import 'package:fort_parts/view/profile_view/pick_location_map_screen.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:local_storage/local_storage.dart';
 
@@ -127,25 +128,35 @@ class _PaymentViewState extends State<PaymentView> {
                               alignment: Alignment.centerLeft,
                               child: TextButton(
                                 onPressed: () async {
-                                  await showModalBottomSheet(
-                                    elevation: 0.0,
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (BuildContext context) => ChangeAddressBottomSheet(),
-                                  ).then((value) {
-                                    if (value != null) {
-                                      setState(() {
-                                        selectedAddress = value;
-                                      });
-                                    }
-                                  });
+                                  if (selectedAddress != null) {
+                                    await showModalBottomSheet(
+                                      elevation: 0.0,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (BuildContext context) => ChangeAddressBottomSheet(),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          selectedAddress = value;
+                                        });
+                                      }
+                                    });
+                                  } else {
+                                    await AppNavigator.navigateTo(
+                                      type: NavigationType.navigateTo,
+                                      widget: PickLocationMapScreen(),
+                                    ).then((_) {
+                                      final cubit = context.read<AddressCubit>();
+                                      cubit.fetchAddresses();
+                                    });
+                                  }
                                 },
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
                                   alignment: Alignment.centerRight,
                                 ),
                                 child: Text(
-                                  'تغيير العنوان',
+                                  selectedAddress != null ? 'تغيير العنوان' : "أضافة عنوان",
                                   style: TextStyle(
                                     decoration: TextDecoration.underline,
                                     decorationColor: mainColor,
@@ -422,7 +433,6 @@ class _PaymentViewState extends State<PaymentView> {
                       );
                     },
                   );
-                  print(date);
                   if (date != null) {
                     TimeOfDay? time = await showTimePicker(
                       context: context,
@@ -434,7 +444,6 @@ class _PaymentViewState extends State<PaymentView> {
                         );
                       },
                     );
-                    print(time);
                     if (time != null) {
                       setState(() {
                         selectedDate = DateFormat('yyyy-MM-dd').format(date);
