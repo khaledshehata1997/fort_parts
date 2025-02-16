@@ -4,6 +4,7 @@ abstract class IAddressRepository {
   Future<List<Address>> fetchAddresses();
 
   Future<void> addAddress({
+    required int? addressID,
     required String latitude,
     required String longitude,
     required String name,

@@ -1,4 +1,5 @@
 import 'package:components/components.dart';
+import 'package:data_access/data_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,11 +12,13 @@ class AddressInformationScreen extends StatefulWidget {
   const AddressInformationScreen({
     required this.pickedLocation,
     required this.formattedAddress,
+    this.address,
     super.key,
   });
 
   final LatLng pickedLocation;
   final String formattedAddress;
+  final Address? address;
 
   @override
   State<AddressInformationScreen> createState() => _AddressInformationScreenState();
@@ -27,6 +30,17 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
   final TextEditingController buildNumberController = TextEditingController();
   final TextEditingController apartmentNumberController = TextEditingController();
   final TextEditingController landmarkController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.address != null) {
+      nameController.text = widget.address!.name;
+      addressController.text = widget.address!.address;
+      buildNumberController.text = widget.address!.build;
+      apartmentNumberController.text = widget.address!.floor;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -324,6 +338,7 @@ class _AddressInformationScreenState extends State<AddressInformationScreen> {
                         landmarkController.text.isNotEmpty) {
                       final cubit = context.read<AddressCubit>();
                       cubit.addAddress(
+                        addressID: widget.address?.id,
                         latitude: widget.pickedLocation.latitude.toString(),
                         longitude: widget.pickedLocation.longitude.toString(),
                         name: nameController.text,

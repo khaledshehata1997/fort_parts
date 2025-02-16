@@ -1,7 +1,6 @@
 // ignore_for_file: unused_element
 
 import 'package:app_settings/app_settings.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -74,9 +73,7 @@ class LocationServices {
     required double latitude,
     required double longitude,
   }) async {
-    await setLocaleIdentifier(
-      EasyLocalization.of(context)!.currentLocale!.languageCode.toLowerCase(),
-    );
+    await setLocaleIdentifier("ar");
 
     List<Placemark> placeMarks = await placemarkFromCoordinates(
       latitude,

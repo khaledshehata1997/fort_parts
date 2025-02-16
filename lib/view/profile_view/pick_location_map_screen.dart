@@ -1,4 +1,5 @@
 import 'package:components/components.dart';
+import 'package:data_access/data_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/view/profile_view/address_information_screen.dart';
@@ -7,8 +8,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_services/location_services.dart';
 
 class PickLocationMapScreen extends StatefulWidget {
-  const PickLocationMapScreen({super.key});
+  const PickLocationMapScreen({
+    super.key,
+    this.address,
+  });
 
+  final Address? address;
   @override
   State<PickLocationMapScreen> createState() => _PickLocationMapScreenState();
 }
@@ -16,6 +21,29 @@ class PickLocationMapScreen extends StatefulWidget {
 class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
   LatLng? selectedLocation;
   Set<Marker> markers = {};
+
+  void setInitialLocation({
+    required GoogleMapController controller,
+  }) {
+    if (widget.address != null) {
+      selectedLocation = LatLng(double.parse(widget.address!.latitude), double.parse(widget.address!.longitude));
+      final LatLng latLng = LatLng(double.parse(widget.address!.latitude), double.parse(widget.address!.longitude));
+      markers.add(
+        Marker(
+          markerId: MarkerId(latLng.toString()),
+          position: latLng,
+          infoWindow: InfoWindow(
+            title: "",
+            snippet: "${latLng.latitude}, ${latLng.longitude}",
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+      setState(() {});
+      controller.animateCamera(CameraUpdate.newLatLngZoom(latLng, 14));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +89,9 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
                       target: LocationServices.currentLocation ?? LocationServices.saudiArabiaLocation,
                       zoom: 14,
                     ),
-                    onMapCreated: (GoogleMapController controller) {},
+                    onMapCreated: (GoogleMapController controller) {
+                      setInitialLocation(controller: controller);
+                    },
                     onTap: (LatLng latLng) async {
                       // Add a new marker at the tapped location
                       markers.clear();
@@ -88,6 +118,8 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
                       borderRadius: BorderRadius.circular(12.r),
                       onTap: () async {
                         if (selectedLocation != null) {
+                          print(selectedLocation!.latitude);
+                          print(selectedLocation!.longitude);
                           final Placemark placeMark = await LocationServices.fetchFormattedAddress(
                               context: context, latitude: selectedLocation!.latitude, longitude: selectedLocation!.longitude);
                           AppNavigator.navigateTo(
@@ -95,6 +127,7 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
                               widget: AddressInformationScreen(
                                 pickedLocation: selectedLocation!,
                                 formattedAddress: placeMark.subLocality ?? "",
+                                address: widget.address,
                               ));
                         }
                       },

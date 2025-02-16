@@ -26,6 +26,7 @@ class AddressCubit extends Cubit<AddressStates> {
   }
 
   Future<void> addAddress({
+    required int? addressID,
     required String latitude,
     required String longitude,
     required String name,
@@ -36,6 +37,7 @@ class AddressCubit extends Cubit<AddressStates> {
     try {
       emit(AddAddressesState(stateStatus: StateStatus.loading));
       await sl<IAddressRepository>().addAddress(
+        addressID: addressID,
         latitude: latitude,
         longitude: longitude,
         name: name,
