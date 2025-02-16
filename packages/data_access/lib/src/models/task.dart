@@ -25,7 +25,7 @@ class Task {
       date: json['date'],
       status: json['status'],
       statusColor: json[''] ?? '028602',
-      notes: json['notes'],
+      notes: json['notes'] ?? "",
       product: Product.fromJson(json['product']),
       provider: Provider.fromJson(json['provider']),
     );
