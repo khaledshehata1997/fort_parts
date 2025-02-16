@@ -11,4 +11,8 @@ abstract class IAddressRepository {
     required String build,
     required String floor,
   });
+
+  Future<void> deleteAddress({
+    required int addressID,
+  });
 }

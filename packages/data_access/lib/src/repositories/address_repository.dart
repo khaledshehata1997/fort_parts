@@ -46,4 +46,19 @@ class AddressRepository implements IAddressRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteAddress({
+    required int addressID,
+  }) async {
+    try {
+      final String url = EndPoints.deleteAddress(addressID: addressID);
+
+      await sl<IApiRepository>().delete(url: url);
+
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

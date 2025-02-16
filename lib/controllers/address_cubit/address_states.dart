@@ -22,3 +22,10 @@ class AddAddressesState extends AddressStates {
   });
   final StateStatus stateStatus;
 }
+
+class DeleteAddressesState extends AddressStates {
+  DeleteAddressesState({
+    required this.stateStatus,
+  });
+  final StateStatus stateStatus;
+}

@@ -50,4 +50,16 @@ class AddressCubit extends Cubit<AddressStates> {
       rethrow;
     }
   }
+
+  Future<void> deleteAddress({required int addressID}) async {
+    try {
+      emit(DeleteAddressesState(stateStatus: StateStatus.loading));
+      await sl<IAddressRepository>().deleteAddress(addressID: addressID);
+
+      emit(DeleteAddressesState(stateStatus: StateStatus.success));
+    } catch (e) {
+      emit(DeleteAddressesState(stateStatus: StateStatus.error));
+      rethrow;
+    }
+  }
 }

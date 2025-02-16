@@ -77,6 +77,38 @@ class _AddressScreenState extends State<AddressScreen> {
                                       color: AppColors.f121256,
                                       textStyles: AppTextStyles.regular16,
                                     ),
+                                    const Spacer(),
+                                    IconButton(
+                                      onPressed: () async {
+                                        AppNavigator.navigateTo(
+                                          type: NavigationType.navigateTo,
+                                          widget: PickLocationMapScreen(address: state.addresses[index]),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: AppColors.fE0AA06,
+                                      ),
+                                    ),
+                                    BlocListener<AddressCubit, AddressStates>(
+                                      listenWhen: (previous, current) => current is DeleteAddressesState,
+                                      listener: (context, state) {
+                                        if (state is DeleteAddressesState && state.stateStatus == StateStatus.success) {
+                                          final cubit = context.read<AddressCubit>();
+                                          cubit.fetchAddresses();
+                                        }
+                                      },
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          final cubit = context.read<AddressCubit>();
+                                          cubit.deleteAddress(addressID: state.addresses[index].id);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: AppColors.fE0AA06,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )
