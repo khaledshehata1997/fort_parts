@@ -118,15 +118,18 @@ class _HomeViewState extends State<HomeView> {
                                               ? FutureBuilder(
                                                   future: LocationServices.fetchFormattedAddress(
                                                       context: context,
-                                                      latitude: double.parse(state.addresses.firstWhere((element) => element.isDefault).latitude),
-                                                      longitude: double.parse(state.addresses.firstWhere((element) => element.isDefault).longitude)),
+                                                      latitude: double.parse(
+                                                          state.addresses.firstWhere((element) => element.isDefault).latitude),
+                                                      longitude: double.parse(
+                                                          state.addresses.firstWhere((element) => element.isDefault).longitude)),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.data == null) {
                                                       return SizedBox();
                                                     }
                                                     return Text(
                                                       snapshot.data!.subLocality ?? "",
-                                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
+                                                      style:
+                                                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
                                                     );
                                                   },
                                                 )
@@ -182,7 +185,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               const HomeSlider(),
               SizedBox(
-                height: Get.height * .05,
+                height: Get.height * .02,
               ),
               const HomeCategories(),
             ],
