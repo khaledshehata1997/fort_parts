@@ -1,6 +1,7 @@
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/controllers/address_cubit/address_cubit.dart';
 import 'package:fort_parts/controllers/address_cubit/address_states.dart';
 import 'package:fort_parts/view/auth/sign_in_view.dart';
@@ -188,6 +189,7 @@ class _HomeViewState extends State<HomeView> {
                 height: Get.height * .02,
               ),
               const HomeCategories(),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

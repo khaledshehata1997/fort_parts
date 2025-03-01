@@ -32,7 +32,7 @@ class _HomeCategoriesState extends State<HomeCategories> {
             child: GridView.count(
               physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
-              padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 130.h, top: 10.h),
+              padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h, top: 10.h),
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               childAspectRatio: 1.6 / 1,
