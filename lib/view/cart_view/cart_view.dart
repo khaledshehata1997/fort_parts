@@ -30,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('السلة', style: TextStyle(fontSize: 18)),
+        title: Text('cart'.tr, style: TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -61,65 +61,62 @@ class _CartScreenState extends State<CartScreen> {
               // First Item Card
 
               // Total Amount Section
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Card(
-                        color: Colors.white,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.monetization_on_outlined, size: 30, color: mainColor),
-                                  SizedBox(width: 8),
-                                  BlocBuilder<CartCubit, CartStates>(builder: (context, state) {
-                                    return Text(
-                                      'المبلغ الإجمالي : ${cubit.cart.total} جنيه',
-                                      style: TextStyle(
-                                        fontSize: 23,
-                                        color: mainColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                            ],
-                          ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Card(
+                      color: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Colors.grey.shade200),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.monetization_on_outlined, size: 30, color: mainColor),
+                                SizedBox(width: 8),
+                                BlocBuilder<CartCubit, CartStates>(builder: (context, state) {
+                                  return Text(
+                                    'المبلغ الإجمالي : ${cubit.cart.total} جنيه',
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                      color: mainColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: Get.height * 0.05),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (cubit.cart.products.isNotEmpty) {
-                            Get.to(const PaymentView());
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          minimumSize: Size(double.infinity, 60), // Increased height (60)
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8), // Less rounded corners (8)
-                          ),
+                    ),
+                    SizedBox(height: Get.height * 0.05),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (cubit.cart.products.isNotEmpty) {
+                          Get.to(const PaymentView());
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        minimumSize: Size(double.infinity, 60), // Increased height (60)
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // Less rounded corners (8)
                         ),
-                        child: const Text(
-                          'تأكيد الطلب',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                      )
-                    ],
-                  ),
+                      ),
+                      child:  Text(
+                        'confirmOrder'.tr,
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    )
+                  ],
                 ),
               ),
               // // Bottom Navigation Bar

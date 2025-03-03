@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
 import 'package:fort_parts/controllers/order_cubit/order_states.dart';
 import 'package:fort_parts/view/requests_view/request_details_view.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class RequestsView extends StatefulWidget {
@@ -58,146 +59,144 @@ class _RequestsViewState extends State<RequestsView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('الطلبات', style: TextStyle(fontSize: 18)),
+        title: Text('requests'.tr, style: TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
-      body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<OrderCubit, OrderStates>(
-            buildWhen: (previous, current) => current is FetchOrdersState,
-            builder: (context, state) {
-              if (state is FetchOrdersState) {
-                meta = state.meta;
-                return Column(
-                  children: [
-                    Expanded(
-                      child: ListView.separated(
-                        controller: scrollController,
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                        itemBuilder: (BuildContext context, int index) {
-                          return state.stateStatus == StateStatus.success
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    border: Border.all(width: 1.0, color: Color(0xFFF6F4FA).withValues(alpha: 0.80)),
+      body: BlocBuilder<OrderCubit, OrderStates>(
+        buildWhen: (previous, current) => current is FetchOrdersState,
+        builder: (context, state) {
+          if (state is FetchOrdersState) {
+            meta = state.meta;
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    controller: scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    itemBuilder: (BuildContext context, int index) {
+                      return state.stateStatus == StateStatus.success
+                          ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(width: 1.0, color: Color(0xFFF6F4FA).withValues(alpha: 0.80)),
+                              ),
+                              child: Column(
+                                children: [
+                                  OrderInfoRow(
+                                    icon: AppImages.hash,
+                                    label: "requestNo".tr,
+                                    value: state.orders[index].id.toString(),
                                   ),
-                                  child: Column(
+                                  SizedBox(height: 16.h),
+                                  OrderInfoRow(
+                                    icon: AppImages.task1,
+                                    label: "taskNo".tr,
+                                    value: state.orders[index].tasksCount.toString(),
+                                  ),
+                                  SizedBox(height: 16.h),
+                                  OrderInfoRow(
+                                    icon: AppImages.calendar,
+                                    label: "firstVisitDate".tr,
+                                    value: state.orders[index].date,
+                                  ),
+                                  SizedBox(height: 16.h),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      OrderInfoRow(
-                                        icon: AppImages.hash,
-                                        label: "رقم الطلب :",
-                                        value: state.orders[index].id.toString(),
+                                      AppSVG(
+                                        svgPath: AppImages.status,
+                                        width: 24,
+                                        height: 24,
                                       ),
-                                      SizedBox(height: 16.h),
-                                      OrderInfoRow(
-                                        icon: AppImages.task1,
-                                        label: "عدد المهام :",
-                                        value: state.orders[index].tasksCount.toString(),
+                                      SizedBox(width: 10.w),
+                                      AppText(
+                                        text: "statusRequest".tr,
+                                        color: Color(0xFF333333),
+                                        textStyles: AppTextStyles.regular16,
                                       ),
-                                      SizedBox(height: 16.h),
-                                      OrderInfoRow(
-                                        icon: AppImages.calendar,
-                                        label: "تاريخ أول زيارة :",
-                                        value: state.orders[index].date,
+                                      SizedBox(width: 10.w),
+                                      CircleAvatar(
+                                        radius: 5,
+                                        backgroundColor: HexColor(state.orders[index].statusColor),
                                       ),
-                                      SizedBox(height: 16.h),
-                                      Row(
+                                      SizedBox(width: 10.w),
+                                      AppText(
+                                        text: state.orders[index].status,
+                                        color: HexColor(state.orders[index].statusColor),
+                                        textStyles: AppTextStyles.bold16,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    onTap: () {
+                                      AppNavigator.navigateTo(
+                                        type: NavigationType.navigateTo,
+                                        widget: RequestDetailsView(orderID: state.orders[index].id),
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 40.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8.r),
+                                        border: Border.all(width: 1.0, color: Color(0xFFE0AA06)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           AppSVG(
-                                            svgPath: AppImages.status,
+                                            svgPath: AppImages.view,
                                             width: 24,
                                             height: 24,
                                           ),
                                           SizedBox(width: 10.w),
                                           AppText(
-                                            text: "حالة الطلب :",
-                                            color: Color(0xFF333333),
-                                            textStyles: AppTextStyles.regular16,
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          CircleAvatar(
-                                            radius: 5,
-                                            backgroundColor: HexColor(state.orders[index].statusColor),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          AppText(
-                                            text: state.orders[index].status,
-                                            color: HexColor(state.orders[index].statusColor),
-                                            textStyles: AppTextStyles.bold16,
+                                            text: "reviewDetails".tr,
+                                            color: Color(0xFFE0AA06),
+                                            textStyles: AppTextStyles.regular18,
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 20.h),
-                                      InkWell(
-                                        borderRadius: BorderRadius.circular(12.r),
-                                        onTap: () {
-                                          AppNavigator.navigateTo(
-                                            type: NavigationType.navigateTo,
-                                            widget: RequestDetailsView(orderID: state.orders[index].id),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 40.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(8.r),
-                                            border: Border.all(width: 1.0, color: Color(0xFFE0AA06)),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              AppSVG(
-                                                svgPath: AppImages.view,
-                                                width: 24,
-                                                height: 24,
-                                              ),
-                                              SizedBox(width: 10.w),
-                                              AppText(
-                                                text: "مراجعة التفاصيل",
-                                                color: Color(0xFFE0AA06),
-                                                textStyles: AppTextStyles.regular18,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                )
-                              : AppShimmer(
-                                  child: Container(
-                                  width: 375.h,
-                                  height: 300.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                  ),
-                                ));
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(height: 16);
-                        },
-                        itemCount: state.stateStatus == StateStatus.success ? state.orders.length : 2,
-                      ),
-                    ),
-                    if (hasMoreData)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: const CupertinoActivityIndicator(),
-                      ),
-                    SizedBox(height: 100.h),
-                  ],
-                );
-              }
-              return const SizedBox();
-            },
-          )),
+                                ],
+                              ),
+                            )
+                          : AppShimmer(
+                              child: Container(
+                              width: 375.h,
+                              height: 300.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                            ));
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 16);
+                    },
+                    itemCount: state.stateStatus == StateStatus.success ? state.orders.length : 2,
+                  ),
+                ),
+                if (hasMoreData)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: const CupertinoActivityIndicator(),
+                  ),
+                SizedBox(height: 100.h),
+              ],
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/controllers/coupon_cubit/coupon_cubit.dart';
 import 'package:fort_parts/controllers/coupon_cubit/coupon_states.dart';
 import 'package:fort_parts/view/profile_view/widgets/coupon_item.dart';
+import 'package:get/get.dart';
 
 class CouponsScreen extends StatefulWidget {
   const CouponsScreen({Key? key}) : super(key: key);
@@ -35,15 +36,15 @@ class _CouponsScreenState extends State<CouponsScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           centerTitle: true,
-          title: const Text(
-            'الكوبونات',
+          title:  Text(
+            'coupon'.tr,
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          bottom: const TabBar(
+          bottom:  TabBar(
             indicatorColor: Colors.amber,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
@@ -52,8 +53,8 @@ class _CouponsScreenState extends State<CouponsScreen> {
               fontSize: 16,
             ),
             tabs: [
-              Tab(text: 'المنتهية'),
-              Tab(text: 'المتاحة'),
+              Tab(text: 'expired'.tr),
+              Tab(text: 'available'.tr),
             ],
           ),
         ),
@@ -75,51 +76,48 @@ class AvailableCouponsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: BlocBuilder<CouponCubit, CouponStates>(
-        buildWhen: (previous, current) => current is FetchCouponsState,
-        builder: (BuildContext context, state) {
-          if (state is FetchCouponsState) {
-            if (state.stateStatus == StateStatus.success && state.coupons!.active.isEmpty) {
-              return Center(
-                child: AppText(
-                  text: "لايوجد كوبونات متاحة حاليا",
-                  color: Color(0xFF333333),
-                  textStyles: AppTextStyles.regular14,
-                ),
-              );
-            }
-            return ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-              itemBuilder: (BuildContext context, int index) {
-                return state.stateStatus == StateStatus.success
-                    ? CouponItem(
-                        coupon: state.coupons!.active[index],
-                        isExpired: false,
-                      )
-                    : AppShimmer(
-                        child: Container(
-                          width: 343.w,
-                          height: 114.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.fffffff,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 16.h);
-              },
-              itemCount: state.stateStatus == StateStatus.success ? state.coupons!.active.length : 3,
+    return BlocBuilder<CouponCubit, CouponStates>(
+      buildWhen: (previous, current) => current is FetchCouponsState,
+      builder: (BuildContext context, state) {
+        if (state is FetchCouponsState) {
+          if (state.stateStatus == StateStatus.success && state.coupons!.active.isEmpty) {
+            return Center(
+              child: AppText(
+                text: "thereIsNoCoupon".tr,
+                color: Color(0xFF333333),
+                textStyles: AppTextStyles.regular14,
+              ),
             );
           }
-          return const SizedBox();
-        },
-      ),
+          return ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            itemBuilder: (BuildContext context, int index) {
+              return state.stateStatus == StateStatus.success
+                  ? CouponItem(
+                      coupon: state.coupons!.active[index],
+                      isExpired: false,
+                    )
+                  : AppShimmer(
+                      child: Container(
+                        width: 343.w,
+                        height: 114.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.fffffff,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(height: 16.h);
+            },
+            itemCount: state.stateStatus == StateStatus.success ? state.coupons!.active.length : 3,
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
@@ -129,51 +127,48 @@ class ExpiredCouponsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: BlocBuilder<CouponCubit, CouponStates>(
-        buildWhen: (previous, current) => current is FetchCouponsState,
-        builder: (BuildContext context, state) {
-          if (state is FetchCouponsState) {
-            if (state.stateStatus == StateStatus.success && state.coupons!.expired.isEmpty) {
-              return Center(
-                child: AppText(
-                  text: "لايوجد كوبونات متاحة حاليا",
-                  color: Color(0xFF333333),
-                  textStyles: AppTextStyles.regular14,
-                ),
-              );
-            }
-            return ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-              itemBuilder: (BuildContext context, int index) {
-                return state.stateStatus == StateStatus.success
-                    ? CouponItem(
-                        coupon: state.coupons!.expired[index],
-                        isExpired: true,
-                      )
-                    : AppShimmer(
-                        child: Container(
-                          width: 343.w,
-                          height: 114.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.fffffff,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 16.h);
-              },
-              itemCount: state.stateStatus == StateStatus.success ? state.coupons!.expired.length : 3,
+    return BlocBuilder<CouponCubit, CouponStates>(
+      buildWhen: (previous, current) => current is FetchCouponsState,
+      builder: (BuildContext context, state) {
+        if (state is FetchCouponsState) {
+          if (state.stateStatus == StateStatus.success && state.coupons!.expired.isEmpty) {
+            return Center(
+              child: AppText(
+                text: "thereIsNoCoupon".tr,
+                color: Color(0xFF333333),
+                textStyles: AppTextStyles.regular14,
+              ),
             );
           }
-          return const SizedBox();
-        },
-      ),
+          return ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            itemBuilder: (BuildContext context, int index) {
+              return state.stateStatus == StateStatus.success
+                  ? CouponItem(
+                      coupon: state.coupons!.expired[index],
+                      isExpired: true,
+                    )
+                  : AppShimmer(
+                      child: Container(
+                        width: 343.w,
+                        height: 114.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.fffffff,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(height: 16.h);
+            },
+            itemCount: state.stateStatus == StateStatus.success ? state.coupons!.expired.length : 3,
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

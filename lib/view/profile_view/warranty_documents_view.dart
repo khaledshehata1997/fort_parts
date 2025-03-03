@@ -33,8 +33,8 @@ class _WarrantyDocumentsScreenState extends State<WarrantyDocumentsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
-          'وثائق الضمان',
+        title:  Text(
+          'warrantyDocuments'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -42,49 +42,46 @@ class _WarrantyDocumentsScreenState extends State<WarrantyDocumentsScreen> {
           ),
         ),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: BlocBuilder<OrderCubit, OrderStates>(
-          buildWhen: (previous, current) => current is FetchCertificatesState,
-          builder: (context, state) {
-            if (state is FetchCertificatesState) {
-              return ListView.separated(
-                padding: const EdgeInsets.all(16),
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return state.stateStatus == StateStatus.success
-                      ? GestureDetector(
-                          onTap: () {
-                            Get.to(WarrantyDetailsScreen(
-                              certificateID: state.certificates[index].id,
-                            ));
-                          },
-                          child: _buildDocumentCard(
-                            title: state.certificates[index].product.name,
-                            subtitle: state.certificates[index].product.description,
-                            date: state.certificates[index].endDate,
-                            image: state.certificates[index].product.image,
-                          ),
-                        )
-                      : AppShimmer(
-                          child: Container(
-                          height: 133,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ));
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 16);
-                },
-                itemCount: state.stateStatus == StateStatus.success ? state.certificates.length : 2,
-              );
-            }
-            return const SizedBox();
-          },
-        ),
+      body: BlocBuilder<OrderCubit, OrderStates>(
+        buildWhen: (previous, current) => current is FetchCertificatesState,
+        builder: (context, state) {
+          if (state is FetchCertificatesState) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(16),
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return state.stateStatus == StateStatus.success
+                    ? GestureDetector(
+                        onTap: () {
+                          Get.to(WarrantyDetailsScreen(
+                            certificateID: state.certificates[index].id,
+                          ));
+                        },
+                        child: _buildDocumentCard(
+                          title: state.certificates[index].product.name,
+                          subtitle: state.certificates[index].product.description,
+                          date: state.certificates[index].endDate,
+                          image: state.certificates[index].product.image,
+                        ),
+                      )
+                    : AppShimmer(
+                        child: Container(
+                        height: 133,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ));
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 16);
+              },
+              itemCount: state.stateStatus == StateStatus.success ? state.certificates.length : 2,
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
@@ -133,7 +130,7 @@ class _WarrantyDocumentsScreenState extends State<WarrantyDocumentsScreen> {
                     children: [
                       const SizedBox(width: 4),
                       Text(
-                        'ينتهي الضمان في: $date',
+                        'warrantyEndIN$date'.tr,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.black,

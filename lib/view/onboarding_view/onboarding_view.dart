@@ -61,7 +61,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                       onPressed: () {
                         Get.to(HomeLayout());
                       },
-                      child: Text("تخطي",
+                      child: Text("skip".tr,
                           textDirection: TextDirection.rtl, style: TextStyle(fontSize: 20, color: mainColor, fontWeight: FontWeight.bold))),
                 ),
                 SizedBox(
@@ -132,7 +132,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                           }
                         },
                         child: Text(
-                          'التالي',
+                          'next'.tr,
                           style: TextStyle(wordSpacing: 2, fontSize: 16, fontWeight: FontWeight.w600, color: mainColor),
                         )),
                     TextButton(

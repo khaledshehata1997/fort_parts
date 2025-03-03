@@ -19,6 +19,7 @@ import 'package:fort_parts/view/home_layout/home_layout.dart';
 import 'package:fort_parts/view/home_layout/home_layout_cubit/home_layout_cubit.dart';
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
 import 'package:fort_parts/view/profile_view/pick_location_map_screen.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:local_storage/local_storage.dart';
 
@@ -77,7 +78,7 @@ class _PaymentViewState extends State<PaymentView> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('تأكيد الطلب', style: TextStyle(fontSize: 18)),
+        title: Text('confirmOrder'.tr, style: TextStyle(fontSize: 18)),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -102,72 +103,69 @@ class _PaymentViewState extends State<PaymentView> {
                 },
                 child: SizedBox(
                   width: double.infinity,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 2,
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "العنوان : ${selectedAddress?.address ?? ""}",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 2,
+                    margin: EdgeInsets.symmetric(vertical: 16),
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "address${selectedAddress?.address ?? ""}".tr,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
-                            SizedBox(height: 8), // Space between text and button
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextButton(
-                                onPressed: () async {
-                                  if (selectedAddress != null) {
-                                    await showModalBottomSheet(
-                                      elevation: 0.0,
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (BuildContext context) => ChangeAddressBottomSheet(),
-                                    ).then((value) {
-                                      if (value != null) {
-                                        setState(() {
-                                          selectedAddress = value;
-                                        });
-                                      }
-                                    });
-                                  } else {
-                                    await AppNavigator.navigateTo(
-                                      type: NavigationType.navigateTo,
-                                      widget: PickLocationMapScreen(),
-                                    ).then((_) {
-                                      final cubit = context.read<AddressCubit>();
-                                      cubit.fetchAddresses();
-                                    });
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  alignment: Alignment.centerRight,
-                                ),
-                                child: Text(
-                                  selectedAddress != null ? 'تغيير العنوان' : "أضافة عنوان",
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: mainColor,
-                                    color: Colors.amber,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          ),
+                          SizedBox(height: 8), // Space between text and button
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              onPressed: () async {
+                                if (selectedAddress != null) {
+                                  await showModalBottomSheet(
+                                    elevation: 0.0,
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (BuildContext context) => ChangeAddressBottomSheet(),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        selectedAddress = value;
+                                      });
+                                    }
+                                  });
+                                } else {
+                                  await AppNavigator.navigateTo(
+                                    type: NavigationType.navigateTo,
+                                    widget: PickLocationMapScreen(),
+                                  ).then((_) {
+                                    final cubit = context.read<AddressCubit>();
+                                    cubit.fetchAddresses();
+                                  });
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                alignment: Alignment.centerRight,
+                              ),
+                              child: Text(
+                                selectedAddress != null ? 'changeAddress'.tr : "addAddress".tr,
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: mainColor,
+                                  color: Colors.amber,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -185,54 +183,51 @@ class _PaymentViewState extends State<PaymentView> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: BlocListener<AuthenticationCubit, AuthenticationStates>(
-                      listenWhen: (previous, current) => current is FetchProfileState,
-                      listener: (context, state) {
-                        if (state is FetchProfileState && state.stateStatus == StateStatus.success && state.user!.activeCoupon.isNotEmpty) {
-                          setState(() {
-                            selectedCoupon = state.user!.activeCoupon;
-                          });
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          AppText(
-                            text: selectedCoupon.isNotEmpty ? selectedCoupon : "أدخل الكوبون الخاص بك",
-                            color: Color(0xFFAFB1B6),
-                            textStyles: AppTextStyles.regular14,
-                          ),
-                          const Spacer(),
-                          InkWell(
-                            borderRadius: BorderRadius.circular(4.r),
-                            onTap: () async {
-                              await AppNavigator.navigateTo(
-                                type: NavigationType.navigateTo,
-                                widget: const CouponsScreen(),
-                              ).then((_) {
-                                if (context.mounted) {
-                                  final cubit = context.read<AuthenticationCubit>();
-                                  cubit.fetchProfile();
-                                }
-                              });
-                            },
-                            child: Container(
-                              width: 65.w,
-                              height: 30.h,
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.circular(4.r), border: Border.all(width: 1.0, color: AppColors.fE0AA06)),
-                              child: Center(
-                                child: AppText(
-                                  text: "تفعيل",
-                                  color: Color(0xFF333333),
-                                  textStyles: AppTextStyles.regular16,
-                                ),
+                  child: BlocListener<AuthenticationCubit, AuthenticationStates>(
+                    listenWhen: (previous, current) => current is FetchProfileState,
+                    listener: (context, state) {
+                      if (state is FetchProfileState && state.stateStatus == StateStatus.success && state.user!.activeCoupon.isNotEmpty) {
+                        setState(() {
+                          selectedCoupon = state.user!.activeCoupon;
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        AppText(
+                          text: selectedCoupon.isNotEmpty ? selectedCoupon : "addYourCoupon".tr,
+                          color: Color(0xFFAFB1B6),
+                          textStyles: AppTextStyles.regular14,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(4.r),
+                          onTap: () async {
+                            await AppNavigator.navigateTo(
+                              type: NavigationType.navigateTo,
+                              widget: const CouponsScreen(),
+                            ).then((_) {
+                              if (context.mounted) {
+                                final cubit = context.read<AuthenticationCubit>();
+                                cubit.fetchProfile();
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: 65.w,
+                            height: 30.h,
+                            decoration:
+                                BoxDecoration(borderRadius: BorderRadius.circular(4.r), border: Border.all(width: 1.0, color: AppColors.fE0AA06)),
+                            child: Center(
+                              child: AppText(
+                                text: "active".tr,
+                                color: Color(0xFF333333),
+                                textStyles: AppTextStyles.regular16,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -260,96 +255,94 @@ class _PaymentViewState extends State<PaymentView> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              text: "addLoyaltyPoints".tr,
+                              color: Color(0xFF753C18),
+                              textStyles: AppTextStyles.medium16,
+                            ),
+                            SizedBox(height: 20.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                AppText(
-                                  text: "أدخل نقاط الولاء الخاصة بك",
-                                  color: Color(0xFF753C18),
-                                  textStyles: AppTextStyles.medium16,
-                                ),
-                                SizedBox(height: 20.h),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                      width: 140.w,
-                                      height: 48.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(4.r), border: Border.all(width: 1.0, color: AppColors.fE0AA06)),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: TextFormField(
-                                              controller: pointsController,
-                                              keyboardType: TextInputType.number,
-                                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                              onChanged: (String? value) {
-                                                if (value != null) {
-                                                  if (int.parse(pointsController.text) > snapshot.data.pos) {
-                                                    pointsController.text = snapshot.data.pos.toString();
-                                                  }
-                                                }
-                                              },
-                                              decoration: InputDecoration(
-                                                  hintText: "0",
-                                                  prefixStyle: TextStyle(color: Color(0xFF753C18)),
-                                                  contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderSide: const BorderSide(color: Colors.transparent, width: 0.0),
-                                                    borderRadius: BorderRadius.circular(5),
-                                                  )),
-                                            ),
-                                          ),
-                                          AppText(
-                                            text: "نقطة",
-                                            color: Color(0xFF753C18),
-                                            textStyles: AppTextStyles.medium16,
-                                          ),
-                                        ],
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                  width: 140.w,
+                                  height: 48.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.r), border: Border.all(width: 1.0, color: AppColors.fE0AA06)),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          controller: pointsController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          onChanged: (String? value) {
+                                            if (value != null) {
+                                              if (int.parse(pointsController.text) > snapshot.data.pos) {
+                                                pointsController.text = snapshot.data.pos.toString();
+                                              }
+                                            }
+                                          },
+                                          decoration: InputDecoration(
+                                              hintText: "0",
+                                              prefixStyle: TextStyle(color: Color(0xFF753C18)),
+                                              contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(color: Colors.transparent, width: 0.0),
+                                                borderRadius: BorderRadius.circular(5),
+                                              )),
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    AppText(
-                                      text: "الخصم: ${calculateDiscountAmount()} ريال سعودي",
-                                      color: Color(0xFF753C18),
-                                      textStyles: AppTextStyles.bold16,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 20.h),
-                                InkWell(
-                                  borderRadius: BorderRadius.circular(4.r),
-                                  onTap: () {
-                                    if (pointsController.text.isNotEmpty && int.parse(pointsController.text) >= pos) {
-                                      setState(() {
-                                        selectedPoints = calculateDiscountAmount() * pos;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 375.w,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      border: Border.all(width: 1.0, color: AppColors.fE0AA06),
-                                    ),
-                                    child: Center(
-                                      child: AppText(
-                                        text: "تفعيل",
+                                      AppText(
+                                        text: "point".tr,
                                         color: Color(0xFF753C18),
-                                        textStyles: AppTextStyles.bold16,
+                                        textStyles: AppTextStyles.medium16,
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
+                                const Spacer(),
+                                AppText(
+                                  text: "الخصم: ${calculateDiscountAmount()} ريال سعودي",
+                                  color: Color(0xFF753C18),
+                                  textStyles: AppTextStyles.bold16,
+                                ),
                               ],
-                            )),
+                            ),
+                            SizedBox(height: 20.h),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(4.r),
+                              onTap: () {
+                                if (pointsController.text.isNotEmpty && int.parse(pointsController.text) >= pos) {
+                                  setState(() {
+                                    selectedPoints = calculateDiscountAmount() * pos;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 375.w,
+                                height: 40.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.r),
+                                  border: Border.all(width: 1.0, color: AppColors.fE0AA06),
+                                ),
+                                child: Center(
+                                  child: AppText(
+                                    text: "active".tr,
+                                    color: Color(0xFF753C18),
+                                    textStyles: AppTextStyles.bold16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -369,40 +362,34 @@ class _PaymentViewState extends State<PaymentView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Row(
-                          children: [
-                            Icon(Icons.monetization_on_outlined, size: 30, color: mainColor),
-                            SizedBox(width: 8),
-                            Text(
-                              'المبلغ الإجمالي : ${calculateTotalAmount()} جنيه',
-                              style: TextStyle(
-                                fontSize: 23,
-                                color: mainColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      Row(
+                        children: [
+                          Icon(Icons.monetization_on_outlined, size: 30, color: mainColor),
+                          SizedBox(width: 8),
+                          Text(
+                            'المبلغ الإجمالي : ${calculateTotalAmount()} جنيه',
+                            style: TextStyle(
+                              fontSize: 23,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 24),
                       // Payment Method Section
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Text(
-                          'طريقة الدفع',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Text(
+                        'paymentWay'.tr,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(height: 16),
 
                       // Radio Buttons for Payment Methods
                       PaymentMethodRadio(
-                        title: 'كاش',
+                        title: 'cash'.tr,
                         groupValue: 'cash',
                         value: 'cash',
                         onChanged: (value) {},
@@ -473,7 +460,7 @@ class _PaymentViewState extends State<PaymentView> {
                       children: [
                         Icon(Icons.calendar_today, color: mainColor, size: 25),
                         Text(
-                          selectedDate.isNotEmpty && selectedTime.isNotEmpty ? '$selectedDate - $selectedTime' : 'اختر موعد وتوقيت زياره الفني',
+                          selectedDate.isNotEmpty && selectedTime.isNotEmpty ? '$selectedDate - $selectedTime' : 'chooseTimeForVisit'.tr,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -515,8 +502,8 @@ class _PaymentViewState extends State<PaymentView> {
                       borderRadius: BorderRadius.circular(8), // Less rounded corners (8)
                     ),
                   ),
-                  child: const Text(
-                    'أرسال الطلب',
+                  child:  Text(
+                    'submitOrder'.tr,
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),

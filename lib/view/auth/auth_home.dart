@@ -28,13 +28,10 @@ class AuthHome extends StatelessWidget {
                 child: Image.asset('icons/welcome_text.png')),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: ListTile(
-                  title: Text('العربيه',style: TextStyle(fontSize: 20),),
-                  leading: Icon(Icons.language,size: 30,),
-                  trailing: Icon(Icons.keyboard_arrow_down_sharp,size: 35,),
-                ),
+              child: ListTile(
+                title: Text('العربيه',style: TextStyle(fontSize: 20),),
+                leading: Icon(Icons.language,size: 30,),
+                trailing: Icon(Icons.keyboard_arrow_down_sharp,size: 35,),
               ),
               width: Get.width,
               height: 65,

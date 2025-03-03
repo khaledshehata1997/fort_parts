@@ -3,6 +3,7 @@ import 'package:data_access/data_access.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/coupon_cubit/coupon_cubit.dart';
+import 'package:get/get.dart';
 
 class CouponItem extends StatelessWidget {
   const CouponItem({
@@ -55,7 +56,7 @@ class CouponItem extends StatelessWidget {
                     ),
                     // SizedBox(width: 10),
                     Text(
-                      coupon.type == "value" ? "ريال" : "%",
+                      coupon.type == "value" ? "SAR".tr : "%",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

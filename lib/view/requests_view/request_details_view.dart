@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
 import 'package:fort_parts/controllers/order_cubit/order_states.dart';
 import 'package:fort_parts/view/requests_view/widgets/provider_details_bottom_sheet.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class RequestDetailsView extends StatefulWidget {
@@ -34,405 +35,403 @@ class _RequestDetailsViewState extends State<RequestDetailsView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('تفاصيل الطلب', style: TextStyle(fontSize: 18)),
+        title: Text('requestDetails'.tr, style: TextStyle(fontSize: 18)),
         centerTitle: true,
       ),
-      body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<OrderCubit, OrderStates>(
-            buildWhen: (previous, current) => current is FetchOrderState,
-            builder: (context, state) {
-              if (state is FetchOrderState) {
-                return state.stateStatus == StateStatus.success
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8.r),
-                                border: Border.all(width: 1.0, color: Color(0xFFF6F4FA).withValues(alpha: 0.80)),
+      body: BlocBuilder<OrderCubit, OrderStates>(
+        buildWhen: (previous, current) => current is FetchOrderState,
+        builder: (context, state) {
+          if (state is FetchOrderState) {
+            return state.stateStatus == StateStatus.success
+                ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.r),
+                            border: Border.all(width: 1.0, color: Color(0xFFF6F4FA).withValues(alpha: 0.80)),
+                          ),
+                          child: Column(
+                            children: [
+                              OrderInfoRow(
+                                icon: AppImages.hash,
+                                label: "requestNo".tr,
+                                value: state.order!.id.toString(),
                               ),
-                              child: Column(
+                              SizedBox(height: 16.h),
+                              OrderInfoRow(
+                                icon: AppImages.setting,
+                                label: "serviceName".tr,
+                                value: state.order!.products[0].name,
+                              ),
+                              SizedBox(height: 16.h),
+                              OrderInfoRow(
+                                icon: AppImages.calendar,
+                                label: "firstVisitDate".tr,
+                                value: state.order!.date,
+                              ),
+                              SizedBox(height: 16.h),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  OrderInfoRow(
-                                    icon: AppImages.hash,
-                                    label: "رقم الطلب :",
-                                    value: state.order!.id.toString(),
+                                  AppSVG(
+                                    svgPath: AppImages.status,
+                                    width: 24,
+                                    height: 24,
                                   ),
-                                  SizedBox(height: 16.h),
-                                  OrderInfoRow(
-                                    icon: AppImages.setting,
-                                    label: "اسم الخدمة :",
-                                    value: state.order!.products[0].name,
+                                  SizedBox(width: 10.w),
+                                  AppText(
+                                    text: "statusRequest".tr,
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.regular16,
                                   ),
-                                  SizedBox(height: 16.h),
-                                  OrderInfoRow(
-                                    icon: AppImages.calendar,
-                                    label: "تاريخ اول زيارة :",
-                                    value: state.order!.date,
+                                  SizedBox(width: 10.w),
+                                  CircleAvatar(
+                                    radius: 5,
+                                    backgroundColor: HexColor(state.order!.statusColor),
                                   ),
-                                  SizedBox(height: 16.h),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      AppSVG(
-                                        svgPath: AppImages.status,
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      AppText(
-                                        text: "حالة الطلب :",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.regular16,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      CircleAvatar(
-                                        radius: 5,
-                                        backgroundColor: HexColor(state.order!.statusColor),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      AppText(
-                                        text: state.order!.status,
-                                        color: HexColor(state.order!.statusColor),
-                                        textStyles: AppTextStyles.bold16,
-                                      ),
-                                    ],
+                                  SizedBox(width: 10.w),
+                                  AppText(
+                                    text: state.order!.status,
+                                    color: HexColor(state.order!.statusColor),
+                                    textStyles: AppTextStyles.bold16,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        Container(
+                          padding: EdgeInsetsDirectional.only(start: 10.w),
+                          width: 390.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: ExpandablePanel(
+                            theme: ExpandableThemeData(
+                              headerAlignment: ExpandablePanelHeaderAlignment.center,
+                              iconColor: AppColors.fE0AA06,
+                            ),
+                            header: SizedBox(
+                              height: 60.h,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  AppSVG(
+                                    svgPath: AppImages.task2,
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    "tasksList".tr,
+                                    style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(height: 16.h),
-                            Container(
-                              padding: EdgeInsetsDirectional.only(start: 10.w),
-                              width: 390.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: ExpandablePanel(
-                                theme: ExpandableThemeData(
-                                  headerAlignment: ExpandablePanelHeaderAlignment.center,
-                                  iconColor: AppColors.fE0AA06,
-                                ),
-                                header: SizedBox(
-                                  height: 60.h,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      AppSVG(
-                                        svgPath: AppImages.task2,
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        "قائمة المهام",
-                                        style: TextStyle(
-                                          color: Color(0xFF333333),
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                collapsed: const SizedBox(),
-                                expanded: state.order!.tasks.isNotEmpty
-                                    ? GridView.count(
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 15.0,
-                                        crossAxisSpacing: 15.0,
-                                        padding: EdgeInsetsDirectional.only(bottom: 20.h),
-                                        childAspectRatio: 3.5 / 1,
-                                        children: List.generate(
-                                          state.order!.tasks.length,
-                                          (index) => InkWell(
-                                            borderRadius: BorderRadius.circular(8.r),
-                                            onTap: () {
-                                              showModalBottomSheet(
-                                                elevation: 0.0,
-                                                isScrollControlled: true,
-                                                context: context,
-                                                builder: (BuildContext context) => ProviderDetailsBottomSheet(
-                                                  task: state.order!.tasks[index],
-                                                  index: index,
-                                                  orderID: state.order!.id,
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(8.r),
-                                                border: Border.all(width: 1.0, color: AppColors.fE0AA06),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  AppSVG(
-                                                    svgPath: AppImages.task3,
-                                                    width: 16,
-                                                    height: 16,
-                                                  ),
-                                                  SizedBox(width: 10.h),
-                                                  AppText(
-                                                    text: "مهمة",
-                                                    color: Color(0xFF333333),
-                                                    textStyles: AppTextStyles.regular14,
-                                                  ),
-                                                  SizedBox(width: 5.h),
-                                                  AppText(
-                                                    text: (index + 1).toString(),
-                                                    color: Color(0xFF333333),
-                                                    textStyles: AppTextStyles.regular14,
-                                                  ),
-                                                ],
-                                              ),
+                            collapsed: const SizedBox(),
+                            expanded: state.order!.tasks.isNotEmpty
+                                ? GridView.count(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 15.0,
+                                    crossAxisSpacing: 15.0,
+                                    padding: EdgeInsetsDirectional.only(bottom: 20.h),
+                                    childAspectRatio: 3.5 / 1,
+                                    children: List.generate(
+                                      state.order!.tasks.length,
+                                      (index) => InkWell(
+                                        borderRadius: BorderRadius.circular(8.r),
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            elevation: 0.0,
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (BuildContext context) => ProviderDetailsBottomSheet(
+                                              task: state.order!.tasks[index],
+                                              index: index,
+                                              orderID: state.order!.id,
                                             ),
-                                          ),
-                                        ))
-                                    : Padding(
-                                        padding: EdgeInsetsDirectional.only(bottom: 10.h),
-                                        child: Center(
-                                          child: AppText(
-                                            text: "لايوجد مهام حالية",
-                                            color: Color(0xFF333333),
-                                            textStyles: AppTextStyles.regular14,
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                            ),
-                            SizedBox(height: 16.h),
-                            Container(
-                              padding: EdgeInsetsDirectional.only(start: 10.w),
-                              width: 390.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: ExpandablePanel(
-                                theme: ExpandableThemeData(
-                                  headerAlignment: ExpandablePanelHeaderAlignment.center,
-                                  iconColor: AppColors.fE0AA06,
-                                ),
-                                header: SizedBox(
-                                  height: 60.h,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      AppSVG(
-                                        svgPath: AppImages.spare,
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        "قطع الغيار المضافة",
-                                        style: TextStyle(
-                                          color: Color(0xFF333333),
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                collapsed: const SizedBox(),
-                                expanded: state.order!.spareParts.isNotEmpty
-                                    ? ListView.separated(
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        padding: EdgeInsetsDirectional.only(bottom: 20.h),
-                                        itemBuilder: (BuildContext context, int index) {
-                                          return Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius: 4.r,
-                                                      backgroundColor: Color(0xFF333333),
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    AppText(
-                                                      text: state.order!.spareParts[index].name,
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 1.0,
-                                                height: 20.h,
-                                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                                decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    AppText(
-                                                      text: "الكمية :",
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    AppText(
-                                                      text: state.order!.spareParts[index].quantity.toString(),
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 1.0,
-                                                height: 20.h,
-                                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                                decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    AppText(
-                                                      text: state.order!.spareParts[index].price.toString(),
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    AppText(
-                                                      text: "ريال",
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 1.0,
-                                                height: 20.h,
-                                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                                decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    AppText(
-                                                      text: "الإجمالي:",
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    AppText(
-                                                      text: state.order!.spareParts[index].total.toString(),
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    AppText(
-                                                      text: "ريال",
-                                                      color: Color(0xFF333333),
-                                                      textStyles: AppTextStyles.regular12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
                                           );
                                         },
-                                        separatorBuilder: (BuildContext context, int index) {
-                                          return SizedBox(height: 20.h);
-                                        },
-                                        itemCount: state.order!.spareParts.length,
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsetsDirectional.only(bottom: 10.h),
-                                        child: Center(
-                                          child: AppText(
-                                            text: "لايوجد قطع غيار مضافة حاليا ",
-                                            color: Color(0xFF333333),
-                                            textStyles: AppTextStyles.regular14,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(8.r),
+                                            border: Border.all(width: 1.0, color: AppColors.fE0AA06),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              AppSVG(
+                                                svgPath: AppImages.task3,
+                                                width: 16,
+                                                height: 16,
+                                              ),
+                                              SizedBox(width: 10.h),
+                                              AppText(
+                                                text: "task".tr,
+                                                color: Color(0xFF333333),
+                                                textStyles: AppTextStyles.regular14,
+                                              ),
+                                              SizedBox(width: 5.h),
+                                              AppText(
+                                                text: (index + 1).toString(),
+                                                color: Color(0xFF333333),
+                                                textStyles: AppTextStyles.regular14,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                              ),
+                                    ))
+                                : Padding(
+                                    padding: EdgeInsetsDirectional.only(bottom: 10.h),
+                                    child: Center(
+                                      child: AppText(
+                                        text: "thereIsNoTasks".tr,
+                                        color: Color(0xFF333333),
+                                        textStyles: AppTextStyles.regular14,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        Container(
+                          padding: EdgeInsetsDirectional.only(start: 10.w),
+                          width: 390.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: ExpandablePanel(
+                            theme: ExpandableThemeData(
+                              headerAlignment: ExpandablePanelHeaderAlignment.center,
+                              iconColor: AppColors.fE0AA06,
                             ),
-                            SizedBox(height: 16.h),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-                              width: 390.w,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Column(
+                            header: SizedBox(
+                              height: 60.h,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    children: [
-                                      AppText(
-                                        text: "إجمالي تكلفة الخدمات:",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.regular16,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      AppText(
-                                        text: "${state.order!.subTotal} ر.س",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.bold16,
-                                      ),
-                                    ],
+                                  AppSVG(
+                                    svgPath: AppImages.spare,
+                                    width: 24,
+                                    height: 24,
                                   ),
-                                  SizedBox(height: 16.h),
-                                  Row(
-                                    children: [
-                                      AppText(
-                                        text: "إجمالي تكلفة القطع المضافة:",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.regular16,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      AppText(
-                                        text: "${state.order!.sparePrice} ر.س",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.bold16,
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 20.h),
-                                    height: 1,
-                                    color: AppColors.fE0AA06,
-                                  ),
-                                  Row(
-                                    children: [
-                                      AppSVG(svgPath: AppImages.total, width: 24, height: 24),
-                                      SizedBox(width: 10.w),
-                                      AppText(
-                                        text: "الإجمالي: ${state.order!.total} ريال فقط لا غير ",
-                                        color: Color(0xFF333333),
-                                        textStyles: AppTextStyles.bold16,
-                                      ),
-                                    ],
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    "addedSpareParts".tr,
+                                    style: TextStyle(
+                                      color: Color(0xFF333333),
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
+                            collapsed: const SizedBox(),
+                            expanded: state.order!.spareParts.isNotEmpty
+                                ? ListView.separated(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    padding: EdgeInsetsDirectional.only(bottom: 20.h),
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 4.r,
+                                                  backgroundColor: Color(0xFF333333),
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                AppText(
+                                                  text: state.order!.spareParts[index].name,
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1.0,
+                                            height: 20.h,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                            decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                AppText(
+                                                  text: "quantity".tr,
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                AppText(
+                                                  text: state.order!.spareParts[index].quantity.toString(),
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1.0,
+                                            height: 20.h,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                            decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                AppText(
+                                                  text: state.order!.spareParts[index].price.toString(),
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                AppText(
+                                                  text: "SAR".tr,
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1.0,
+                                            height: 20.h,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                            decoration: BoxDecoration(color: Color(0xFFDFDFDF)),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                AppText(
+                                                  text: "total".tr,
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                AppText(
+                                                  text: state.order!.spareParts[index].total.toString(),
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                AppText(
+                                                  text: "SAR".tr,
+                                                  color: Color(0xFF333333),
+                                                  textStyles: AppTextStyles.regular12,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    separatorBuilder: (BuildContext context, int index) {
+                                      return SizedBox(height: 20.h);
+                                    },
+                                    itemCount: state.order!.spareParts.length,
+                                  )
+                                : Padding(
+                                    padding: EdgeInsetsDirectional.only(bottom: 10.h),
+                                    child: Center(
+                                      child: AppText(
+                                        text: "thereIsNoSpareParts".tr,
+                                        color: Color(0xFF333333),
+                                        textStyles: AppTextStyles.regular14,
+                                      ),
+                                    ),
+                                  ),
+                          ),
                         ),
-                      )
-                    : const SizedBox();
-              }
-              return const SizedBox();
-            },
-          )),
+                        SizedBox(height: 16.h),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                          width: 390.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  AppText(
+                                    text: "totalServiceCost".tr,
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.regular16,
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  AppText(
+                                    text: "${state.order!.subTotal} ر.س",
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.bold16,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16.h),
+                              Row(
+                                children: [
+                                  AppText(
+                                    text: "totalSparePartsCost".tr,
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.regular16,
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  AppText(
+                                    text: "${state.order!.sparePrice} ر.س",
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.bold16,
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 20.h),
+                                height: 1,
+                                color: AppColors.fE0AA06,
+                              ),
+                              Row(
+                                children: [
+                                  AppSVG(svgPath: AppImages.total, width: 24, height: 24),
+                                  SizedBox(width: 10.w),
+                                  AppText(
+                                    text: "الإجمالي: ${state.order!.total} ريال فقط لا غير ",
+                                    color: Color(0xFF333333),
+                                    textStyles: AppTextStyles.bold16,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox();
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

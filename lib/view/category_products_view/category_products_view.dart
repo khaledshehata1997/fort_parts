@@ -44,32 +44,30 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
         width: Get.width,
         height: Get.height,
         margin: EdgeInsets.only(top: 20, left: 5, right: 5),
-        child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: BlocBuilder<SettingsCubit, SettingsStates>(
-              buildWhen: (previous, current) => current is FetchProductsSate,
-              builder: (BuildContext context, state) {
-                if (state is FetchProductsSate) {
-                  return ListView.builder(
-                      itemCount: state.stateStatus == StateStatus.success ? state.products.length : 2,
-                      itemBuilder: (context, index) {
-                        return state.stateStatus == StateStatus.success
-                            ? CategoryProduct(product: state.products[index])
-                            : AppShimmer(
-                                child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                                width: Get.width,
-                                height: Get.height * .18,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: [BoxShadow(blurRadius: 1, color: Colors.grey.shade300, spreadRadius: .025)]),
-                              ));
-                      });
-                }
-                return const SizedBox();
-              },
-            )),
+        child: BlocBuilder<SettingsCubit, SettingsStates>(
+          buildWhen: (previous, current) => current is FetchProductsSate,
+          builder: (BuildContext context, state) {
+            if (state is FetchProductsSate) {
+              return ListView.builder(
+                  itemCount: state.stateStatus == StateStatus.success ? state.products.length : 2,
+                  itemBuilder: (context, index) {
+                    return state.stateStatus == StateStatus.success
+                        ? CategoryProduct(product: state.products[index])
+                        : AppShimmer(
+                            child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                            width: Get.width,
+                            height: Get.height * .18,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [BoxShadow(blurRadius: 1, color: Colors.grey.shade300, spreadRadius: .025)]),
+                          ));
+                  });
+            }
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }

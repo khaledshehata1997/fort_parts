@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_cubit.dart';
 import 'package:fort_parts/controllers/settings_cubit/settings_states.dart';
+import 'package:get/get.dart';
 
 class TermsConditionsScreen extends StatefulWidget {
   const TermsConditionsScreen({super.key});
@@ -31,8 +32,8 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
-          'الشروط والأحكام',
+        title:  Text(
+          'termsConditions'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -40,50 +41,47 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
           ),
         ),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              // Illustration and Document
-              Container(
-                width: double.infinity,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: // Character illustration
-                    Image.asset(
-                  'icons/img_8.png', // Add your character illustration
-                  width: 150,
-                  height: 200,
-                ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Illustration and Document
+            Container(
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(height: 24),
-              // Terms List
-              BlocBuilder<SettingsCubit, SettingsStates>(
-                buildWhen: (previous, current) => current is FetchTermsAndConditionsState,
-                builder: (BuildContext context, state) {
-                  if (state is FetchTermsAndConditionsState) {
-                    return state.stateStatus == StateStatus.success
-                        ? Text(
-                            state.termsAndConditions,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 25,
-                              height: 1.5,
-                              color: Colors.black87,
-                            ),
-                          )
-                        : SizedBox();
-                  }
-                  return const SizedBox();
-                },
+              child: // Character illustration
+                  Image.asset(
+                'icons/img_8.png', // Add your character illustration
+                width: 150,
+                height: 200,
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 24),
+            // Terms List
+            BlocBuilder<SettingsCubit, SettingsStates>(
+              buildWhen: (previous, current) => current is FetchTermsAndConditionsState,
+              builder: (BuildContext context, state) {
+                if (state is FetchTermsAndConditionsState) {
+                  return state.stateStatus == StateStatus.success
+                      ? Text(
+                          state.termsAndConditions,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 25,
+                            height: 1.5,
+                            color: Colors.black87,
+                          ),
+                        )
+                      : SizedBox();
+                }
+                return const SizedBox();
+              },
+            ),
+          ],
         ),
       ),
     );

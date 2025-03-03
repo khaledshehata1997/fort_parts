@@ -8,6 +8,7 @@ import 'package:fort_parts/controllers/authentication_cubit/authentication_state
 import 'package:fort_parts/view/profile_view/coupons_view.dart';
 import 'package:fort_parts/view/profile_view/warranty_details_screen.dart';
 import 'package:fort_parts/view/requests_view/request_details_view.dart';
+import 'package:get/get.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -65,8 +66,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
-          'الإشعارات',
+        title:  Text(
+          'notification'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -74,75 +75,73 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           ),
         ),
       ),
-      body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<AuthenticationCubit, AuthenticationStates>(
-            buildWhen: (previous, current) => current is FetchNotificationsState,
-            builder: (context, state) {
-              if (state is FetchNotificationsState) {
-                meta = state.meta;
-                return Column(
-                  children: [
-                    ListView.separated(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      itemBuilder: (BuildContext context, int index) {
-                        return state.stateStatus == StateStatus.success
-                            ? _buildNotificationItem(
-                                time: state.notifications[index].time,
-                                message: state.notifications[index].title,
-                                number: (index + 1).toString(),
-                                onTap: () {
-                                  switch (state.notifications[index].type) {
-                                    case 'coupon':
-                                      return AppNavigator.navigateTo(
-                                        type: NavigationType.navigateTo,
-                                        widget: CouponsScreen(),
-                                      );
-                                    case 'order':
-                                      return AppNavigator.navigateTo(
-                                        type: NavigationType.navigateTo,
-                                        widget: RequestDetailsView(
-                                          orderID: state.notifications[index].typeID,
-                                        ),
-                                      );
-                                    case 'task':
-                                      return AppNavigator.navigateTo(
-                                        type: NavigationType.navigateTo,
-                                        widget: RequestDetailsView(
-                                          orderID: state.notifications[index].typeID,
-                                        ),
-                                      );
-                                    case 'certificate':
-                                      return AppNavigator.navigateTo(
-                                        type: NavigationType.navigateTo,
-                                        widget: WarrantyDetailsScreen(
-                                          certificateID: state.notifications[index].typeID,
-                                        ),
-                                      );
-                                  }
-                                },
-                              )
-                            : const SizedBox();
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(height: 16);
-                      },
-                      itemCount: state.stateStatus == StateStatus.success ? state.notifications.length : 2,
-                    ),
-                    if (hasMoreData)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: const CupertinoActivityIndicator(),
-                      ),
-                  ],
-                );
-              }
-              return const SizedBox();
-            },
-          )),
+      body: BlocBuilder<AuthenticationCubit, AuthenticationStates>(
+        buildWhen: (previous, current) => current is FetchNotificationsState,
+        builder: (context, state) {
+          if (state is FetchNotificationsState) {
+            meta = state.meta;
+            return Column(
+              children: [
+                ListView.separated(
+                  controller: scrollController,
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  itemBuilder: (BuildContext context, int index) {
+                    return state.stateStatus == StateStatus.success
+                        ? _buildNotificationItem(
+                            time: state.notifications[index].time,
+                            message: state.notifications[index].title,
+                            number: (index + 1).toString(),
+                            onTap: () {
+                              switch (state.notifications[index].type) {
+                                case 'coupon':
+                                  return AppNavigator.navigateTo(
+                                    type: NavigationType.navigateTo,
+                                    widget: CouponsScreen(),
+                                  );
+                                case 'order':
+                                  return AppNavigator.navigateTo(
+                                    type: NavigationType.navigateTo,
+                                    widget: RequestDetailsView(
+                                      orderID: state.notifications[index].typeID,
+                                    ),
+                                  );
+                                case 'task':
+                                  return AppNavigator.navigateTo(
+                                    type: NavigationType.navigateTo,
+                                    widget: RequestDetailsView(
+                                      orderID: state.notifications[index].typeID,
+                                    ),
+                                  );
+                                case 'certificate':
+                                  return AppNavigator.navigateTo(
+                                    type: NavigationType.navigateTo,
+                                    widget: WarrantyDetailsScreen(
+                                      certificateID: state.notifications[index].typeID,
+                                    ),
+                                  );
+                              }
+                            },
+                          )
+                        : const SizedBox();
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: 16);
+                  },
+                  itemCount: state.stateStatus == StateStatus.success ? state.notifications.length : 2,
+                ),
+                if (hasMoreData)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: const CupertinoActivityIndicator(),
+                  ),
+              ],
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/view/profile_view/address_information_screen.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_services/location_services.dart';
 
@@ -56,8 +57,8 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
-          'العناوين',
+        title:  Text(
+          'addresses'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -65,95 +66,92 @@ class _PickLocationMapScreenState extends State<PickLocationMapScreen> {
           ),
         ),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Column(
-          children: [
-            SizedBox(height: 20.h),
-            AppText(
-              text: "حدد موقعك على الخريطة، ثم أكمل البيانات",
-              color: Color(0xFF333333),
-              textStyles: AppTextStyles.medium18,
-            ),
-            SizedBox(height: 10.h),
-            Expanded(
-              child: Stack(
-                children: [
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    zoomControlsEnabled: true,
-                    myLocationButtonEnabled: true,
-                    mapType: MapType.normal,
-                    markers: markers,
-                    initialCameraPosition: CameraPosition(
-                      target: LocationServices.currentLocation ?? LocationServices.saudiArabiaLocation,
-                      zoom: 14,
-                    ),
-                    onMapCreated: (GoogleMapController controller) {
-                      setInitialLocation(controller: controller);
-                    },
-                    onTap: (LatLng latLng) async {
-                      // Add a new marker at the tapped location
-                      markers.clear();
-                      markers.add(
-                        Marker(
-                          markerId: MarkerId(latLng.toString()),
-                          position: latLng,
-                          infoWindow: InfoWindow(
-                            title: "",
-                            snippet: "${latLng.latitude}, ${latLng.longitude}",
-                          ),
-                          icon: BitmapDescriptor.defaultMarker,
-                        ),
-                      );
-
-                      setState(() {
-                        selectedLocation = latLng;
-                      });
-                    },
+      body: Column(
+        children: [
+          SizedBox(height: 20.h),
+          AppText(
+            text: "yourLocation".tr,
+            color: Color(0xFF333333),
+            textStyles: AppTextStyles.medium18,
+          ),
+          SizedBox(height: 10.h),
+          Expanded(
+            child: Stack(
+              children: [
+                GoogleMap(
+                  myLocationEnabled: true,
+                  zoomControlsEnabled: true,
+                  myLocationButtonEnabled: true,
+                  mapType: MapType.normal,
+                  markers: markers,
+                  initialCameraPosition: CameraPosition(
+                    target: LocationServices.currentLocation ?? LocationServices.saudiArabiaLocation,
+                    zoom: 14,
                   ),
-                  Align(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12.r),
-                      onTap: () async {
-                        if (selectedLocation != null) {
-                          print(selectedLocation!.latitude);
-                          print(selectedLocation!.longitude);
-                          final Placemark placeMark = await LocationServices.fetchFormattedAddress(
-                              context: context, latitude: selectedLocation!.latitude, longitude: selectedLocation!.longitude);
-                          AppNavigator.navigateTo(
-                              type: NavigationType.navigateTo,
-                              widget: AddressInformationScreen(
-                                pickedLocation: selectedLocation!,
-                                formattedAddress: placeMark.subLocality ?? "",
-                                address: widget.address,
-                              ));
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, bottom: 30.h),
-                        width: 343.w,
-                        height: 56.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: AppColors.fE0AA06,
+                  onMapCreated: (GoogleMapController controller) {
+                    setInitialLocation(controller: controller);
+                  },
+                  onTap: (LatLng latLng) async {
+                    // Add a new marker at the tapped location
+                    markers.clear();
+                    markers.add(
+                      Marker(
+                        markerId: MarkerId(latLng.toString()),
+                        position: latLng,
+                        infoWindow: InfoWindow(
+                          title: "",
+                          snippet: "${latLng.latitude}, ${latLng.longitude}",
                         ),
-                        child: Center(
-                          child: AppText(
-                            text: "التالي",
-                            color: AppColors.fffffff,
-                            textStyles: AppTextStyles.medium18,
-                          ),
+                        icon: BitmapDescriptor.defaultMarker,
+                      ),
+                    );
+
+                    setState(() {
+                      selectedLocation = latLng;
+                    });
+                  },
+                ),
+                Align(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12.r),
+                    onTap: () async {
+                      if (selectedLocation != null) {
+                        print(selectedLocation!.latitude);
+                        print(selectedLocation!.longitude);
+                        final Placemark placeMark = await LocationServices.fetchFormattedAddress(
+                            context: context, latitude: selectedLocation!.latitude, longitude: selectedLocation!.longitude);
+                        AppNavigator.navigateTo(
+                            type: NavigationType.navigateTo,
+                            widget: AddressInformationScreen(
+                              pickedLocation: selectedLocation!,
+                              formattedAddress: placeMark.subLocality ?? "",
+                              address: widget.address,
+                            ));
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, bottom: 30.h),
+                      width: 343.w,
+                      height: 56.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: AppColors.fE0AA06,
+                      ),
+                      child: Center(
+                        child: AppText(
+                          text: "next".tr,
+                          color: AppColors.fffffff,
+                          textStyles: AppTextStyles.medium18,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

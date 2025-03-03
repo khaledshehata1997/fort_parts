@@ -92,7 +92,7 @@ class _SignInViewState extends State<SignInView> {
                   if (state is LoginState && state.stateStatus == StateStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('رقمم الهاتف غير صحيح'),
+                        content: Text('phoneNumWrong'.tr),
                       ),
                     );
                   }
@@ -107,7 +107,7 @@ class _SignInViewState extends State<SignInView> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('رقمم الهاتف غير صحيح'),
+                          content: Text('phoneNumWrong'.tr),
                         ),
                       );
                     }
@@ -116,7 +116,7 @@ class _SignInViewState extends State<SignInView> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'تسجيل الدخول',
+                      'signIn'.tr,
                       style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                     ),
                     width: Get.width,
@@ -139,7 +139,7 @@ class _SignInViewState extends State<SignInView> {
                     onTap: () {
                       Get.to(SignUpView(phoneNumber: ""));
                     },
-                    child: Text('إنشاء حساب ',
+                    child: Text('createAcc'.tr,
                         style: TextStyle(
                             decoration: TextDecoration.underline,
                             decorationColor: mainColor,
@@ -151,7 +151,7 @@ class _SignInViewState extends State<SignInView> {
                     width: 2,
                   ),
                   Text(
-                    'ليس لديك حساب؟ ',
+                    'dontHaveAcc'.tr,
                     style: TextStyle(fontSize: 17, color: Colors.black),
                   )
                 ],

@@ -5,6 +5,7 @@ import 'package:fort_parts/constants.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_cubit.dart';
 import 'package:fort_parts/controllers/authentication_cubit/authentication_states.dart';
 import 'package:fort_parts/view/home_layout/home_layout.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
 class OtvVerificationView extends StatefulWidget {
@@ -75,14 +76,14 @@ class _OtvVerificationViewState extends State<OtvVerificationView> {
                 height: 100,
               ),
               Text(
-                "أدخل رمز التحقق",
+                "enterOtp".tr,
                 style: TextStyle(
                   fontSize: 24,
                   color: Color(0xff333333),
                 ),
               ),
               Text(
-                "أدخل الرمز المكون من أربعة أرقام المرسل إليك على رقم الهاتف  الخاص بك.",
+                "enterFourOtpNo".tr,
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontSize: 16,
@@ -106,59 +107,56 @@ class _OtvVerificationViewState extends State<OtvVerificationView> {
                   if (state is OTPVerificationState && state.stateStatus == StateStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('الكود غير صحيح'),
+                        content: Text('otpIncorrect'.tr),
                       ),
                     );
                   }
                 },
-                child: Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: Center(
-                    child: Pinput(
-                      // You can pass your own SmsRetriever implementation based on any package
-                      // in this example we are using the SmartAuth
-                      controller: pinController,
-                      focusNode: focusNode,
-                      defaultPinTheme: defaultPinTheme,
-                      separatorBuilder: (index) => const SizedBox(width: 8),
-                      validator: (value) {
-                        return;
-                      },
-                      hapticFeedbackType: HapticFeedbackType.lightImpact,
-                      onCompleted: (pin) {
-                        final cubit = context.read<AuthenticationCubit>();
-                        cubit.otpVerification(phone: widget.phone, otp: pin);
-                      },
-                      onChanged: (value) {
-                        debugPrint('onChanged: $value');
-                      },
-                      cursor: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 9),
-                            width: 22,
-                            height: 1,
-                            color: mainColor,
-                          ),
-                        ],
-                      ),
-                      focusedPinTheme: defaultPinTheme.copyWith(
-                        decoration: defaultPinTheme.decoration!.copyWith(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: mainColor),
-                        ),
-                      ),
-                      submittedPinTheme: defaultPinTheme.copyWith(
-                        decoration: defaultPinTheme.decoration!.copyWith(
+                child: Center(
+                  child: Pinput(
+                    // You can pass your own SmsRetriever implementation based on any package
+                    // in this example we are using the SmartAuth
+                    controller: pinController,
+                    focusNode: focusNode,
+                    defaultPinTheme: defaultPinTheme,
+                    separatorBuilder: (index) => const SizedBox(width: 8),
+                    validator: (value) {
+                      return;
+                    },
+                    hapticFeedbackType: HapticFeedbackType.lightImpact,
+                    onCompleted: (pin) {
+                      final cubit = context.read<AuthenticationCubit>();
+                      cubit.otpVerification(phone: widget.phone, otp: pin);
+                    },
+                    onChanged: (value) {
+                      debugPrint('onChanged: $value');
+                    },
+                    cursor: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 9),
+                          width: 22,
+                          height: 1,
                           color: mainColor,
-                          borderRadius: BorderRadius.circular(19),
-                          border: Border.all(color: mainColor),
                         ),
+                      ],
+                    ),
+                    focusedPinTheme: defaultPinTheme.copyWith(
+                      decoration: defaultPinTheme.decoration!.copyWith(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: mainColor),
                       ),
-                      errorPinTheme: defaultPinTheme.copyBorderWith(
-                        border: Border.all(color: Colors.redAccent),
+                    ),
+                    submittedPinTheme: defaultPinTheme.copyWith(
+                      decoration: defaultPinTheme.decoration!.copyWith(
+                        color: mainColor,
+                        borderRadius: BorderRadius.circular(19),
+                        border: Border.all(color: mainColor),
                       ),
+                    ),
+                    errorPinTheme: defaultPinTheme.copyBorderWith(
+                      border: Border.all(color: Colors.redAccent),
                     ),
                   ),
                 ),

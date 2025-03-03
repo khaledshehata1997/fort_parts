@@ -33,8 +33,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       body: Align(
         alignment: Alignment.topRight,
-        child: Directionality(
-          textDirection: TextDirection.rtl,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
@@ -56,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
                           Row(
                             children: [
                               Text(
-                                'مرحبا بك , ',
+                                'welcome'.tr,
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
                               ),
                               FutureBuilder(
@@ -69,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                                           AppNavigator.navigateTo(type: NavigationType.navigateTo, widget: SignInView());
                                         },
                                         child: Text(
-                                          'انضم إلينا',
+                                          'joinUs'.tr,
                                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: mainColor),
                                         ),
                                       );
@@ -107,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'العنوان : ',
+                                      'address'.tr,
                                       style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: mainColor),
                                     ),
                                     BlocBuilder<AddressCubit, AddressStates>(
@@ -164,7 +163,7 @@ class _HomeViewState extends State<HomeView> {
                         Icons.search,
                         color: mainColor,
                       ),
-                      hintText: 'إبحث عن خدمة',
+                      hintText: 'searchForService'.tr,
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
@@ -184,7 +183,9 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(
                 height: Get.height * .05,
               ),
-              const HomeCategories(),
+              Container(
+                  height: Get.height * 0.37,
+                  child: const HomeCategories()),
             ],
           ),
         ),

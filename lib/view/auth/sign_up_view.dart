@@ -68,7 +68,7 @@ class _SignUpViewState extends State<SignUpView> {
                   margin: EdgeInsets.only(right: 15, bottom: 15),
                   alignment: Alignment.topRight,
                   child: Text(
-                    'الاسم الشخصي',
+                    'name'.tr,
                     style: TextStyle(fontSize: 17),
                   )),
               Padding(
@@ -160,7 +160,7 @@ class _SignUpViewState extends State<SignUpView> {
                     onTap: () {
                       Get.to(const TermsConditionsScreen());
                     },
-                    child: Text('الشروط والاحكام',
+                    child: Text('termsConditions'.tr,
                         style: TextStyle(
                             decoration: TextDecoration.underline,
                             decorationColor: mainColor,
@@ -172,7 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
                     width: 2,
                   ),
                   Text(
-                    'الموافقه علي ',
+                    'agreeWith'.tr,
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   )
                 ],
@@ -194,7 +194,7 @@ class _SignUpViewState extends State<SignUpView> {
                   if (state is RegisterState && state.stateStatus == StateStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('حدث خطأ ف التسجيل'),
+                        content: Text('errorSignup'.tr),
                       ),
                     );
                   }
@@ -214,7 +214,7 @@ class _SignUpViewState extends State<SignUpView> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('البيانات غير صحيحه'),
+                          content: Text('infoIncorrect'.tr),
                         ),
                       );
                     }
@@ -223,7 +223,7 @@ class _SignUpViewState extends State<SignUpView> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'إنشاء حساب',
+                      'createAcc'.tr,
                       style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
                     ),
                     width: Get.width,

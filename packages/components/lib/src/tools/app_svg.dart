@@ -20,21 +20,18 @@ class AppSVG extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SvgPicture.asset(
-        svgPath,
-        width: width,
-        height: height,
-        colorFilter: color != null
-            ? ColorFilter.mode(
-                color!,
-                BlendMode.srcIn,
-              )
-            : null,
-        fit: fit,
-        matchTextDirection: matchTextDirection,
-      ),
+    return SvgPicture.asset(
+      svgPath,
+      width: width,
+      height: height,
+      colorFilter: color != null
+          ? ColorFilter.mode(
+              color!,
+              BlendMode.srcIn,
+            )
+          : null,
+      fit: fit,
+      matchTextDirection: matchTextDirection,
     );
   }
 }

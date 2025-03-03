@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fort_parts/controllers/order_cubit/order_cubit.dart';
 import 'package:fort_parts/controllers/order_cubit/order_states.dart';
+import 'package:get/get.dart';
 
 class WarrantyDetailsScreen extends StatefulWidget {
   const WarrantyDetailsScreen({
@@ -36,8 +37,8 @@ class _WarrantyDetailsScreenState extends State<WarrantyDetailsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text(
-          'وثائق الضمان',
+        title:  Text(
+          'warrantyDocuments'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -45,44 +46,41 @@ class _WarrantyDetailsScreenState extends State<WarrantyDetailsScreen> {
           ),
         ),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: BlocBuilder<OrderCubit, OrderStates>(
-            buildWhen: (previous, current) => current is FetchCertificateState,
-            builder: (context, state) {
-              if (state is FetchCertificateState) {
-                return state.stateStatus == StateStatus.success
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            state.certificate!.product.name,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: BlocBuilder<OrderCubit, OrderStates>(
+          buildWhen: (previous, current) => current is FetchCertificateState,
+          builder: (context, state) {
+            if (state is FetchCertificateState) {
+              return state.stateStatus == StateStatus.success
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          state.certificate!.product.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 24),
-                          _buildInfoItem('الرقم المرجعي:', state.certificate!.code),
-                          _buildInfoItem('نوع الجهاز:', state.certificate!.type),
-                          _buildInfoItem('اسم البراند:', state.certificate!.brand),
-                          _buildInfoItem('المشكلة الاساسية:', state.certificate!.problem),
-                          _buildInfoItem('تاريخ بداية الضمان:', state.certificate!.startDate),
-                          _buildInfoItem('تاريخ نهاية الضمان بعد شهر:', state.certificate!.endDate),
-                          _buildInfoItem('الإجراءات المتخذة:', state.certificate!.procedure),
-                          const SizedBox(height: 16),
-                          _buildBulletPoint('شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'),
-                          _buildBulletPoint(
-                              'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'),
-                        ],
-                      )
-                    : const SizedBox();
-              }
-              return const SizedBox();
-            },
-          ),
+                        ),
+                        const SizedBox(height: 24),
+                        _buildInfoItem('الرقم المرجعي:', state.certificate!.code),
+                        _buildInfoItem('نوع الجهاز:', state.certificate!.type),
+                        _buildInfoItem('اسم البراند:', state.certificate!.brand),
+                        _buildInfoItem('المشكلة الاساسية:', state.certificate!.problem),
+                        _buildInfoItem('تاريخ بداية الضمان:', state.certificate!.startDate),
+                        _buildInfoItem('تاريخ نهاية الضمان بعد شهر:', state.certificate!.endDate),
+                        _buildInfoItem('الإجراءات المتخذة:', state.certificate!.procedure),
+                        const SizedBox(height: 16),
+                        _buildBulletPoint('شروط الضمان: يرجع للعميل إذا في حالة الإخلال بأي شرط يعتبر الضمان لاغي'),
+                        _buildBulletPoint(
+                            'يبدأ الضمان من تاريخ خدمة الصيانة ويستمر لمدة عام كامل، وبالتالي يتم تغطية أي مشكلة تحدث خلال هذه الفترة بدون تكلفة'),
+                      ],
+                    )
+                  : const SizedBox();
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );

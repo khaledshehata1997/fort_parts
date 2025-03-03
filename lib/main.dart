@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fort_parts/bloc_observer.dart';
 import 'package:fort_parts/bloc_providers.dart';
 import 'package:fort_parts/firebase_options.dart';
+import 'package:fort_parts/translations/local_strings.dart';
 import 'package:fort_parts/view/splash_screen/splash_view.dart';
 import 'package:get/get.dart';
 import 'package:local_storage/local_storage.dart';
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
               FocusManager.instance.primaryFocus!.unfocus();
             },
             child: GetMaterialApp(
+              translations: LocalStrings(),
+              locale: const Locale('ar', 'Ar'),
+              fallbackLocale: const Locale('ar', 'Ar'),
               builder: (context, widget) {
                 ScreenUtil.init(
                   context,
